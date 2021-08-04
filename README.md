@@ -2,16 +2,16 @@
 
 This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-In this repo, we have a Next.js application using
+In this repo, we have two sample auth flows: 
 
-- Stytch's React SDK component for magic links, Stytch's node client library for authentication, and with-iron-sessions for session management.
-- An integration with Stytch's API for SMS OTP authentication. Both Stytch's node client library and with-iron-session are also used.
+- SDK integration: This flow uses Stytch's React component to create a login and signup flow using email magic links. Other libraries used include Stytch's node client library for authentication and with-iron-sessions for session management.
+- API integration: This flow uses a custom UI with Stytch's backend API for SMS OTP authentication. Both Stytch's node client library and with-iron-session are also used.
 
 # Getting Started
 
 ### Setting up Stytch
 
-After signing up for Stytch and creating a project, you'll need your project's ID, project's secret, and a public token. You can find these in the [API keys tab](https://stytch.com/dashboard/api-keys).
+After signing up for Stytch, you'll need your project's ID, secret, and public token. You can find these in the [API keys tab](https://stytch.com/dashboard/api-keys).
 
 Once you've gathered these values, add them to a new .env.local file.
 Example:
@@ -21,7 +21,7 @@ cp .env.template .env.local
 # Replace your keys in new .env.local file
 ```
 
-Next you'll want to add your magic link urls to the dashboard. Stytch, for security purposes, verifies your magic link urls before they are sent. You can set these magic link urls for your project in the [Magic Link Urls tab](https://stytch.com/dashboard/magic-link-urls).
+Next, add your magic link URLs to the dashboard. Stytch, for security purposes, verifies your magic link URLs before they are sent. You can set these magic link URLs for your project in the [Magic link URLs tab](https://stytch.com/dashboard/magic-link-urls).
 
 ### Running the example app
 
@@ -47,6 +47,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Learn more about some of Stytch's products used in this example app:
 
-[Stytch React](https://www.npmjs.com/package/@stytch/stytch-react)
-[Stytch's node client library](https://www.npmjs.com/package/stytch)
-[with-iron-session](https://github.com/vvo/next-iron-session)
+- [Stytch React](https://www.npmjs.com/package/@stytch/stytch-react)
+- [Stytch's node client library](https://www.npmjs.com/package/stytch)
+- [with-iron-session](https://github.com/vvo/next-iron-session)
