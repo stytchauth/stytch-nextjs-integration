@@ -2,7 +2,7 @@
 
 This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-In this repo, we have two sample auth flows: 
+In this repo, we have two sample auth flows:
 
 - SDK integration: This flow uses Stytch's React component to create a login and signup flow using email magic links. Other libraries used include Stytch's node client library for authentication and with-iron-sessions for session management.
 - API integration: This flow uses a custom UI with Stytch's backend API for SMS OTP authentication. Both Stytch's node client library and with-iron-session are also used.

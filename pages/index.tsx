@@ -1,8 +1,8 @@
 import { Stytch } from "@stytch/stytch-react";
 import styles from "../styles/Home.module.css";
 import withSession, { ServerSideProps } from "../lib/withSession";
-import LoginWithSMS from "./components/loginWithSMS";
-import Profile from "./components/profile";
+import LoginWithSMS from "../components/loginWithSMS";
+import Profile from "../components/profile";
 
 type AppProps = { publicToken: string; user?: object };
 
