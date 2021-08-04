@@ -9,14 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@stytch/stytch-react": "^1.1.5",
+    "@stytch/stytch-react": "^1.1.6",
     "next": "11.0.1",
     "next-auth": "^3.27.3",
     "next-iron-session": "^4.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "stytch": "^3.0.2",
-    "swr": "^0.5.6"
+    "stytch": "^3.0.2"
   },
   "devDependencies": {
     "@types/react": "17.0.15",

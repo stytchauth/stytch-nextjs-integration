@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import * as stytch from "stytch";
 import { Session } from "next-iron-session";
-import withSession from "../withSession";
+import withSession from "../../lib/withSession";
 type NextIronRequest = NextApiRequest & { session: Session };
 
 type Data = {
@@ -37,7 +37,6 @@ export async function handler(
   } else {
     // Handle any other HTTP method
   }
-  //res.status(200).json({ name: 'John Doe' })
 }
 
 export default withSession(handler);

@@ -1,6 +1,6 @@
 import { Stytch } from "@stytch/stytch-react";
 import styles from "../styles/Home.module.css";
-import withSession, { ServerSideProps } from "./withSession";
+import withSession, { ServerSideProps } from "../lib/withSession";
 import LoginWithSMS from "./loginWithSMS";
 import Profile from "./profile";
 

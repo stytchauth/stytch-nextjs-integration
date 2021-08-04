@@ -50,6 +50,7 @@
   height: 40px;
   width: 60%;
 }
+
 .logoutButton {
   background-color: #0577ca;
   border: none;
@@ -63,6 +64,7 @@
   width: 100%;
   font-size: 18px;
 }
+
 .sendOTPButton {
   background-color: #0577ca;
   border: none;

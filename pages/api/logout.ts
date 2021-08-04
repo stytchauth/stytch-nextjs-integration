@@ -1,7 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-iron-session";
-import withSession from "../withSession";
+import withSession from "../../lib/withSession";
 type NextIronRequest = NextApiRequest & { session: Session };
 
 type Data = {
