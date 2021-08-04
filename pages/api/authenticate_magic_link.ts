@@ -1,3 +1,4 @@
+// This API route authenticates a Stytch magic link.
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-iron-session";
 import withSession from "../../lib/withSession";
@@ -21,6 +22,7 @@ export async function handler(
       req.session.set("user", {
         id: resp.user_id,
       });
+      // Save additional user data here
       await req.session.save();
       res.redirect("/");
     } catch (error) {

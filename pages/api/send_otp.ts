@@ -1,3 +1,4 @@
+// This API route sends an OTP code to a specified number.
 import type { NextApiRequest, NextApiResponse } from "next";
 import loadStytch from "../../lib/loadStytch";
 

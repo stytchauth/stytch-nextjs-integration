@@ -1,3 +1,4 @@
+// This API route logs a user out.
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-iron-session";
 import withSession from "../../lib/withSession";
