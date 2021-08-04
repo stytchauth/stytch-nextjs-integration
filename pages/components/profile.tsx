@@ -8,7 +8,7 @@ const Profile = (user: object) => (
     <button
       className={styles.logoutButton}
       onClick={async () => {
-        const resp = await fetch("/api/logout");
+        const resp = await fetch("/api/logout", { method: "POST" });
         if (resp.status === 200) {
           window.location.reload();
         }

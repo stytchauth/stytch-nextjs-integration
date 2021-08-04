@@ -12,7 +12,7 @@ export async function handler(
   req: NextIronRequest,
   res: NextApiResponse<Data>
 ) {
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     try {
       // Set session
       req.session.destroy();
