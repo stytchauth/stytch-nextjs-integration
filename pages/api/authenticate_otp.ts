@@ -25,6 +25,8 @@ export async function handler(
 
       const resp = await client.otps.authenticate(params);
       if (resp.status_code.toString() === "200") {
+        // Set session
+        req.session.destroy();
         req.session.set("user", {
           id: resp.user_id,
         });

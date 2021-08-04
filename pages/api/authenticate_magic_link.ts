@@ -19,6 +19,7 @@ export async function handler(
     try {
       const resp = await client.magicLinks.authenticate(token as string);
       // Set session
+      req.session.destroy();
       req.session.set("user", {
         id: resp.user_id,
       });
