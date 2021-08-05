@@ -27,6 +27,7 @@ export async function handler(
       if (resp.status_code.toString() === "200") {
         // Set session
         req.session.destroy();
+        // Save additional user data here
         req.session.set("user", {
           id: resp.user_id,
         });
