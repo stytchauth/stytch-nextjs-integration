@@ -20,6 +20,7 @@ const withSession = (handler: APIHandler | ServerSideProps) =>
     cookieName: process.env.COOKIE_NAME || "",
     // if your localhost is served on http:// then disable the secure flag
     cookieOptions: {
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     },
   });
