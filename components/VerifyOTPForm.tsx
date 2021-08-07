@@ -1,6 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import { sendOTP } from "./SendOTPForm";
+
+// Handles auto-tabbing to next passcode digit input.
+// Logic from https://stackoverflow.com/questions/15595652/focus-next-input-once-reaching-maxlength-value.
+function autoTab(target: HTMLInputElement) {
+  if (target.value.length >= target.maxLength) {
+    let next = target;
+    while (next = next.nextElementSibling as HTMLInputElement) {
+      if (next == null)
+        break;
+      if (next.tagName.toLowerCase() === "input") {
+        next?.focus();
+        break;
+      }
+    }
+  }
+  // Move to previous field if empty (user pressed backspace)
+  else if (target.value.length === 0) {
+    let previous = target;
+    while (previous = previous.previousElementSibling as HTMLInputElement) {
+      if (previous == null)
+        break;
+      if (previous.tagName.toLowerCase() === "input") {
+        previous.focus();
+        break;
+      }
+    }
+  }
+}
 
 type Props = {
   methodId: string;
@@ -9,51 +37,25 @@ type Props = {
 
 const VerifyOTPForm = (props: Props) => {
   const { methodId, phoneNumber } = props;
-  const [passcodeArray, setPasscodeArray] = React.useState(['', '', '', '', '', '']);
   const [isDisabled, setIsDisabled] = React.useState(true);
   const [currentMethodId, setCurrentMethodId] = React.useState(methodId);
   const [isError, setIsError] = React.useState(false);
-  const activeInputId = React.useRef(1);
 
   const strippedNumber = phoneNumber.replace(/\D/g, "");
   const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(6, 10)}`;
 
-  const isValidPasscodeDigit = (digitValue: string) => {
-    const regex = /^[0-9]$/g;
-    if (digitValue.match(regex)) {
-      return true;
-    }
-    return false;
-  }
-
   const isValidPasscode = () => {
-    for (let i = 0; i < passcodeArray.length; i++) {
-      if (!isValidPasscodeDigit(passcodeArray[i])) {
+    const regex = /^[0-9]$/g;
+    const inputs = document.getElementsByClassName(styles.passcodeInput);
+    for (let i = 0; i < inputs.length; i++) {
+      if (!(inputs[i] as HTMLInputElement).value.match(regex)) {
         return false;
       }
     }
     return true;
   }
 
-  // Handles auto tabbing to next passcode digit input.
-  const autoTab = (e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace') {
-      if (activeInputId.current > 0) {
-        activeInputId.current = activeInputId.current - 1;
-      }
-    } else if (isValidPasscodeDigit(e.key)) {
-      if (activeInputId.current < 5) {
-        activeInputId.current = activeInputId.current + 1;
-      }
-    }
-    document.getElementById(`${activeInputId.current}`)?.focus();
-  }
-
-  const onPasscodeDigitChange = (e: React.ChangeEvent<{ id: string; value: string }>) => {
-    const currentPasscode = passcodeArray;
-    currentPasscode[Number(e.target.id)] = e.target.value;
-    setPasscodeArray(currentPasscode);
-
+  const onPasscodeDigitChange = () => {
     if (isValidPasscode()) {
       setIsDisabled(false);
       setIsError(false);
@@ -63,35 +65,37 @@ const VerifyOTPForm = (props: Props) => {
   };
 
   const resetPasscode = () => {
-    setPasscodeArray(['', '', '', '', '', '']);
-    activeInputId.current = 0;
-    document.getElementById('0')?.focus();
+    const inputs = document.getElementsByClassName(styles.passcodeInput);
+    for (let i = 0; i < inputs.length; i++) {
+      (inputs[i] as HTMLInputElement).value = '';
+    }
+    document.getElementById('digit-0')?.focus();
   }
 
   const resendCode = async () => {
     const methodId = await sendOTP(phoneNumber);
     setCurrentMethodId(methodId);
     resetPasscode();
+    setIsError(false);
   }
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isValidPasscode()) {
-      const otpInput = passcodeArray.join("");
+      let otpInput = '';
+      const inputs = document.getElementsByClassName(styles.passcodeInput);
+      for (let i = 0; i < inputs.length; i++) {
+        otpInput += (inputs[i] as HTMLInputElement).value;
+      }
 
-      try {
-        const resp = await fetch("/api/authenticate_otp", {
-          method: "POST",
-          body: JSON.stringify({ otpInput, methodId: currentMethodId }),
-        });
+      const resp = await fetch("/api/authenticate_otp", {
+        method: "POST",
+        body: JSON.stringify({ otpInput, methodId: currentMethodId }),
+      });
 
-        if (resp.status === 200) {
-          window.location.reload();
-        } else {
-          setIsError(true);
-          resetPasscode();
-        }
-      } catch {
+      if (resp.status === 200) {
+        window.location.reload();
+      } else {
         setIsError(true);
         resetPasscode();
       }
@@ -105,19 +109,18 @@ const VerifyOTPForm = (props: Props) => {
         <input
           autoFocus={i === 0}
           className={styles.passcodeInput}
-          id={`${i}`}
+          id={`digit-${i}`}
           key={i}
           maxLength={1}
           onChange={onPasscodeDigitChange}
-          onKeyUp={autoTab}
+          onKeyUp={e => autoTab(e.target as HTMLInputElement)}
           placeholder="0"
           size={1}
           type="text"
-          value={passcodeArray[i]}
         />
       )
     }
-    return inputs.map(input => input);
+    return inputs;
   }
 
   return (
@@ -133,7 +136,7 @@ const VerifyOTPForm = (props: Props) => {
         </div>
         <div className={styles.resendCodeContainer}>
           <p className={styles.resendCodeText}>Didn’t get it? </p>
-          <button className={`${styles.resendCodeButton} ${styles.resendCodeText}`} onClick={resendCode}>Resend code</button>
+          <button className={`${styles.resendCodeButton} ${styles.resendCodeText}`} onClick={resendCode} type="button">Resend code</button>
         </div>
         <input
           className={styles.primaryButton}
