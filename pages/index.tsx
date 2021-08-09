@@ -76,7 +76,7 @@ const App = ({ user, publicToken }: any) => {
           <LoginWithSMS />
         </React.Fragment>
       ) : (
-        Profile(user)
+        <Profile user={user} />
       )}
     </div>
   );

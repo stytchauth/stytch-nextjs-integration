@@ -114,16 +114,27 @@
   border: none;
   cursor: pointer;
   font-weight: 500;
+  height: fit-content;
   padding: 0;
+  width: fit-content;
+}
+
+/* Profile styles */
+
+.profileSubHeader {
+  margin-bottom: 8px;
+  margin-top: 28px;
 }
 
 .code {
-  background: #fafafa;
+  background: #F3F5F6;
   border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 0.7rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+  color: #10232E;
+  padding: 8px;
+  font-size: 16px;
+  font-family: IBM Plex Mono, monospace;
+  margin-bottom: 16px;
+  white-space: pre-wrap; 
 }
 
 @media only screen and (max-width: 600px) {
