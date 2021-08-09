@@ -8,6 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <React.Fragment>
       <Head>
         <link rel="icon" href="/favicon.png" type="image/png" />
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <title>Stytch + Next.js example app</title>
       </Head>
       <Component {...pageProps} />
