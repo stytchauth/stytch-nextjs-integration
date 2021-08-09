@@ -27,7 +27,7 @@ const LoginWithSMS = () => {
             phoneNumber={phoneNumber}
           />
         )}
-      <Image height={15} src={lockup} width={150} />
+      <Image alt="Powered by Stytch" height={15} src={lockup} width={150} />
     </div>
   );
 };
