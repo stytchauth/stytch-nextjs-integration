@@ -1,17 +1,6 @@
 import React from "react";
+import { sendOTP } from "../lib/otpUtils";
 import styles from "../styles/Home.module.css";
-
-export async function sendOTP(phoneNumber: string) {
-  const resp = await fetch("/api/send_otp", {
-    method: "POST",
-    body: JSON.stringify({
-      intlCode: "+1",
-      phoneNumber,
-    }),
-  });
-  const data = await resp.json();
-  return data.methodId;
-}
 
 type Props = {
   phoneNumber: string;

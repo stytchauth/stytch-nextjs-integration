@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import { sendOTP } from "./SendOTPForm";
+import { sendOTP } from "../lib/otpUtils";
 
 // Handles auto-tabbing to next passcode digit input.
 // Logic from https://stackoverflow.com/questions/15595652/focus-next-input-once-reaching-maxlength-value.
