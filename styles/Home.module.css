@@ -32,8 +32,6 @@
   background-color: #F3F5F6;
   color: #5C727D;
   opacity: 1;
-<<<<<<< HEAD
-=======
 }
 
 
@@ -49,7 +47,6 @@
   line-height: 20px;
   margin-bottom: 16px;
   margin-top: 24px;
->>>>>>> Update sms login UI
 }
 
 .telInput {
@@ -127,16 +124,6 @@
   font-size: 0.7rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
-.flag {
-  background: url("/stars-and-stripes.png") no-repeat scroll 7px 15px;
-  height: 40px;
-  border-right: none;
-  border-radius: 3px 0 0 3px;
-  font-size: 15px;
-  width: 20%;
-  padding-left: 52px;
 }
 
 @media only screen and (max-width: 600px) {
