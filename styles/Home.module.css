@@ -34,92 +34,87 @@
   opacity: 1;
 }
 
+
+/* SMS login styles  */
+
+.smsInstructions {
+  margin-top: 28px;
+}
+
+.smsDisclaimer {
+  color: #5C727D;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 16px;
+  margin-top: 24px;
+}
+
 .telInput {
-  border: 1px solid #adbcc5;
-  box-sizing: border-box;
-  border-radius: 3px;
-  color: #19303d;
-  font-family: "Josefin Sans", sans-serif;
-  font-size: 18px;
-  height: 45px;
-  line-height: 25px;
+  display: flex;
+  margin-top: 20px;
   white-space: nowrap;
-  max-width: 320px;
-  width: 100%;
-  padding-left: 10px;
+}
+
+.flag {
+  background: url('/stars-and-stripes.png') no-repeat scroll 8px 16px;
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+  width: 80px;
+  padding-left: 48px;
 }
 
 .phoneNumber {
   border-left: none;
   border-radius: 0 3px 3px 0;
-  margin-left: -6px;
+  padding-left: 0;
   flex-grow: 1;
   font-size: 18px;
-  height: 40px;
-  width: 60%;
+  width: calc(100%);
 }
 
-.logoutButton {
-  background-color: #0577ca;
-  border: none;
+.passcodeContainer {
+  margin-top: 4px;
+}
+
+.passcodeInputContainer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.passcodeInput {
   border-radius: 3px;
-  color: white;
+  font-size: 20px;
+  width: 48px;
   height: 45px;
-  margin-bottom: 30px;
-  margin-top: 12px;
-  padding-top: 12px;
-  max-width: 320px;
-  width: 100%;
-  font-size: 18px;
-}
-
-.sendOTPButton {
-  background-color: #0577ca;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  height: 45px;
-  margin-bottom: 30px;
-  margin-top: 12px;
-  padding-top: 12px;
-  max-width: 320px;
-  width: 100%;
-  font-size: 18px;
-}
-
-.header {
-  background: "white";
-  height: 100px;
-  position: absolute;
-  top: 100px;
-  width: 100%;
-}
-
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-}
-
-.title {
-  margin: 5px;
-  line-height: 1.15;
-  font-size: 1rem;
-}
-
-.title,
-.description {
   text-align: center;
 }
 
-.description {
-  line-height: 1.5;
-  font-size: 1.5rem;
+.errorText {
+  color: red;
+  font-size: 14px;
+  height: 20px;
+  line-height: 20px;
+}
+
+.resendCodeContainer {
+  margin: 28px 0;
+}
+
+.resendCodeText {
+  color: #5C727D;
+  display: inline;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.resendCodeButton {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0;
 }
 
 .code {
@@ -129,38 +124,6 @@
   font-size: 0.7rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
-}
-
-.passcodeInputContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 320px;
-}
-
-.passcodeInput {
-  border-radius: 10px;
-  font-size: 20px;
-  width: 48px;
-  height: 45px;
-  text-align: center;
-}
-
-.flag {
-  background: url("/stars-and-stripes.png") no-repeat scroll 7px 15px;
-  height: 40px;
-  border-right: none;
-  border-radius: 3px 0 0 3px;
-  font-size: 15px;
-  width: 20%;
-  padding-left: 52px;
 }
 
 @media only screen and (max-width: 600px) {

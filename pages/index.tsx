@@ -1,8 +1,9 @@
 import { Stytch } from "@stytch/stytch-react";
 import styles from "../styles/Home.module.css";
 import withSession, { ServerSideProps } from "../lib/withSession";
-import LoginWithSMS from "../components/loginWithSMS";
-import Profile from "../components/profile";
+import LoginWithSMS from "../components/LoginWithSMS";
+import Profile from "../components/Profile";
+import React from "react";
 
 type AppProps = { publicToken: string; user?: object };
 
@@ -61,26 +62,22 @@ export const getServerSideProps = withSession(getServerSidePropsHandler);
 
 const App = ({ user, publicToken }: any) => {
   return (
-    <div>
-      <div className={styles.header}>{"Stytch.js + Next.js"}</div>
-      <div className={styles.container}>
-        <main className={styles.main}>
-          {!user ? (
-            <div>
-              <Stytch
-                publicToken={publicToken || ""}
-                config={stytchProps.config}
-                style={stytchProps.style}
-                callbacks={stytchProps.callbacks}
-              />
-              <hr />
-              <LoginWithSMS />
-            </div>
-          ) : (
-            Profile(user)
-          )}
-        </main>
-      </div>
+    <div className={styles.root}>
+      {!user ? (
+        <React.Fragment>
+          <div className={styles.container}>
+            <Stytch
+              publicToken={publicToken || ""}
+              config={stytchProps.config}
+              style={stytchProps.style}
+              callbacks={stytchProps.callbacks}
+            />
+          </div>
+          <LoginWithSMS />
+        </React.Fragment>
+      ) : (
+        Profile(user)
+      )}
     </div>
   );
 };
