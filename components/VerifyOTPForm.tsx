@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "../styles/Home.module.css";
 import { sendOTP } from "../lib/otpUtils";
 
 // Handles auto-tabbing to next passcode digit input.
-// Logic from https://stackoverflow.com/questions/15595652/focus-next-input-once-reaching-maxlength-value.
-function autoTab(target: HTMLInputElement) {
+// Logic inspired from https://stackoverflow.com/questions/15595652/focus-next-input-once-reaching-maxlength-value.
+const autoTab = (target: HTMLInputElement, key?: string) => {
   if (target.value.length >= target.maxLength) {
     let next = target;
     while (next = next.nextElementSibling as HTMLInputElement) {
@@ -14,6 +14,10 @@ function autoTab(target: HTMLInputElement) {
         next?.focus();
         break;
       }
+    }
+    if (next && key && target.value !== key) {
+      next.value = key;
+      autoTab(next);
     }
   }
   // Move to previous field if empty (user pressed backspace)
@@ -113,7 +117,7 @@ const VerifyOTPForm = (props: Props) => {
           key={i}
           maxLength={1}
           onChange={onPasscodeDigitChange}
-          onKeyUp={e => autoTab(e.target as HTMLInputElement)}
+          onKeyUp={e => autoTab(e.target as HTMLInputElement, e.key)}
           placeholder="0"
           size={1}
           type="text"

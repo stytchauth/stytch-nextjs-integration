@@ -6,18 +6,18 @@ import SendOTPForm from './SendOTPForm';
 import VerifyOTPForm from './VerifyOTPForm';
 
 const LoginWithSMS = () => {
-  const [otpSubmitted, setOTPSubmitted] = useState(false);
+  const [otpSent, setOTPSent] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [methodId, setMethodId] = useState("");
 
   return (
     <div className={styles.container}>
-      {!otpSubmitted
+      {!otpSent
         ? (
           <SendOTPForm
             phoneNumber={phoneNumber}
             setMethodId={setMethodId}
-            setOTPSubmitted={setOTPSubmitted}
+            setOTPSent={setOTPSent}
             setPhoneNumber={setPhoneNumber}
           />
         )
