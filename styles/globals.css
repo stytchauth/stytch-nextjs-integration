@@ -2,8 +2,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -13,4 +11,55 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: IBM Plex Sans, "sans-serif";
+}
+
+p {
+  color: #19303D;
+  font-size: 18px;
+  line-height: 25px;
+  margin: 0;
+}
+
+strong {
+  color: black;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 30px;
+  line-height: 40px;
+  margin: 0;
+}
+
+input {
+  border: 1px solid #ADBCC5;
+  box-sizing: border-box;
+  border-radius: 3px;
+  color: #19303D;
+  font-size: 18px;
+  height: 45px;
+  line-height: 25px;
+  padding: 10px;
+}
+
+input:disabled {
+  background-color: white;
+  color: #19303D;
+}
+
+input:focus {
+  outline: 0;
+}
+
+input::placeholder {
+  color: #ADBCC5;
+}
+
+input[type="submit"] {
+  border: none;
+  border-radius: 3px;
+  color: white;
+  height: 45px;
+  width: 100%;
 }
