@@ -4,7 +4,7 @@ import Image from 'next/image';
 import lockup from '/public/powered-by-stytch.svg';
 
 type Props = {
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
 }
 
 const StytchContainer = (props: Props) => {
