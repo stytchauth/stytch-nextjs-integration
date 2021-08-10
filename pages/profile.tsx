@@ -28,17 +28,23 @@ const Profile = (props: Props) => {
   }
 
   return (
-    <StytchContainer>
-      <h2>{"Welcome!"}</h2>
-      <p className={styles.profileSubHeader}>Thank you for using Stytch! Here’s your user info.</p>
-      <pre className={styles.code}>{JSON.stringify(user, null, 1).replace(' ', '')}</pre>
-      <button
-        className={styles.primaryButton}
-        onClick={signOut}
-      >
-        Sign out
-      </button>
-    </StytchContainer>
+    <>
+      {!user ? (
+        <div />
+      ) : (
+        <StytchContainer>
+          <h2>{"Welcome!"}</h2>
+          <p className={styles.profileSubHeader}>Thank you for using Stytch! Here’s your user info.</p>
+          <pre className={styles.code}>{JSON.stringify(user, null, 1).replace(' ', '')}</pre>
+          <button
+            className={styles.primaryButton}
+            onClick={signOut}
+          >
+            Sign out
+          </button>
+        </StytchContainer>
+      )}
+    </>
   )
 };
 

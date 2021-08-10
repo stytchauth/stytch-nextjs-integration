@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../styles/Home.module.css";
 import { sendOTP } from "../lib/otpUtils";
+import { useRouter } from "next/router";
 
 // Handles auto-tabbing to next passcode digit input.
 // Logic inspired from https://stackoverflow.com/questions/15595652/focus-next-input-once-reaching-maxlength-value.
@@ -40,6 +41,7 @@ const VerifyOTPForm = (props: Props) => {
   const [isDisabled, setIsDisabled] = React.useState(true);
   const [currentMethodId, setCurrentMethodId] = React.useState(methodId);
   const [isError, setIsError] = React.useState(false);
+  const router = useRouter();
 
   const strippedNumber = phoneNumber.replace(/\D/g, "");
   const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(6, 10)}`;
@@ -95,7 +97,7 @@ const VerifyOTPForm = (props: Props) => {
       });
 
       if (resp.status === 200) {
-        window.location.reload();
+        router.push('/profile');
       } else {
         setIsError(true);
         resetPasscode();
