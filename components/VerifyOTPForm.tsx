@@ -15,10 +15,6 @@ const autoTab = (target: HTMLInputElement, key?: string) => {
         break;
       }
     }
-    if (next && key && target.value !== key) {
-      next.value = key;
-      autoTab(next);
-    }
   }
   // Move to previous field if empty (user pressed backspace)
   else if (target.value.length === 0) {
@@ -74,6 +70,7 @@ const VerifyOTPForm = (props: Props) => {
       (inputs[i] as HTMLInputElement).value = '';
     }
     document.getElementById('digit-0')?.focus();
+    setIsDisabled(true);
   }
 
   const resendCode = async () => {
@@ -147,7 +144,7 @@ const VerifyOTPForm = (props: Props) => {
           disabled={isDisabled}
           id="button"
           type="submit"
-          value="Verify OTP Code"
+          value="Continue"
         />
       </form>
     </div>

@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
-import StytchContainer from "./StytchContainer";
+import StytchContainer from "../components/StytchContainer";
+import withSession, { ServerSideProps } from "../lib/withSession";
+import { useRouter } from 'next/router';
 
 type Props = {
-  user: {
+  user?: {
     id: string;
   };
 }
 
 const Profile = (props: Props) => {
   const { user } = props;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.replace('/');
+    }
+  })
+
   const signOut = async () => {
     const resp = await fetch("/api/logout", { method: "POST" });
     if (resp.status === 200) {
-      window.location.reload();
+      router.push('/');
     }
   }
 
@@ -31,5 +41,15 @@ const Profile = (props: Props) => {
     </StytchContainer>
   )
 };
+
+
+const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
+  // Get the user's session based on the request
+  const user = req.session.get("user") ?? null;
+  const props: Props = { user };
+  return { props };
+};
+
+export const getServerSideProps = withSession(getServerSidePropsHandler);
 
 export default Profile;

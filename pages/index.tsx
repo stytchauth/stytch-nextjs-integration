@@ -2,10 +2,10 @@ import { Stytch } from "@stytch/stytch-react";
 import styles from "../styles/Home.module.css";
 import withSession, { ServerSideProps } from "../lib/withSession";
 import LoginWithSMS from "../components/LoginWithSMS";
-import Profile from "../components/Profile";
-import React from "react";
-
-type AppProps = { publicToken: string; user?: object };
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import { LoginMethod } from "../lib/types";
+import LoginEntryPoint from "../components/LoginEntrypoint";
 
 const stytchProps = {
   config: {
@@ -44,42 +44,60 @@ const stytchProps = {
   },
 };
 
-const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
-  // Get the user's session based on the request
-  const user = req.session.get("user");
-  const props: AppProps = {
-    publicToken: stytchProps.publicToken,
-  };
-  if (user) {
-    props.user = user;
-  }
-  return {
-    props,
+type Props = {
+  publicToken: string;
+  user: {
+    id: string;
   };
 };
 
-export const getServerSideProps = withSession(getServerSidePropsHandler);
 
-const App = ({ user, publicToken }: any) => {
+const App = (props: Props) => {
+  const { user, publicToken } = props;
+  const [loginMethod, setLoginMethod] = React.useState<LoginMethod | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push('/profile');
+    }
+  })
+
+  const loginMethodMap: Record<LoginMethod, React.ReactElement> = {
+    [LoginMethod.API]: <LoginWithSMS />,
+    [LoginMethod.SDK]: (
+      <div className={styles.container}>
+        <Stytch
+          publicToken={publicToken || ""}
+          config={stytchProps.config}
+          style={stytchProps.style}
+          callbacks={stytchProps.callbacks}
+        />
+      </div>
+    ),
+  }
+
   return (
     <div className={styles.root}>
-      {!user ? (
-        <React.Fragment>
-          <div className={styles.container}>
-            <Stytch
-              publicToken={publicToken || ""}
-              config={stytchProps.config}
-              style={stytchProps.style}
-              callbacks={stytchProps.callbacks}
-            />
-          </div>
-          <LoginWithSMS />
-        </React.Fragment>
+      {loginMethod === null ? (
+        <LoginEntryPoint setLoginMethod={setLoginMethod} />
       ) : (
-        <Profile user={user} />
+        loginMethodMap[loginMethod]
       )}
     </div>
   );
 };
+
+const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
+  // Get the user's session based on the request
+  const user = req.session.get("user") ?? null;
+  const props: Props = {
+    publicToken: stytchProps.publicToken,
+    user,
+  };
+  return { props };
+};
+
+export const getServerSideProps = withSession(getServerSidePropsHandler);
 
 export default App;
