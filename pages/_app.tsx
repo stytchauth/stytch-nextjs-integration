@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import styles from "../styles/Home.module.css";
+import styles from '../styles/Home.module.css';
 import type { AppProps } from 'next/app';
 import React from 'react';
 import Head from 'next/head';
@@ -26,4 +26,4 @@ function MyApp({ Component, pageProps }: AppProps) {
     </React.Fragment>
   );
 }
-export default MyApp
+export default MyApp;

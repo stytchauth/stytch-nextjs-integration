@@ -1,17 +1,16 @@
-import React from "react";
-import styles from "../styles/Home.module.css";
-import { sendOTP } from "../lib/otpUtils";
-import { useRouter } from "next/router";
+import React from 'react';
+import styles from '../styles/Home.module.css';
+import { sendOTP } from '../lib/otpUtils';
+import { useRouter } from 'next/router';
 
 // Handles auto-tabbing to next passcode digit input.
 // Logic inspired from https://stackoverflow.com/questions/15595652/focus-next-input-once-reaching-maxlength-value.
 const autoTab = (target: HTMLInputElement, key?: string) => {
   if (target.value.length >= target.maxLength) {
     let next = target;
-    while (next = next.nextElementSibling as HTMLInputElement) {
-      if (next == null)
-        break;
-      if (next.tagName.toLowerCase() === "input") {
+    while ((next = next.nextElementSibling as HTMLInputElement)) {
+      if (next == null) break;
+      if (next.tagName.toLowerCase() === 'input') {
         next?.focus();
         break;
       }
@@ -20,21 +19,20 @@ const autoTab = (target: HTMLInputElement, key?: string) => {
   // Move to previous field if empty (user pressed backspace)
   else if (target.value.length === 0) {
     let previous = target;
-    while (previous = previous.previousElementSibling as HTMLInputElement) {
-      if (previous == null)
-        break;
-      if (previous.tagName.toLowerCase() === "input") {
+    while ((previous = previous.previousElementSibling as HTMLInputElement)) {
+      if (previous == null) break;
+      if (previous.tagName.toLowerCase() === 'input') {
         previous.focus();
         break;
       }
     }
   }
-}
+};
 
 type Props = {
   methodId: string;
   phoneNumber: string;
-}
+};
 
 const VerifyOTPForm = (props: Props) => {
   const { methodId, phoneNumber } = props;
@@ -43,8 +41,11 @@ const VerifyOTPForm = (props: Props) => {
   const [isError, setIsError] = React.useState(false);
   const router = useRouter();
 
-  const strippedNumber = phoneNumber.replace(/\D/g, "");
-  const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(6, 10)}`;
+  const strippedNumber = phoneNumber.replace(/\D/g, '');
+  const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(
+    6,
+    10,
+  )}`;
 
   const isValidPasscode = () => {
     const regex = /^[0-9]$/g;
@@ -55,7 +56,7 @@ const VerifyOTPForm = (props: Props) => {
       }
     }
     return true;
-  }
+  };
 
   const onPasscodeDigitChange = () => {
     if (isValidPasscode()) {
@@ -73,14 +74,14 @@ const VerifyOTPForm = (props: Props) => {
     }
     document.getElementById('digit-0')?.focus();
     setIsDisabled(true);
-  }
+  };
 
   const resendCode = async () => {
     const methodId = await sendOTP(phoneNumber);
     setCurrentMethodId(methodId);
     resetPasscode();
     setIsError(false);
-  }
+  };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,8 +92,8 @@ const VerifyOTPForm = (props: Props) => {
         otpInput += (inputs[i] as HTMLInputElement).value;
       }
 
-      const resp = await fetch("/api/authenticate_otp", {
-        method: "POST",
+      const resp = await fetch('/api/authenticate_otp', {
+        method: 'POST',
         body: JSON.stringify({ otpInput, methodId: currentMethodId }),
       });
 
@@ -116,38 +117,34 @@ const VerifyOTPForm = (props: Props) => {
           key={i}
           maxLength={1}
           onChange={onPasscodeDigitChange}
-          onKeyUp={e => autoTab(e.target as HTMLInputElement, e.key)}
+          onKeyUp={(e) => autoTab(e.target as HTMLInputElement, e.key)}
           placeholder="0"
           size={1}
           type="text"
-        />
-      )
+        />,
+      );
     }
     return inputs;
-  }
+  };
 
   return (
     <div>
       <h2>Enter passcode</h2>
-      <p className={styles.smsInstructions}>A 6-digit passcode was sent to you at <strong>{parsedPhoneNumber}</strong>.</p>
+      <p className={styles.smsInstructions}>
+        A 6-digit passcode was sent to you at <strong>{parsedPhoneNumber}</strong>.
+      </p>
       <form onSubmit={onSubmit}>
         <div className={styles.passcodeContainer}>
           <p className={styles.errorText}>{isError ? 'Invalid code. Please try again.' : ''}</p>
-          <div className={styles.passcodeInputContainer}>
-            {renderPasscodeInputs()}
-          </div>
+          <div className={styles.passcodeInputContainer}>{renderPasscodeInputs()}</div>
         </div>
         <div className={styles.resendCodeContainer}>
           <p className={styles.resendCodeText}>Didn’t get it? </p>
-          <button className={`${styles.resendCodeButton} ${styles.resendCodeText}`} onClick={resendCode} type="button">Resend code</button>
+          <button className={`${styles.resendCodeButton} ${styles.resendCodeText}`} onClick={resendCode} type="button">
+            Resend code
+          </button>
         </div>
-        <input
-          className={styles.primaryButton}
-          disabled={isDisabled}
-          id="button"
-          type="submit"
-          value="Continue"
-        />
+        <input className={styles.primaryButton} disabled={isDisabled} id="button" type="submit" value="Continue" />
       </form>
     </div>
   );

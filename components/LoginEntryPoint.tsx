@@ -1,11 +1,11 @@
-import React from "react";
-import styles from "../styles/Home.module.css";
-import { LoginMethod } from "../lib/types";
-import StytchContainer from "./StytchContainer";
+import React from 'react';
+import styles from '../styles/Home.module.css';
+import { LoginMethod } from '../lib/types';
+import StytchContainer from './StytchContainer';
 
 type Props = {
   setLoginMethod: (loginMethod: LoginMethod) => void;
-}
+};
 
 const LoginEntryPoint = (props: Props) => {
   const { setLoginMethod } = props;
@@ -23,6 +23,6 @@ const LoginEntryPoint = (props: Props) => {
       </button>
     </StytchContainer>
   );
-}
+};
 
 export default LoginEntryPoint;
