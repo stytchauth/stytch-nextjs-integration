@@ -1,8 +1,8 @@
 export async function sendOTP(phoneNumber: string) {
-  const resp = await fetch("/api/send_otp", {
-    method: "POST",
+  const resp = await fetch('/api/send_otp', {
+    method: 'POST',
     body: JSON.stringify({
-      intlCode: "+1",
+      intlCode: '+1',
       phoneNumber,
     }),
   });
