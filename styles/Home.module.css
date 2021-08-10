@@ -34,8 +34,28 @@
   opacity: 1;
 }
 
+/* Nav bar styles */
 
-/* SMS login styles  */
+.nav {
+  align-items: center;
+  background-color: #C7F1FF;
+  display: flex;
+  height: 64px;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.accountNavItem {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+/* SMS login styles */
 
 .smsInstructions {
   margin-top: 28px;
