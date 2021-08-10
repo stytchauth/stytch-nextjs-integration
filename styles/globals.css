@@ -56,10 +56,11 @@ input::placeholder {
   color: #ADBCC5;
 }
 
-input[type="submit"] {
+button, input[type="submit"] {
   border: none;
   border-radius: 3px;
   color: white;
+  font-size: 18px;
   height: 45px;
   width: 100%;
 }

@@ -1,22 +1,35 @@
+import React from "react";
 import styles from "../styles/Home.module.css";
+import StytchContainer from "./StytchContainer";
 
-const Profile = (user: object) => (
-  <>
-    <h1 className={styles.header}>{"Welcome! You're logged in"}</h1>
-    <h1 className={styles.title}>Your user info</h1>
-    <pre className={styles.code}>{JSON.stringify(user, null, 2)}</pre>
-    <button
-      className={styles.logoutButton}
-      onClick={async () => {
-        const resp = await fetch("/api/logout", { method: "POST" });
-        if (resp.status === 200) {
-          window.location.reload();
-        }
-      }}
-    >
-      Logout
-    </button>
-  </>
-);
+type Props = {
+  user: {
+    id: string;
+  };
+}
+
+const Profile = (props: Props) => {
+  const { user } = props;
+  const signOut = async () => {
+    const resp = await fetch("/api/logout", { method: "POST" });
+    if (resp.status === 200) {
+      window.location.reload();
+    }
+  }
+
+  return (
+    <StytchContainer>
+      <h2>{"Welcome!"}</h2>
+      <p className={styles.profileSubHeader}>Thank you for using Stytch! Here’s your user info.</p>
+      <pre className={styles.code}>{JSON.stringify(user, null, 1).replace(' ', '')}</pre>
+      <button
+        className={styles.primaryButton}
+        onClick={signOut}
+      >
+        Sign out
+      </button>
+    </StytchContainer>
+  )
+};
 
 export default Profile;

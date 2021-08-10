@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import styles from "../styles/Home.module.css";
-import Image from 'next/image';
-import lockup from '/public/powered-by-stytch.svg';
 import SendOTPForm from './SendOTPForm';
 import VerifyOTPForm from './VerifyOTPForm';
+import StytchContainer from "./StytchContainer";
 
 const LoginWithSMS = () => {
   const [otpSent, setOTPSent] = useState(false);
@@ -11,7 +9,7 @@ const LoginWithSMS = () => {
   const [methodId, setMethodId] = useState("");
 
   return (
-    <div className={styles.container}>
+    <StytchContainer>
       {!otpSent
         ? (
           <SendOTPForm
@@ -27,8 +25,7 @@ const LoginWithSMS = () => {
             phoneNumber={phoneNumber}
           />
         )}
-      <Image alt="Powered by Stytch" height={15} src={lockup} width={150} />
-    </div>
+    </StytchContainer>
   );
 };
 
