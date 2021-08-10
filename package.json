@@ -7,8 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
     "prettier": "prettier --write pages/ lib/ components/"
   },
+  "pre-commit": [
+    "precommit-msg",
+    "lint"
+    // "prettier && git add ."
+  ],
   "dependencies": {
     "@stytch/stytch-react": "^1.1.6",
     "next": "11.0.1",
