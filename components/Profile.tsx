@@ -21,7 +21,7 @@ const Profile = (props: Props) => {
       <>
         <h2>{"Welcome!"}</h2>
         <p className={styles.profileSubHeader}>Thank you for using Stytch! Here’s your user info.</p>
-        <pre className={styles.code}>{JSON.stringify(user, null, ' ').replace(' ', '')}</pre>
+        <pre className={styles.code}>{JSON.stringify(user, null, 1).replace(' ', '')}</pre>
         <button
           className={styles.primaryButton}
           onClick={signOut}
