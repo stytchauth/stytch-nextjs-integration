@@ -20,12 +20,24 @@
   height: 500px;
 }
 
-.primaryButton {
-  background-color: #19303D;
+@media only screen and (max-width: 600px) {
+  .container {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+  }
 }
 
-.primaryButton:hover {
-  opacity: 0.8;
+@media only screen and (max-width: 400px) {
+  .container {
+    padding: 40px
+  }
+}
+
+
+.primaryButton {
+  background-color: #19303D;
 }
 
 .primaryButton:disabled {
@@ -53,6 +65,18 @@
   font-size: 20px;
   font-weight: 500;
   line-height: 30px;
+}
+
+/* App entry styles */
+
+.entrySubHeader {
+  margin: 32px 0;
+}
+
+.entryButton {
+  background-color: #E5E8EB;
+  color: #19303D;
+  margin-bottom: 16px;
 }
 
 /* SMS login styles */
@@ -155,19 +179,4 @@
   font-family: IBM Plex Mono, monospace;
   margin-bottom: 16px;
   white-space: pre-wrap; 
-}
-
-@media only screen and (max-width: 600px) {
-  .container {
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    width: 100%;
-  }
-}
-
-@media only screen and (max-width: 400px) {
-  .container {
-    padding: 40px
-  }
 }

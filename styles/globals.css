@@ -61,6 +61,11 @@ button, input[type="submit"] {
   border-radius: 3px;
   color: white;
   font-size: 18px;
+  font-weight: 600;
   height: 45px;
   width: 100%;
+}
+
+button:hover, input[type="submit"]:hover {
+  opacity: 0.8;
 }

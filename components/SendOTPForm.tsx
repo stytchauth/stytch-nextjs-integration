@@ -68,7 +68,7 @@ const SendOTPForm = (props: Props): JSX.Element => {
           disabled={isDisabled}
           id="button"
           type="submit"
-          value="Send OTP Code"
+          value="Continue"
         />
       </form>
     </div>

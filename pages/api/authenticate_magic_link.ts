@@ -25,7 +25,7 @@ export async function handler(
       });
       // Save additional user data here
       await req.session.save();
-      res.redirect("/");
+      res.redirect("/profile");
     } catch (error) {
       console.log(error);
       res.status(400).json({ error });
