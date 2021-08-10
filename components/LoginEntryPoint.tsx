@@ -16,10 +16,10 @@ const LoginEntryPoint = (props: Props) => {
         This example app demonstrates how you can integrate with Stytch using Next.js. Now, let’s get started!
       </p>
       <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.SDK)}>
-        SDK Integration (Email magic link)
+        SDK Integration (Email magic links)
       </button>
       <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.API)}>
-        API Integration (SMS Passcode)
+        API Integration (SMS Passcodes)
       </button>
     </StytchContainer>
   );
