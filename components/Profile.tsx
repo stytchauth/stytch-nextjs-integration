@@ -8,6 +8,14 @@ type Props = {
 
 const Profile = (props: Props) => {
   const { user } = props;
+
+  const signOut = async () => {
+    const resp = await fetch("/api/logout", { method: "POST" });
+    if (resp.status === 200) {
+      window.location.reload();
+    }
+  }
+
   return (
     <StytchContainer>
       <>
@@ -16,12 +24,7 @@ const Profile = (props: Props) => {
         <pre className={styles.code}>{JSON.stringify(user, null, ' ').replace(' ', '')}</pre>
         <button
           className={styles.primaryButton}
-          onClick={async () => {
-            const resp = await fetch("/api/logout", { method: "POST" });
-            if (resp.status === 200) {
-              window.location.reload();
-            }
-          }}
+          onClick={signOut}
         >
           Sign out
         </button>
