@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write pages/ lib/ components/"
   },
   "dependencies": {
     "@stytch/stytch-react": "^1.1.6",
@@ -23,6 +24,8 @@
     "@typescript-eslint/parser": "^4.29.0",
     "eslint": "^7.31.0",
     "eslint-config-next": "11.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "2.3.2",
     "typescript": "^4.3.5"
   }
 }
