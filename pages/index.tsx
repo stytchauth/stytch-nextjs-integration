@@ -1,36 +1,33 @@
-import { Stytch } from '@stytch/stytch-react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Stytch, StytchProps } from '@stytch/stytch-react';
+import { SDKProductTypes } from '@stytch/stytch-js';
 import styles from '../styles/Home.module.css';
 import withSession, { ServerSideProps } from '../lib/withSession';
 import LoginWithSMS from '../components/LoginWithSMS';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { LoginMethod } from '../lib/types';
-import LoginEntryPoint from '../components/LoginEntrypoint';
+import LoginEntryPoint from '../components/LoginEntryPoint';
 
-const stytchProps = {
-  config: {
-    loginConfig: {
-      magicLinkUrl: 'http://localhost:3000/api/authenticate_magic_link',
-      expirationMinutes: 30,
-    },
-    createUserConfig: {
-      magicLinkUrl: 'http://localhost:3000/api/authenticate_magic_link',
-      expirationMinutes: 30,
+const stytchProps: StytchProps = {
+  loginOrSignupView: {
+    products: [SDKProductTypes.emailMagicLinks],
+    emailMagicLinksOptions: {
+      loginRedirectURL: 'http://localhost:3000/api/authenticate_magic_link',
+      loginExpirationMinutes: 30,
+      signupRedirectURL: 'http://localhost:3000/api/authenticate_magic_link',
+      signupExpirationMinutes: 30,
+      createUserAsPending: false,
     },
   },
   style: {
     fontFamily: '"Helvetica New", Helvetica, sans-serif',
-    button: {
-      backgroundColor: '#0577CA',
-    },
-    input: {
-      textColor: '#090909',
-    },
+    primaryColor: '#0577CA',
+    primaryTextColor: '#090909',
     width: '321px',
   },
   publicToken: process.env.STYTCH_PUBLIC_TOKEN || '',
   callbacks: {
-    onEvent: (data: any) => {
+    onEvent: (data) => {
       // TODO: check whether the user exists in your DB
       if (data.eventData.type === 'USER_EVENT_TYPE') {
         console.log({
@@ -39,8 +36,8 @@ const stytchProps = {
         });
       }
     },
-    onSuccess: (data: any) => console.log(data),
-    onError: (data: any) => console.log(data),
+    onSuccess: (data) => console.log(data),
+    onError: (data) => console.log(data),
   },
 };
 
@@ -68,7 +65,7 @@ const App = (props: Props) => {
       <div className={styles.container}>
         <Stytch
           publicToken={publicToken || ''}
-          config={stytchProps.config}
+          loginOrSignupView={stytchProps.loginOrSignupView}
           style={stytchProps.style}
           callbacks={stytchProps.callbacks}
         />
