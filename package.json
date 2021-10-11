@@ -24,7 +24,7 @@
     "stytch": "^3.4.0"
   },
   "devDependencies": {
-    "@types/react": "17.0.21",
+    "@types/react": "17.0.22",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "eslint": "^7.32.0",
