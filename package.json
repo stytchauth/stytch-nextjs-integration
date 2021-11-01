@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "@stytch/stytch-react": "^3.0.0",
-    "next": "11.1.2",
+    "next": "12.0.2",
     "next-auth": "^3.29.0",
     "next-iron-session": "^4.2.0",
     "react": "17.0.2",
