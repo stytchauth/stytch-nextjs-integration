@@ -15,7 +15,7 @@
     "lint"
   ],
   "dependencies": {
-    "@stytch/stytch-react": "^3.0.0",
+    "@stytch/stytch-react": "^3.0.1",
     "next": "11.1.2",
     "next-auth": "^3.29.0",
     "next-iron-session": "^4.2.0",
