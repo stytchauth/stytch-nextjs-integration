@@ -5,7 +5,7 @@ import withSession from '../../lib/withSession';
 type NextIronRequest = NextApiRequest & { session: Session };
 
 type Data = {
-  error: string;
+  errorString: string;
 };
 
 export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
@@ -15,7 +15,9 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
       req.session.destroy();
       res.redirect('/');
     } catch (error) {
-      res.status(400).json({ error });
+      const errorString = JSON.stringify(error);
+      console.log(error);
+      res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method
