@@ -8,7 +8,8 @@ import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 
-const baseURL = process.env.VERCEL_URL;
+const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL;
+
 
 const stytchProps: StytchProps = {
   loginOrSignupView: {
