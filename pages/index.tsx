@@ -12,9 +12,9 @@ const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
-      loginRedirectURL: 'http://localhost:3000/api/authenticate_magic_link',
+      loginRedirectURL: 'https://stytch-nextjs-integration-e3d2qocv3-stytch-auth.vercel.app:3000/api/authenticate_magic_link',
       loginExpirationMinutes: 30,
-      signupRedirectURL: 'http://localhost:3000/api/authenticate_magic_link',
+      signupRedirectURL: 'https://stytch-nextjs-integration-e3d2qocv3-stytch-auth.vercel.app:3000/api/authenticate_magic_link',
       signupExpirationMinutes: 30,
       createUserAsPending: false,
     },
