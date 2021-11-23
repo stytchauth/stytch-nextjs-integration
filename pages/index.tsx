@@ -8,13 +8,15 @@ import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 
+const baseURL = process.env.VERCEL_URL;
+
 const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
-      loginRedirectURL: 'https://stytch-nextjs-integration-e3d2qocv3-stytch-auth.vercel.app:3000/api/authenticate_magic_link',
+      loginRedirectURL: `${baseURL}:3000/api/authenticate_magic_link`,
       loginExpirationMinutes: 30,
-      signupRedirectURL: 'https://stytch-nextjs-integration-e3d2qocv3-stytch-auth.vercel.app:3000/api/authenticate_magic_link',
+      signupRedirectURL: `${baseURL}:3000/api/authenticate_magic_link`,
       signupExpirationMinutes: 30,
       createUserAsPending: false,
     },
