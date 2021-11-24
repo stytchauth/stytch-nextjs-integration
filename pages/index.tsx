@@ -8,13 +8,15 @@ import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 
+const REDIRECT_URL_BASE = process.env.USE_VERCEL ? 'http://localhost:3000/api/authenticate_magic_link' : `https://${process.env.VERCEL_URL}/api/authenticate_magic_link`;
+
 const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
-      loginRedirectURL: `https://${process.env.VERCEL_URL}/api/authenticate_magic_link`,
+      loginRedirectURL: REDIRECT_URL_BASE,
       loginExpirationMinutes: 30,
-      signupRedirectURL: `https://${process.env.VERCEL_URL}/api/authenticate_magic_link`,
+      signupRedirectURL: REDIRECT_URL_BASE,
       signupExpirationMinutes: 30,
       createUserAsPending: false,
     },
