@@ -12,9 +12,9 @@ const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
-      loginRedirectURL: `http://${process.env.VERCEL_URL}/api/authenticate_magic_link`,
+      loginRedirectURL: `https://${process.env.VERCEL_URL}/api/authenticate_magic_link`,
       loginExpirationMinutes: 30,
-      signupRedirectURL: `http://${process.env.VERCEL_URL}/api/authenticate_magic_link`,
+      signupRedirectURL: `https://${process.env.VERCEL_URL}/api/authenticate_magic_link`,
       signupExpirationMinutes: 30,
       createUserAsPending: false,
     },
