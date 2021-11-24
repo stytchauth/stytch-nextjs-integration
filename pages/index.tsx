@@ -8,9 +8,10 @@ import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 
-const REDIRECT_URL_BASE = process.env.USE_VERCEL ?
-  'http://localhost:3000/api/authenticate_magic_link' :
-  `https://${process.env.VERCEL_URL}/api/authenticate_magic_link`;
+const REDIRECT_URL_BASE = process.env.USE_VERCEL == 'true' ?
+  `https://${process.env.VERCEL_URL}/api/authenticate_magic_link` :
+  'http://localhost:3000/api/authenticate_magic_link';
+
 
 const stytchProps: StytchProps = {
   loginOrSignupView: {

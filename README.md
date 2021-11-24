@@ -4,14 +4,20 @@ This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project 
 
 In this repo, we have two sample auth flows:
 
-- SDK integration: This flow uses Stytch's React component to create a login and signup flow using email magic links. Other libraries used include Stytch's node client library for authentication and with-iron-sessions for session management.
-- API integration: This flow uses a custom UI with Stytch's backend API for SMS OTP authentication. Both Stytch's node client library and with-iron-session are also used.
+- SDK integration: This flow uses Stytch's React component to create a login and sign-up flow using [Email Magic Links](https://stytch.com/docs/api/send-by-email).
+- API integration: This flow uses a custom UI with Stytch's backend API for [Onetime Passcodes(OTP) via SMS](https://stytch.com/docs/api/sms-otp-overview) authentication.
 
-# Getting Started
+Both flows use Stytch's [Node client library](https://github.com/stytchauth/stytch-node) and `with-iron-session` for session management.
 
-### Setting up Stytch
+<!-- If you'd like to deploy with [Vercel](https://vercel.com/), just add `https://*.vercel.app:3000` as both a login and sign-up re-direct URL to your [Stytch Dashboard](https://stytch.com/dashboard/redirect-urls) and then click Deploy below! You'll be asked to login to your Vercel account, then we'll walk you through each step to get you up-and-running in no time. -->
 
-After signing up for Stytch, you'll need your project's ID, secret, and public token. You can find these in the [API keys tab](https://stytch.com/dashboard/api-keys).
+<!-- [![Deploy with Vercel](TODO) -->
+
+# Running locally
+
+## Setting up Stytch
+
+After signing up for Stytch, you'll need your Project's `project_id`, `secret`, and `public_token`. You can find these in the [API keys tab](https://stytch.com/dashboard/api-keys).
 
 Once you've gathered these values, add them to a new .env.local file.
 Example:
@@ -21,10 +27,10 @@ cp .env.template .env.local
 # Replace your keys in new .env.local file
 ```
 
-Next, add `http://localhost:3000/api/authenticate_magic_link` as a login and signup magic link URL to the dashboard. Stytch, for security purposes, verifies your magic link URLs before they are sent. You can set these magic link URLs for your project in the [Magic link URLs tab](https://stytch.com/dashboard/magic-link-urls).
+Next we'll configure the appropriate re-direct URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost:3000/api/authenticate_magic_link` as both a login and sign-up re-direct URL.
 
-### Running the example app
 
+## Running the example app
 Install dependencies by running
 
 ```bash
@@ -33,7 +39,7 @@ npm install
 yarn install
 ```
 
-You can run a development server using:
+You can then run a development server using:
 
 ```bash
 npm run dev
@@ -43,7 +49,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Documentation
+## Documentation
 
 Learn more about some of Stytch's products used in this example app:
 
