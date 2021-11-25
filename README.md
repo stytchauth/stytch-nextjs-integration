@@ -9,10 +9,6 @@ In this repo, we have two sample auth flows:
 
 Both flows use Stytch's [Node client library](https://github.com/stytchauth/stytch-node) and `with-iron-session` for session management.
 
-<!-- If you'd like to deploy with [Vercel](https://vercel.com/), just add `https://*.vercel.app:3000` as both a login and sign-up re-direct URL to your [Stytch Dashboard](https://stytch.com/dashboard/redirect-urls) and then click Deploy below! You'll be asked to login to your Vercel account, then we'll walk you through each step to get you up-and-running in no time. -->
-
-<!-- [![Deploy with Vercel](TODO) -->
-
 # Running locally
 
 ## Setting up Stytch
