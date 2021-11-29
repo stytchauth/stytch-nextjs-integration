@@ -7,7 +7,7 @@ In this repo, we have two sample auth flows:
 - SDK integration: This flow uses Stytch's React component to create a login and sign-up flow using [Email Magic Links](https://stytch.com/docs/api/send-by-email).
 - API integration: This flow uses a custom UI with Stytch's backend API for [Onetime Passcodes(OTP) via SMS](https://stytch.com/docs/api/sms-otp-overview) authentication.
 
-Both flows use Stytch's [Node client library](https://github.com/stytchauth/stytch-node) and `with-iron-session` for session management.
+Both flows use Stytch's [Node client library](https://github.com/stytchauth/stytch-node) and [`iron-session`](https://github.com/vvo/next-iron-session) for session management.
 
 # Running locally
 
@@ -51,4 +51,4 @@ Learn more about some of Stytch's products used in this example app:
 
 - [Stytch React](https://www.npmjs.com/package/@stytch/stytch-react)
 - [Stytch's node client library](https://www.npmjs.com/package/stytch)
-- [with-iron-session](https://github.com/vvo/next-iron-session)
+- [iron-session](https://github.com/vvo/next-iron-session)
