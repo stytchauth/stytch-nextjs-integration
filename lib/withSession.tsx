@@ -9,8 +9,8 @@ export type ServerSideProps = ({ req }: { req: NextIronRequest }) => Promise<any
 
 const withSession = (handler: APIHandler | ServerSideProps) =>
   withIronSession(handler, {
-    password: process.env.IRON_SESSION_PWD || '',
-    cookieName: process.env.COOKIE_NAME || '',
+    password: process.env.IRON_SESSION_PASSWORD || '',
+    cookieName: process.env.IRON_SESSION_COOKIE_NAME || '',
     // if your localhost is served on http:// then disable the secure flag
     cookieOptions: {
       httpOnly: true,

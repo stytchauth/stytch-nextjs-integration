@@ -6,7 +6,7 @@ import loadStytch from '../../lib/loadStytch';
 type NextIronRequest = NextApiRequest & { session: Session };
 
 type Data = {
-  error: string;
+  errorString: string;
 };
 
 export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
@@ -24,8 +24,9 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
       await req.session.save();
       res.redirect('/profile');
     } catch (error) {
+      const errorString = JSON.stringify(error);
       console.log(error);
-      res.status(400).json({ error });
+      res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method
