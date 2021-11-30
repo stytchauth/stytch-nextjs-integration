@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Stytch, StytchProps } from '@stytch/stytch-react';
-import { SDKProductTypes } from '@stytch/stytch-js';
+import { OAuthProvidersTypes, SDKProductTypes } from '@stytch/stytch-js';
 import styles from '../styles/Home.module.css';
 import withSession, { ServerSideProps } from '../lib/withSession';
 import LoginWithSMS from '../components/LoginWithSMS';
@@ -15,13 +15,20 @@ const REDIRECT_URL_BASE = process.env.USE_VERCEL == 'true' ?
 
 const stytchProps: StytchProps = {
   loginOrSignupView: {
-    products: [SDKProductTypes.emailMagicLinks],
+    products: [ SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
       loginRedirectURL: REDIRECT_URL_BASE,
       loginExpirationMinutes: 30,
       signupRedirectURL: REDIRECT_URL_BASE,
       signupExpirationMinutes: 30,
       createUserAsPending: false,
+    },
+    oauthOptions: {
+      providers: [
+        {type: OAuthProvidersTypes.Google},
+        {type: OAuthProvidersTypes.Microsoft},
+        {type: OAuthProvidersTypes.Apple},
+      ],
     },
   },
   style: {
