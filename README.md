@@ -9,6 +9,16 @@ In this repo, we have two sample auth flows:
 
 Both flows use Stytch's [Node client library](https://github.com/stytchauth/stytch-node) and [`iron-session`](https://github.com/vvo/next-iron-session) for session management.
 
+# Running with Vercel
+
+If you'd like to run this example app with [Vercel](https://vercel.com/), the first step is to configure the appropriate redirect URLs for your project.
+
+You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app:3000` as both a login and sign-up redirect URL.
+
+Now just click the deploy button below! Once you're signed in to your Vercel account, you'll be guided through how to get up and running quickly. Check out [.env.template](/.env.template) for pointers on filling in the appropriate environment variables for this step.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration&env=USE_VERCEL,STYTCH_PROJECT_ENV,STYTCH_PROJECT_ID,STYTCH_SECRET,STYTCH_PUBLIC_TOKEN,IRON_SESSION_PASSWORD,IRON_SESSION_COOKIE_NAME&envDescription=All%20variables%20here%20need%20values%2C%20see%20the%20following%20link%20for%20pointers%20on%20how%20to%20feel%20these%20out.&envLink=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration%2Fblob%2Fmain%2F.env.template&project-name=stytch-nextjs-vercel&repo-name=stytch-nextjs-vercel&demo-title=Stytch%20on%20Next.js&demo-description=Example%20app%20running%20Stytch%20via%20Direct%20API%20or%20JavaScript%20SDK%20on%20Next.js&demo-url=stytch-nextjs-integration-qk2cp0i3l-stytch-auth.vercel.app&demo-image=https%3A%2F%2Fstytch.com%2F_next%2Fimage%3Furl%3D%252F_next%252Fstatic%252Fimage%252Fsrc%252Fimg%252Fhome%252Fillustrations%252Fdark-hero.9eeccecb0c4161496ec2861763aad73f.webp%26w%3D1920%26q%3D75)
+
 # Running locally
 
 ## Setting up Stytch
