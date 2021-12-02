@@ -23,9 +23,6 @@ if (process.env.VERCEL_URL != undefined &&
   REDIRECT_URL_BASE = 'http://localhost:3000';
 }
 
-console.log("process.env.VERCEL_URL " + process.env.VERCEL_URL);
-console.log("REDIRECT_URL  " + REDIRECT_URL_BASE);
-
 const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [ SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
