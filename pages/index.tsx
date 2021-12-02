@@ -8,6 +8,10 @@ import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 
+// Set the URL base for redirect URLs. The three cases are as follows:
+// 1. Running locally via `vercel dev`; VERCEL_URL will contain localhost, but will not be https.
+// 2. Deploying via Vercel; VERCEL_URL will be generated on runtime and use https.
+// 3. Running locally via `npm run dev`; VERCEL_URL will be undefined and the app will be at localhost.
 let REDIRECT_URL_BASE = '';
 
 if (process.env.VERCEL_URL != undefined &&
