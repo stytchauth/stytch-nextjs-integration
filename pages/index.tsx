@@ -12,14 +12,18 @@ const REDIRECT_URL_BASE = process.env.USE_VERCEL == 'true' ?
   `https://${process.env.VERCEL_URL}/api/authenticate_magic_link` :
   'http://localhost:3000/api/authenticate_magic_link';
 
+const REDIRECT_URL = process.env.VERCEL_URL.includes('localhost') ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
+
+console.log("process.env.VERCEL_URL " + process.env.VERCEL_URL);
+console.log("REDIRECT_URL  " + REDIRECT_URL);
 
 const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [ SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
-      loginRedirectURL: REDIRECT_URL_BASE,
+      loginRedirectURL: REDIRECT_URL + '/api/authenticate_magic_link',
       loginExpirationMinutes: 30,
-      signupRedirectURL: REDIRECT_URL_BASE,
+      signupRedirectURL: REDIRECT_URL + '/api/authenticate_magic_link',
       signupExpirationMinutes: 30,
       createUserAsPending: false,
     },
