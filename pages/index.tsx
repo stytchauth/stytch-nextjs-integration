@@ -8,23 +8,27 @@ import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 
-const REDIRECT_URL_BASE = process.env.USE_VERCEL == 'true' ?
-  `https://${process.env.VERCEL_URL}/api/authenticate_magic_link` :
-  'http://localhost:3000/api/authenticate_magic_link';
+let REDIRECT_URL_BASE = '';
 
-const REDIRECT_URL = (process.env.VERCEL_URL!= undefined &&
-                      process.env.VERCEL_URL.includes('localhost')) ? 'http://localhost:3000' : `https://${process.env.VERCEL_URL}`;
+if (process.env.VERCEL_URL == undefined) {
+  REDIRECT_URL_BASE = 'http://localhost:3000';
+} else if (process.env.VERCEL_URL != undefined &&
+    process.env.VERCEL_URL.includes('localhost')) {
+  REDIRECT_URL_BASE = 'http://localhost:3000';
+} else {
+  REDIRECT_URL_BASE = `https://${process.env.VERCEL_URL}`;
+}
 
 console.log("process.env.VERCEL_URL " + process.env.VERCEL_URL);
-console.log("REDIRECT_URL  " + REDIRECT_URL);
+console.log("REDIRECT_URL  " + REDIRECT_URL_BASE);
 
 const stytchProps: StytchProps = {
   loginOrSignupView: {
     products: [ SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
-      loginRedirectURL: REDIRECT_URL + '/api/authenticate_magic_link',
+      loginRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_magic_link',
       loginExpirationMinutes: 30,
-      signupRedirectURL: REDIRECT_URL + '/api/authenticate_magic_link',
+      signupRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_magic_link',
       signupExpirationMinutes: 30,
       createUserAsPending: false,
     },
