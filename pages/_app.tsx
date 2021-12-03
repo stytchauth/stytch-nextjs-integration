@@ -4,7 +4,9 @@ import type { AppProps } from 'next/app';
 import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import logo from '/public/stytch-logo.svg';
+import stytchLogo from '/public/stytch-logo.svg';
+import nextjsLogo from '/public/nextjs-logotype-dark.svg';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -15,10 +17,20 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Stytch + Next.js example app</title>
       </Head>
       <div className={styles.nav}>
-        <a href="https://stytch.com" rel="noopener noreferrer" target="_blank">
-          <Image alt="Stytch logo" height={20} src={logo} width={105} />
-        </a>
-        <span className={styles.accountNavItem}>Account</span>
+        <div className={styles.navLogos}>
+          <a href="https://stytch.com" rel="noopener noreferrer" target="_blank">
+            <Image alt="Stytch logo" height={20} src={stytchLogo} width={105} />
+          </a>
+          <p className={styles.navPlusSign}> + </p>
+          <a href="https://nextjs.org" rel="noopener noreferrer" target="_blank">
+            <Image alt="Next.js logo" height={40} src={nextjsLogo} width={105} />
+          </a>
+        </div>
+        <div className={styles.docsNavItem}>
+          <a href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
+            Docs
+          </a>
+        </div>
       </div>
       <div className={styles.root}>
         <Component {...pageProps} />

@@ -2,6 +2,8 @@
 
 This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+<p align="center"><img src="./public/example-app-image.png" alt="stytch" width="50%"/></p>
+
 In this repo, we have two sample auth flows:
 
 - SDK integration: This flow uses Stytch's React component to create a login and sign-up flow using [Email Magic Links](https://stytch.com/docs/api/send-by-email).
@@ -19,7 +21,7 @@ You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.
 
 Now just click the deploy button below! Once you're signed in to your Vercel account, you'll be guided through how to get up and running quickly. Check out [.env.template](/.env.template) for pointers on filling in the appropriate environment variables for this step.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration&env=USE_VERCEL,STYTCH_PROJECT_ENV,STYTCH_PROJECT_ID,STYTCH_SECRET,STYTCH_PUBLIC_TOKEN,IRON_SESSION_PASSWORD,IRON_SESSION_COOKIE_NAME&envDescription=All%20variables%20here%20need%20values%2C%20see%20the%20following%20link%20for%20pointers%20on%20how%20to%20feel%20these%20out.&envLink=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration%2Fblob%2Fmain%2F.env.template&project-name=stytch-nextjs-vercel&repo-name=stytch-nextjs-vercel&demo-title=Stytch%20on%20Next.js&demo-description=Example%20app%20running%20Stytch%20via%20Direct%20API%20or%20JavaScript%20SDK%20on%20Next.js&demo-url=stytch-nextjs-integration-qk2cp0i3l-stytch-auth.vercel.app&demo-image=https%3A%2F%2Fstytch.com%2F_next%2Fimage%3Furl%3D%252F_next%252Fstatic%252Fimage%252Fsrc%252Fimg%252Fhome%252Fillustrations%252Fdark-hero.9eeccecb0c4161496ec2861763aad73f.webp%26w%3D1920%26q%3D75)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration&env=STYTCH_PROJECT_ENV,STYTCH_PROJECT_ID,STYTCH_SECRET,STYTCH_PUBLIC_TOKEN,IRON_SESSION_PASSWORD,IRON_SESSION_COOKIE_NAME&envDescription=All%20variables%20here%20need%20values%2C%20see%20the%20following%20link%20for%20pointers%20on%20how%20to%20feel%20these%20out.&envLink=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration%2Fblob%2Fmain%2F.env.template&project-name=stytch-nextjs&repo-name=stytch-nextjs&demo-title=Stytch%20on%20Next.js&demo-description=Next.js%20example%20app%20using%20Stytch%20authentication&demo-url=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration&demo-image=https%3A%2F%2Fgithub.com%2Fstytchauth%2Fstytch-nextjs-integration%2Fblob%2Fmain%2Fpublic%2Fexample-app-image.png)
 
 # Running locally
 
