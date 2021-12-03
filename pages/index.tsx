@@ -45,7 +45,7 @@ const stytchProps: StytchProps = {
   },
   style: {
     fontFamily: '"Helvetica New", Helvetica, sans-serif',
-    primaryColor: '#0577CA',
+    primaryColor: '#19303d',
     primaryTextColor: '#090909',
     width: '321px',
   },
