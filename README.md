@@ -2,6 +2,8 @@
 
 This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+<p align="center"><img src="./public/example-app-image.png" alt="stytch" width="50%"/></p>
+
 In this repo, we have two sample auth flows:
 
 - SDK integration: This flow uses Stytch's React component to create a login and sign-up flow using [Email Magic Links](https://stytch.com/docs/api/send-by-email).
