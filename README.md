@@ -37,7 +37,7 @@ cp .env.template .env.local
 # Replace your keys in new .env.local file
 ```
 
-Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost:3000/api/authenticate_magic_link` as both a login and sign-up redirect URL.
+Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost:3000/api/authenticate_magic_link` and `http://localhost:3000/api/authenticate_magic_link_with_webauthn` as both a login and sign-up redirect URL.
 
 
 ## Running the example app
