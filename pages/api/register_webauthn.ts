@@ -15,13 +15,13 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
       const client = loadStytch();
       const data = JSON.parse(req.body);
       try {
-        const resp = await client.webauthn.register({
+        const { user_id } = await client.webauthn.register({
           user_id: req.session.get('user_id') as string,
           public_key_credential: data.credential,
         });
         req.session.destroy();
         req.session.set('user', {
-          id: resp.user_id,
+          id: user_id,
         });
         // Save additional user data here
         await req.session.save();

@@ -16,7 +16,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
     const client = loadStytch();
     const data = JSON.parse(req.body);
     try {
-      const resp = await client.magicLinks.email.loginOrCreate({
+      await client.magicLinks.email.loginOrCreate({
         email: data.email,
         login_magic_link_url: `${REDIRECT_URL_BASE}/api/authenticate_magic_link_with_webauthn`,
         signup_magic_link_url: `${REDIRECT_URL_BASE}/api/authenticate_magic_link_with_webauthn`,
