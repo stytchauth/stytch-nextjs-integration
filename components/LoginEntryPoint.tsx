@@ -24,6 +24,9 @@ const LoginEntryPoint = (props: Props) => {
       <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.EMAIL_WEBAUTHN)}>
         Email + WebAuthn (API Integration)
       </button>
+      <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.SDK_OAUTH)}>
+        SDK Integration (SDK Google OAuth + One Tap)
+      </button>
     </StytchContainer>
   );
 };

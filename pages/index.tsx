@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Stytch, StytchProps } from '@stytch/stytch-react';
-import { OAuthProvidersTypes, SDKProductTypes } from '@stytch/stytch-js';
 import styles from '../styles/Home.module.css';
 import withSession, { ServerSideProps } from '../lib/withSession';
 import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
+import LoginWithOAuthAndOneTap from '../components/LoginWithOAuthAndOneTap';
+import LoginWithMagicLinks from '../components/LoginWithMagicLinks';
+import { CallbackOptions, StyleConfig } from '@stytch/stytch-js';
 
 // Set the URL base for redirect URLs. The three cases are as follows:
 // 1. Running locally via `vercel dev`; VERCEL_URL will contain localhost, but will not be https.
@@ -16,41 +17,14 @@ import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
 //
 // VERCEL_URL only contains the domain of the site's URL, the scheme is not included so we must add it manually,
 // see https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables.
-let REDIRECT_URL_BASE = '';
 
-if (process.env.VERCEL_URL?.includes('localhost')) {
-  REDIRECT_URL_BASE = 'http://localhost:3000';
-} else if (process.env.VERCEL_URL != undefined) {
-  REDIRECT_URL_BASE = `https://${process.env.VERCEL_URL}`;
-} else {
-  REDIRECT_URL_BASE = 'http://localhost:3000';
-}
-
-const stytchProps: StytchProps = {
-  loginOrSignupView: {
-    products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
-    emailMagicLinksOptions: {
-      loginRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_magic_link',
-      loginExpirationMinutes: 30,
-      signupRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_magic_link',
-      signupExpirationMinutes: 30,
-      createUserAsPending: false,
-    },
-    oauthOptions: {
-      providers: [
-        { type: OAuthProvidersTypes.Google },
-        { type: OAuthProvidersTypes.Microsoft },
-        { type: OAuthProvidersTypes.Apple },
-      ],
-    },
-  },
+const stytchProps: { style: StyleConfig; callbacks: CallbackOptions } = {
   style: {
     fontFamily: '"Helvetica New", Helvetica, sans-serif',
     primaryColor: '#19303d',
     primaryTextColor: '#090909',
     width: '321px',
   },
-  publicToken: process.env.STYTCH_PUBLIC_TOKEN || '',
   callbacks: {
     onEvent: (data) => {
       // TODO: check whether the user exists in your DB
@@ -83,18 +57,23 @@ const App = (props: Props) => {
       router.push('/profile');
     }
   });
-
   const loginMethodMap: Record<LoginMethod, React.ReactElement> = {
     [LoginMethod.API]: <LoginWithSMS />,
     [LoginMethod.SDK]: (
-      <div className={styles.container}>
-        <Stytch
-          publicToken={publicToken || ''}
-          loginOrSignupView={stytchProps.loginOrSignupView}
-          style={stytchProps.style}
-          callbacks={stytchProps.callbacks}
-        />
-      </div>
+      <LoginWithMagicLinks
+        styles={styles}
+        publicToken={publicToken}
+        sdkStyle={stytchProps.style}
+        callbacks={stytchProps.callbacks}
+      />
+    ),
+    [LoginMethod.SDK_OAUTH]: (
+      <LoginWithOAuthAndOneTap
+        styles={styles}
+        publicToken={publicToken}
+        sdkStyle={stytchProps.style}
+        callbacks={stytchProps.callbacks}
+      />
     ),
     [LoginMethod.EMAIL_WEBAUTHN]: <LoginWithEmailWebAuthn />,
   };
@@ -110,7 +89,7 @@ const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
   // Get the user's session based on the request
   const user = req.session.get('user') ?? null;
   const props: Props = {
-    publicToken: stytchProps.publicToken,
+    publicToken: process.env.STYTCH_PUBLIC_TOKEN || '',
     user,
   };
   return { props };
