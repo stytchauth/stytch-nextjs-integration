@@ -7,10 +7,9 @@ import Image from 'next/image';
 import stytchLogo from '/public/stytch-logo.svg';
 import nextjsLogo from '/public/nextjs-logotype-dark.svg';
 
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <React.Fragment>
+    <>
       <Head>
         <link rel="icon" href="/favicon.png" type="image/png" />
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
@@ -35,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className={styles.root}>
         <Component {...pageProps} />
       </div>
-    </React.Fragment>
+    </>
   );
 }
 export default MyApp;
