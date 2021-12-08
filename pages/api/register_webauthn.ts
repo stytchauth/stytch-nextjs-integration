@@ -5,11 +5,11 @@ import withSession from '../../lib/withSession';
 import loadStytch from '../../lib/loadStytch';
 type NextIronRequest = NextApiRequest & { session: Session };
 
-type Data = {
+type ErrorData = {
   errorString: string;
 };
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
+export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'POST') {
     if (req.session?.get('user_id') && req.session?.get('webauthn_pending')) {
       const client = loadStytch();
@@ -27,8 +27,9 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
         await req.session.save();
         return res.status(200).end();
       } catch (error) {
+        const errorString = JSON.stringify(error);
         console.log(error);
-        return res.status(400);
+        return res.status(400).json({ errorString });
       }
     }
     return res.redirect('/');

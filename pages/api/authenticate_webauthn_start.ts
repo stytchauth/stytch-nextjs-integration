@@ -12,6 +12,10 @@ type Data = {
   public_key_credential_request_options: string;
 };
 
+type ErrorData = {
+  errorString: string;
+};
+
 let DOMAIN = '';
 if (process.env.VERCEL_URL?.includes('localhost')) {
   DOMAIN = 'localhost';
@@ -21,7 +25,7 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
   DOMAIN = 'localhost';
 }
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
+export async function handler(req: NextIronRequest, res: NextApiResponse<Data | ErrorData>) {
   if (req.method === 'POST') {
     if (req.session?.get('user_id') && req.session?.get('webauthn_pending')) {
       const client = loadStytch();
@@ -32,8 +36,9 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
         });
         return res.status(200).json(authnResp);
       } catch (error) {
+        const errorString = JSON.stringify(error);
         console.log(error);
-        return res.status(400);
+        return res.status(400).json({ errorString });
       }
     }
     return res.redirect('/');

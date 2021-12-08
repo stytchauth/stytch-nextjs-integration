@@ -6,7 +6,11 @@ type Data = {
   methodId: string;
 };
 
-export async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+type ErrorData = {
+  errorString: string;
+};
+
+export async function handler(req: NextApiRequest, res: NextApiResponse<Data | ErrorData>) {
   if (req.method === 'POST') {
     const client = loadStytch();
     const data = JSON.parse(req.body);
@@ -19,10 +23,11 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
       };
 
       const resp = await client.otps.sms.loginOrCreate(params);
-      res.status(200).json({ methodId: resp.phone_id });
+      return res.status(200).json({ methodId: resp.phone_id });
     } catch (error) {
+      const errorString = JSON.stringify(error);
       console.log(error);
-      res.status(400);
+      return res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method

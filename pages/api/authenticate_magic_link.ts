@@ -5,11 +5,11 @@ import withSession from '../../lib/withSession';
 import loadStytch from '../../lib/loadStytch';
 type NextIronRequest = NextApiRequest & { session: Session };
 
-type Data = {
+type ErrorData = {
   errorString: string;
 };
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
+export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'GET') {
     const client = loadStytch();
     const { token } = req.query;
@@ -22,11 +22,11 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
       });
       // Save additional user data here
       await req.session.save();
-      res.redirect('/profile');
+      return res.redirect('/profile');
     } catch (error) {
       const errorString = JSON.stringify(error);
       console.log(error);
-      res.status(400).json({ errorString });
+      return res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method

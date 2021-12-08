@@ -5,7 +5,7 @@ import withSession from '../../lib/withSession';
 import loadStytch from '../../lib/loadStytch';
 type NextIronRequest = NextApiRequest & { session: Session };
 
-type Data = {
+type ErrorData = {
   errorString: string;
 };
 
@@ -18,7 +18,7 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
   DOMAIN = 'localhost';
 }
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
+export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'GET') {
     const client = loadStytch();
     const { token } = req.query;

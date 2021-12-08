@@ -4,20 +4,20 @@ import { Session } from 'next-iron-session';
 import withSession from '../../lib/withSession';
 type NextIronRequest = NextApiRequest & { session: Session };
 
-type Data = {
+type ErrorData = {
   errorString: string;
 };
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
+export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'POST') {
     try {
       // Set session
       req.session.destroy();
-      res.redirect('/');
+      return res.redirect('/');
     } catch (error) {
       const errorString = JSON.stringify(error);
       console.log(error);
-      res.status(400).json({ errorString });
+      return res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method

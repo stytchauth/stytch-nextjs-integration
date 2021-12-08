@@ -9,7 +9,11 @@ type Data = {
   msg: string;
 };
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) {
+type ErrorData = {
+  errorString: string;
+};
+
+export async function handler(req: NextIronRequest, res: NextApiResponse<Data | ErrorData>) {
   if (req.method === 'POST') {
     const client = loadStytch();
     const data = JSON.parse(req.body);
@@ -29,14 +33,14 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
           id: resp.user_id,
         });
         await req.session.save();
-        res.status(200).send({ msg: `successfully authenticated ${resp.user_id}` });
+        return res.status(200).send({ msg: `successfully authenticated ${resp.user_id}` });
       } else {
         throw Error('Error authenticating your code');
       }
     } catch (error) {
       const errorString = JSON.stringify(error);
       console.log(error);
-      res.status(400).json({ msg: errorString });
+      return res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method

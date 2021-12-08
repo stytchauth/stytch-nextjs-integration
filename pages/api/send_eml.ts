@@ -11,7 +11,11 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
   REDIRECT_URL_BASE = 'http://localhost:3000';
 }
 
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
+type ErrorData = {
+  errorString: string;
+};
+
+export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'POST') {
     const client = loadStytch();
     const data = JSON.parse(req.body);
@@ -23,8 +27,9 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
       });
       return res.status(200).end();
     } catch (error) {
+      const errorString = JSON.stringify(error);
       console.log(error);
-      return res.status(400);
+      return res.status(400).json({ errorString });
     }
   } else {
     // Handle any other HTTP method
