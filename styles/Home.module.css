@@ -177,6 +177,19 @@
   width: fit-content;
 }
 
+/* Email WebAuthn styles */
+
+.emailInput {
+  width: 100%;
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.marginBottom {
+  margin-bottom: 4px;
+}
+
 /* Profile styles */
 
 .profileSubHeader {

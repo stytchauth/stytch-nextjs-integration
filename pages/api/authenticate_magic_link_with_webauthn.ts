@@ -1,4 +1,4 @@
-// This API route authenticates a Stytch magic link.
+// This API route authenticates a Stytch magic link for WebAuthn.
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-iron-session';
 import withSession from '../../lib/withSession';
@@ -9,20 +9,34 @@ type ErrorData = {
   errorString: string;
 };
 
+let DOMAIN = '';
+if (process.env.VERCEL_URL?.includes('localhost')) {
+  DOMAIN = 'localhost';
+} else if (process.env.VERCEL_URL != undefined) {
+  DOMAIN = process.env.VERCEL_URL;
+} else {
+  DOMAIN = 'localhost';
+}
+
 export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'GET') {
     const client = loadStytch();
     const { token } = req.query;
     try {
-      const resp = await client.magicLinks.authenticate(token as string);
-      // Set session
+      const { user_id } = await client.magicLinks.authenticate(token as string);
       req.session.destroy();
-      req.session.set('user', {
-        id: resp.user_id,
-      });
-      // Save additional user data here
+      req.session.set('webauthn_pending', true);
+      req.session.set('user_id', user_id);
       await req.session.save();
-      return res.redirect('/profile');
+      try {
+        await client.webauthn.authenticateStart({
+          user_id,
+          domain: DOMAIN,
+        });
+        return res.redirect(`/webauthn_authenticate`);
+      } catch {
+        return res.redirect(`/webauthn_register`);
+      }
     } catch (error) {
       const errorString = JSON.stringify(error);
       console.log(error);

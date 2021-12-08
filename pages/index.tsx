@@ -7,6 +7,7 @@ import withSession, { ServerSideProps } from '../lib/withSession';
 import LoginWithSMS from '../components/LoginWithSMS';
 import { LoginMethod } from '../lib/types';
 import LoginEntryPoint from '../components/LoginEntryPoint';
+import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
 
 // Set the URL base for redirect URLs. The three cases are as follows:
 // 1. Running locally via `vercel dev`; VERCEL_URL will contain localhost, but will not be https.
@@ -27,7 +28,7 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
 
 const stytchProps: StytchProps = {
   loginOrSignupView: {
-    products: [ SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
+    products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
     emailMagicLinksOptions: {
       loginRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_magic_link',
       loginExpirationMinutes: 30,
@@ -37,9 +38,9 @@ const stytchProps: StytchProps = {
     },
     oauthOptions: {
       providers: [
-        {type: OAuthProvidersTypes.Google},
-        {type: OAuthProvidersTypes.Microsoft},
-        {type: OAuthProvidersTypes.Apple},
+        { type: OAuthProvidersTypes.Google },
+        { type: OAuthProvidersTypes.Microsoft },
+        { type: OAuthProvidersTypes.Apple },
       ],
     },
   },
@@ -95,6 +96,7 @@ const App = (props: Props) => {
         />
       </div>
     ),
+    [LoginMethod.EMAIL_WEBAUTHN]: <LoginWithEmailWebAuthn />,
   };
 
   return (
