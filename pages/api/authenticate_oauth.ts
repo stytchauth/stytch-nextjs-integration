@@ -16,7 +16,6 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
     try {
       const resp = await client.oauth.authenticate(token as string);
       console.log(resp);
-      res.status(200).json({ user_id: resp.user_id });
       // Set session
       req.session.destroy();
       req.session.set('user', {

@@ -22,7 +22,6 @@ const loginOrSignupViewOAuth = {
     signupRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_oauth',
   },
 };
-console.log(loginOrSignupViewOAuth);
 
 const LoginWithOAuthAndOneTap = ({ styles, publicToken, sdkStyle, callbacks }: PropTypes) => (
   <div className={styles.container}>
