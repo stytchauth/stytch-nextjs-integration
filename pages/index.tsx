@@ -18,26 +18,24 @@ import { CallbackOptions, StyleConfig } from '@stytch/stytch-js';
 // VERCEL_URL only contains the domain of the site's URL, the scheme is not included so we must add it manually,
 // see https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables.
 
-const stytchProps: { style: StyleConfig; callbacks: CallbackOptions } = {
-  style: {
-    fontFamily: '"Helvetica New", Helvetica, sans-serif',
-    primaryColor: '#19303d',
-    primaryTextColor: '#090909',
-    width: '321px',
+const sdkStyle: StyleConfig = {
+  fontFamily: '"Helvetica New", Helvetica, sans-serif',
+  primaryColor: '#19303d',
+  primaryTextColor: '#090909',
+  width: '321px',
+};
+const callbacks: CallbackOptions = {
+  onEvent: (data) => {
+    // TODO: check whether the user exists in your DB
+    if (data.eventData.type === 'USER_EVENT_TYPE') {
+      console.log({
+        userId: data.eventData.userId,
+        email: data.eventData.email,
+      });
+    }
   },
-  callbacks: {
-    onEvent: (data) => {
-      // TODO: check whether the user exists in your DB
-      if (data.eventData.type === 'USER_EVENT_TYPE') {
-        console.log({
-          userId: data.eventData.userId,
-          email: data.eventData.email,
-        });
-      }
-    },
-    onSuccess: (data) => console.log(data),
-    onError: (data) => console.log(data),
-  },
+  onSuccess: (data) => console.log(data),
+  onError: (data) => console.log(data),
 };
 
 type Props = {
@@ -60,20 +58,10 @@ const App = (props: Props) => {
   const loginMethodMap: Record<LoginMethod, React.ReactElement> = {
     [LoginMethod.API]: <LoginWithSMS />,
     [LoginMethod.SDK]: (
-      <LoginWithMagicLinks
-        styles={styles}
-        publicToken={publicToken}
-        sdkStyle={stytchProps.style}
-        callbacks={stytchProps.callbacks}
-      />
+      <LoginWithMagicLinks styles={styles} publicToken={publicToken} sdkStyle={sdkStyle} callbacks={callbacks} />
     ),
     [LoginMethod.SDK_OAUTH]: (
-      <LoginWithOAuthAndOneTap
-        styles={styles}
-        publicToken={publicToken}
-        sdkStyle={stytchProps.style}
-        callbacks={stytchProps.callbacks}
-      />
+      <LoginWithOAuthAndOneTap styles={styles} publicToken={publicToken} sdkStyle={sdkStyle} callbacks={callbacks} />
     ),
     [LoginMethod.EMAIL_WEBAUTHN]: <LoginWithEmailWebAuthn />,
   };
