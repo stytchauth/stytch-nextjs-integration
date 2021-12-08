@@ -17,7 +17,7 @@ Both flows use Stytch's [Node client library](https://github.com/stytchauth/styt
 
 If you'd like to run this example app with [Vercel](https://vercel.com/), the first step is to configure the appropriate redirect URLs for your project.
 
-You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app:3000` as both a login and sign-up redirect URL.
+You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app:3000` as both a login and sign-up redirect URL.  If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
 
 Now just click the deploy button below! Once you're signed in to your Vercel account, you'll be guided through how to get up and running quickly. Check out [.env.template](/.env.template) for pointers on filling in the appropriate environment variables for this step.
 
