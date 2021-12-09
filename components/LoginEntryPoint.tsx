@@ -18,14 +18,14 @@ const LoginEntryPoint = (props: Props) => {
       <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.SDK)}>
         Email Magic Links (SDK Integration)
       </button>
+      <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.SDK_OAUTH)}>
+        OAuth + One Tap (SDK Integration)
+      </button>
       <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.API)}>
         SMS Passcodes (API Integration)
       </button>
       <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.EMAIL_WEBAUTHN)}>
         Email + WebAuthn (API Integration)
-      </button>
-      <button className={styles.entryButton} onClick={() => setLoginMethod(LoginMethod.SDK_OAUTH)}>
-        OAuth + One Tap (SDK Integration)
       </button>
     </StytchContainer>
   );
