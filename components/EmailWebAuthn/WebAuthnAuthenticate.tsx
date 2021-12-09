@@ -31,7 +31,8 @@ const WebAuthnAuthenticate = ({ isPending }: Props) => {
   return (
     <StytchContainer>
       <div>
-        <h2>Authenticate with a WebAuthn Device</h2>
+        <h2>Authenticate with a WebAuthn device</h2>
+        <p>After registering a WebAuthn device, now the user can complete the authentication step.</p>
         <button className={styles.primaryButton} onClick={authenticate}>
           Authenticate
         </button>

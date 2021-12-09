@@ -43,7 +43,12 @@ const LoginWithEmail = () => {
           <h2>Sign up or log in</h2>
           <p>
             Make sure to add the appropriate Redirect URL in your{' '}
-            <a className={styles.link} href="https://stytch.com/dashboard/redirect-urls" target="_blank" rel="noreferrer">
+            <a
+              className={styles.link}
+              href="https://stytch.com/dashboard/redirect-urls"
+              target="_blank"
+              rel="noreferrer"
+            >
               Stytch Dashboard
             </a>
             , and check out our full{' '}
