@@ -31,7 +31,8 @@ const WebAuthnRegister = ({ isPending }: Props) => {
   return (
     <StytchContainer>
       <div>
-        <h2>Register a WebAuthn Device</h2>
+        <h2>Register a WebAuthn device</h2>
+        <p> First a user selects which WebAuthn device they would like to register, e.g. Apple TouchID or a Yubikey.</p>
         <button className={styles.primaryButton} onClick={register}>
           Register Device
         </button>

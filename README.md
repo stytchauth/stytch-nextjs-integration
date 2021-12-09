@@ -17,7 +17,9 @@ Both flows use Stytch's [Node client library](https://github.com/stytchauth/styt
 
 If you'd like to run this example app with [Vercel](https://vercel.com/), the first step is to configure the appropriate redirect URLs for your project.
 
-You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app:3000` as both a login and sign-up redirect URL.  If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
+You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app` as both a login and sign-up redirect URL.  If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
+
+**Note:** To use Google One Tap in this example app, you'll need to deploy on Vercel first, then add the resulting URL, e.g. `https://<uuid>.vercel.app/` as both a Stytch Redirect URL and as a [Authorized JavaScript origins](https://console.cloud.google.com/apis/credentials/) in your Google OAuth dashboard.
 
 Now just click the deploy button below! Once you're signed in to your Vercel account, you'll be guided through how to get up and running quickly. Check out [.env.template](/.env.template) for pointers on filling in the appropriate environment variables for this step.
 
@@ -37,7 +39,7 @@ cp .env.template .env.local
 # Replace your keys in new .env.local file
 ```
 
-Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost:3000/api/authenticate_magic_link` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `http://localhost:3000/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
+Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `http://localhost:3000/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
 
 
 ## Running the example app
