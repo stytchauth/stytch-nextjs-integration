@@ -10,14 +10,6 @@ import LoginWithOAuthAndOneTap from '../components/LoginWithOAuthAndOneTap';
 import LoginWithMagicLinks from '../components/LoginWithMagicLinks';
 import { CallbackOptions, StyleConfig } from '@stytch/stytch-js';
 
-// Set the URL base for redirect URLs. The three cases are as follows:
-// 1. Running locally via `vercel dev`; VERCEL_URL will contain localhost, but will not be https.
-// 2. Deploying via Vercel; VERCEL_URL will be generated on runtime and use https.
-// 3. Running locally via `npm run dev`; VERCEL_URL will be undefined and the app will be at localhost.
-//
-// VERCEL_URL only contains the domain of the site's URL, the scheme is not included so we must add it manually,
-// see https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables.
-
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
   primaryColor: '#19303d',
