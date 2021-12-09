@@ -120,6 +120,10 @@
   padding-left: 48px;
 }
 
+.link {
+  text-decoration: underline;
+}
+
 .phoneNumber {
   border-left: none;
   border-radius: 0 3px 3px 0;

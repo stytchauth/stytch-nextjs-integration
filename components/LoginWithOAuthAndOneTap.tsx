@@ -25,6 +25,14 @@ const loginOrSignupViewOAuth = {
 
 const LoginWithOAuthAndOneTap = ({ styles, publicToken, sdkStyle, callbacks }: PropTypes) => (
   <div className={styles.container}>
+    <h2> Sign up or log in</h2>
+    <p>
+      Do not forget to setup each OAuth provider in your{' '}
+      <a className={styles.link} href="https://stytch.com/dashboard/oauth" target="_blank" rel="noreferrer">
+        Stytch Dashboard
+      </a>
+      .
+    </p>
     <Stytch
       publicToken={publicToken || ''}
       loginOrSignupView={loginOrSignupViewOAuth}
