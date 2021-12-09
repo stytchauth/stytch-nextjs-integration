@@ -26,6 +26,8 @@ const magicLinksView = {
 const LoginWithMagicLinks = ({ styles, publicToken, sdkStyle, callbacks }: PropTypes) => {
   return (
     <div className={styles.container}>
+      <h2> Sign up or log in</h2>
+      <p> Enter your email address to receive an Email Magic Link for authentication.</p>
       <Stytch
         publicToken={publicToken || ''}
         loginOrSignupView={magicLinksView}

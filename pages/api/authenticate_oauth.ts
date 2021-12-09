@@ -19,7 +19,7 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data>) 
       // Set session
       req.session.destroy();
       req.session.set('user', {
-        id: resp.user_id,
+        user_id: resp.user_id,
       });
       // Save additional user data here
       await req.session.save();

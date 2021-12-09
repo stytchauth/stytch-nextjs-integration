@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 type Props = {
   user?: {
-    id: string;
+    user_id: string;
   };
 };
 
@@ -35,7 +35,7 @@ const Profile = (props: Props) => {
         <StytchContainer>
           <h2>{'Welcome!'}</h2>
           <p className={styles.profileSubHeader}>Thank you for using Stytch! Here’s your user info.</p>
-          <pre className={styles.code}>{JSON.stringify(user, null, 1).replace(' ', '')}</pre>
+          <pre className={styles.code}>{JSON.stringify(user, null, 2).replace(' ', '')}</pre>
           <button className={styles.primaryButton} onClick={signOut}>
             Sign out
           </button>

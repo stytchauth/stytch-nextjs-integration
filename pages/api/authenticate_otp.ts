@@ -30,7 +30,7 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data | 
         req.session.destroy();
         // Save additional user data here
         req.session.set('user', {
-          id: resp.user_id,
+          user_id: resp.user_id,
         });
         await req.session.save();
         return res.status(200).send({ msg: `successfully authenticated ${resp.user_id}` });

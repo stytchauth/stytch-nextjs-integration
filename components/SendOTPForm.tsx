@@ -43,7 +43,7 @@ const SendOTPForm = (props: Props): JSX.Element => {
   return (
     <div>
       <h2>Enter phone number</h2>
-      <p className={styles.smsInstructions}>Enter your phone number to receive a passcode for authentication.</p>
+      <p>Enter your phone number to receive a passcode for authentication.</p>
       <form onSubmit={onSubmit}>
         <div className={styles.telInput}>
           <input className={styles.flag} name="intlCode" type="text" value="+1" readOnly />
