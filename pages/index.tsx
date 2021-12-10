@@ -15,6 +15,7 @@ const sdkStyle: StyleConfig = {
   primaryColor: '#19303d',
   primaryTextColor: '#090909',
   width: '321px',
+  hideHeaderText: true,
 };
 const callbacks: CallbackOptions = {
   onEvent: (data) => {
@@ -33,7 +34,7 @@ const callbacks: CallbackOptions = {
 type Props = {
   publicToken: string;
   user: {
-    id: string;
+    user_id: string;
   };
 };
 

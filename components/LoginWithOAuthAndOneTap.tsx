@@ -14,7 +14,7 @@ const loginOrSignupViewOAuth = {
   products: [SDKProductTypes.oauth],
   oauthOptions: {
     providers: [
-      { type: OAuthProvidersTypes.Google, one_tap: 'true', position: 'embedded' },
+      { type: OAuthProvidersTypes.Google, one_tap: true, position: 'embedded' },
       { type: OAuthProvidersTypes.Apple },
       { type: OAuthProvidersTypes.Microsoft },
     ],
@@ -26,8 +26,8 @@ const loginOrSignupViewOAuth = {
 const LoginWithOAuthAndOneTap = ({ styles, publicToken, sdkStyle, callbacks }: PropTypes) => (
   <div className={styles.container}>
     <h2> Sign up or log in</h2>
-    <p>
-      Do not forget to setup each OAuth provider in your{' '}
+    <p className={styles.entrySubHeader}>
+      {`Don't forget to setup each OAuth provider in your `}
       <a className={styles.link} href="https://stytch.com/dashboard/oauth" target="_blank" rel="noreferrer">
         Stytch Dashboard
       </a>
