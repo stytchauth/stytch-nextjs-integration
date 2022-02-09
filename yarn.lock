@@ -262,17 +262,17 @@
   "resolved" "https://registry.npmjs.org/@sqltools/formatter/-/formatter-1.2.3.tgz"
   "version" "1.2.3"
 
-"@stytch/stytch-js@^2.0.3":
-  "integrity" "sha512-rzvSnhc6Qk0eWueUGqFy1gr2q/khOh0mGct7J/WU1FPZ9SYERURYf34AnkX8JAJVwObN2u1NLN0Xsy+78it64w=="
-  "resolved" "https://registry.npmjs.org/@stytch/stytch-js/-/stytch-js-2.0.3.tgz"
-  "version" "2.0.3"
+"@stytch/stytch-js@^2.0.8":
+  "integrity" "sha512-1LZoVKAPg2evqRY6nSoVFiUqFxpJlYviGbzhMs+MQs9L9MBLNyvZ2qpcSgjcHXt10cyJtwbPEw+vm7xAeUo//g=="
+  "resolved" "https://registry.npmjs.org/@stytch/stytch-js/-/stytch-js-2.0.8.tgz"
+  "version" "2.0.8"
 
-"@stytch/stytch-react@^3.0.2":
-  "integrity" "sha512-05VQIIvK5cu1xQ7gWNYZjOxyyYGlfBz1NWd/4KuIkSuQccRBVnKxbA8wE9ao+20jEEQIUzI/LJENl98Aoih9Mw=="
-  "resolved" "https://registry.npmjs.org/@stytch/stytch-react/-/stytch-react-3.0.2.tgz"
-  "version" "3.0.2"
+"@stytch/stytch-react@^3.0.7":
+  "integrity" "sha512-Fppx5tgaHBUyBd+uOlWl9WHNMcF6SyII6YRGZtlqB0b88Aa0cTtUESShW+7R2EQ6RLxoAMPFM4CEl+pITZAZnA=="
+  "resolved" "https://registry.npmjs.org/@stytch/stytch-react/-/stytch-react-3.0.7.tgz"
+  "version" "3.0.7"
   dependencies:
-    "@stytch/stytch-js" "^2.0.3"
+    "@stytch/stytch-js" "^2.0.8"
 
 "@types/cookie@^0.4.0":
   "integrity" "sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q=="
@@ -3684,10 +3684,10 @@
   "resolved" "https://registry.npmjs.org/stylis/-/stylis-3.5.4.tgz"
   "version" "3.5.4"
 
-"stytch@^3.6.0":
-  "integrity" "sha512-XnJV7X+e1KlDf6OykF8l+T+QlJDGKOvVBtA7xm8hWyRHkRkxBz/eab9YVJOaBjF9n/ow6XZoXQcAcuSnFwfRXQ=="
-  "resolved" "https://registry.npmjs.org/stytch/-/stytch-3.6.0.tgz"
-  "version" "3.6.0"
+"stytch@^3.11.0":
+  "integrity" "sha512-6rEQNsTvK6dDz74yYTBIOnqvwaJs6FEiEjTB78FYCyfdXcjYwtKgRyxnCH9EWrpcOdAUgLGNmjEmzAXcexqlBA=="
+  "resolved" "https://registry.npmjs.org/stytch/-/stytch-3.11.0.tgz"
+  "version" "3.11.0"
   dependencies:
     "axios" "^0.21.4"
 
