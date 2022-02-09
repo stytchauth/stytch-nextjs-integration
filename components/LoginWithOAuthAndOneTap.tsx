@@ -17,6 +17,8 @@ const loginOrSignupViewOAuth = {
       { type: OAuthProvidersTypes.Google, one_tap: true, position: 'embedded' },
       { type: OAuthProvidersTypes.Apple },
       { type: OAuthProvidersTypes.Microsoft },
+      { type: OAuthProvidersTypes.Facebook },
+      { type: OAuthProvidersTypes.Github },
     ],
     loginRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_oauth',
     signupRedirectURL: REDIRECT_URL_BASE + '/api/authenticate_oauth',
