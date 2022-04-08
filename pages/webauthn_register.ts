@@ -1,3 +1,3 @@
-import WebAuthnRegister, { getServerSideProps } from '../components/EmailWebAuthn/WebAuthnRegister';
+import WebAuthnRegister from '../components/EmailWebAuthn/WebAuthnRegister';
 
-export { WebAuthnRegister as default, getServerSideProps };
+export { WebAuthnRegister as default };

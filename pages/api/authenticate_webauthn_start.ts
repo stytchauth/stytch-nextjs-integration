@@ -1,9 +1,7 @@
 // This API route starts authentication for WebAuthn.
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Session } from 'next-iron-session';
-import withSession from '../../lib/withSession';
 import loadStytch from '../../lib/loadStytch';
-type NextIronRequest = NextApiRequest & { session: Session };
+import { getCookie } from 'cookies-next';
 
 type Data = {
   user_id: string;
@@ -25,13 +23,15 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
   DOMAIN = 'localhost';
 }
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<Data | ErrorData>) {
+export async function handler(req: NextApiRequest, res: NextApiResponse<Data | ErrorData>) {
+  const user_id = getCookie('user_id', { req, res });
+  const webauthn_pending = getCookie('webauthn_pending', { req, res });
   if (req.method === 'POST') {
-    if (req.session?.get('user_id') && req.session?.get('webauthn_pending')) {
+    if (user_id && webauthn_pending) {
       const client = loadStytch();
       try {
         const authnResp = await client.webauthn.authenticateStart({
-          user_id: req.session.get('user_id') as string,
+          user_id: user_id as string,
           domain: DOMAIN,
         });
         return res.status(200).json(authnResp);
@@ -47,4 +47,4 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<Data | 
   }
 }
 
-export default withSession(handler);
+export default handler;

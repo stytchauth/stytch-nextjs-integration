@@ -1,81 +1,83 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css';
-import withSession, { ServerSideProps } from '../lib/withSession';
-import LoginWithSMS from '../components/LoginWithSMS';
-import { LoginMethod } from '../lib/types';
-import LoginEntryPoint from '../components/LoginEntryPoint';
+import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
+import { LoginType } from '../lib/types';
+import LoginProducts from '../lib/loginProduct';
+import LoginDetails from '../components/LoginDetails';
+import LoginMethodCard from '../components/LoginMethodCard';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
-import LoginWithOAuthAndOneTap from '../components/LoginWithOAuthAndOneTap';
-import LoginWithMagicLinks from '../components/LoginWithMagicLinks';
-import { CallbackOptions, StyleConfig } from '@stytch/stytch-js';
+import LoginWithMagicLinks from '../components/LoginWithReactSDK';
+import { useStytchUser } from '@stytch/stytch-react';
+import { getCookie } from 'cookies-next';
 
-const sdkStyle: StyleConfig = {
-  fontFamily: '"Helvetica New", Helvetica, sans-serif',
-  primaryColor: '#19303d',
-  primaryTextColor: '#090909',
-  width: '321px',
-  hideHeaderText: true,
-};
-const callbacks: CallbackOptions = {
-  onEvent: (data) => {
-    // TODO: check whether the user exists in your DB
-    if (data.eventData.type === 'USER_EVENT_TYPE') {
-      console.log({
-        userId: data.eventData.userId,
-        email: data.eventData.email,
-      });
-    }
+const Login: Record<string, LoginType> = {
+  REACT: {
+    id: 'react',
+    title: 'React Component + Javascript Headless SDK',
+    details:
+      'Use our React component, and headless Javascript SDK to get started with Stytch fast. The React component provides a great, customizable login experience. And the headless SDK handles all the Stytch API calls, and session management. In this example we have build a highly featured login flow including email magic links, OAuth, and Google One Tap.',
+    component: <LoginWithMagicLinks />,
+    products: [LoginProducts.EML, LoginProducts.OAUTH],
   },
-  onSuccess: (data) => console.log(data),
-  onError: (data) => console.log(data),
+  CUSTOM_UI_HEADLESS: {
+    id: 'headless',
+    title: 'Custom UI + Javascript Headless SDK',
+    details:
+      'In this example we have built an SMS OPT login flow built with a custom UI that is powered by the headless SDK. This gives us full control over the user experience, while minimizing backend code and session management logic.',
+    component: <LoginWithSMS />,
+    products: [LoginProducts.SMS],
+  },
+  CUSTOM_UI_API: {
+    id: 'api',
+    title: 'Custom UI + Direct API Integration',
+    details:
+      'For developers that want the most control, you can interact with the Stytch APIs directly on your backend along with providing your own UI elements. In this example we use custom UI elements and our own backend API logic to implement two factor login with Email magic links and WebAuthn.',
+    component: <LoginWithEmailWebAuthn />,
+    products: [LoginProducts.EML, LoginProducts.WEBAUTHN],
+  },
 };
 
-type Props = {
-  publicToken: string;
-  user: {
-    user_id: string;
-  };
-};
+const App = () => {
+  const sdkUser = useStytchUser();
+  const customSession = getCookie('stytch_session_eml_webauthn');
 
-const App = (props: Props) => {
-  const { user, publicToken } = props;
-  const [loginMethod, setLoginMethod] = React.useState<LoginMethod | null>(null);
+  const [loginMethod, setLoginMethod] = React.useState<LoginType | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
+    if (sdkUser || customSession) {
       router.push('/profile');
     }
   });
-  const loginMethodMap: Record<LoginMethod, React.ReactElement> = {
-    [LoginMethod.API]: <LoginWithSMS />,
-    [LoginMethod.SDK]: (
-      <LoginWithMagicLinks styles={styles} publicToken={publicToken} sdkStyle={sdkStyle} callbacks={callbacks} />
-    ),
-    [LoginMethod.SDK_OAUTH]: (
-      <LoginWithOAuthAndOneTap styles={styles} publicToken={publicToken} sdkStyle={sdkStyle} callbacks={callbacks} />
-    ),
-    [LoginMethod.EMAIL_WEBAUTHN]: <LoginWithEmailWebAuthn />,
-  };
 
   return (
     <div className={styles.root}>
-      {loginMethod === null ? <LoginEntryPoint setLoginMethod={setLoginMethod} /> : loginMethodMap[loginMethod]}
+      <div className={styles.main}>
+        <h1 className={styles.header}>Stytch Authentication Examples</h1>
+        <p className={styles.headerDesc}>
+          Stytch provides many options to build your perfect passwordless authentication experinece including UI
+          components, a frontend SDK, and direct API access. Explore the examples below to learn more about what
+          approach will work best for you.
+        </p>
+        {!loginMethod ? (
+          <div className={styles.loginRow}>
+            <LoginMethodCard login={Login.REACT} onClick={() => setLoginMethod(Login.REACT)}></LoginMethodCard>
+            <LoginMethodCard
+              login={Login.CUSTOM_UI_HEADLESS}
+              onClick={() => setLoginMethod(Login.CUSTOM_UI_HEADLESS)}
+            ></LoginMethodCard>
+            <LoginMethodCard
+              login={Login.CUSTOM_UI_API}
+              onClick={() => setLoginMethod(Login.CUSTOM_UI_API)}
+            ></LoginMethodCard>
+          </div>
+        ) : (
+          <LoginDetails login={loginMethod} onBack={() => setLoginMethod(null)} />
+        )}
+      </div>
     </div>
   );
 };
-
-const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
-  // Get the user's session based on the request
-  const user = req.session.get('user') ?? null;
-  const props: Props = {
-    publicToken: process.env.STYTCH_PUBLIC_TOKEN || '',
-    user,
-  };
-  return { props };
-};
-
-export const getServerSideProps = withSession(getServerSidePropsHandler);
 
 export default App;

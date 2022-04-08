@@ -1,10 +1,12 @@
 .root {
   background-color: #ecfaff;
-  width: 100%;
-  height: 100vh;
-  display: flex;
+  /* display: flex; */
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 20px;
+  padding: 20px;
+  height: 100vh;
 }
 
 .container {
@@ -17,6 +19,13 @@
   padding: 80px;
   width: 500px;
   height: 650px;
+}
+
+.mainTopModule {
+  display: flex;
+  height: 500px;
+  width: 100%;
+  background-color: red;
 }
 
 @media only screen and (max-width: 600px) {
@@ -54,7 +63,6 @@
   height: 64px;
   justify-content: space-between;
   padding: 0 28px;
-  position: absolute;
   top: 0;
   width: 100%;
 }
@@ -204,4 +212,105 @@
   font-family: IBM Plex Mono, monospace;
   margin-bottom: 16px;
   white-space: pre-wrap;
+  height: 300px;
+  overflow: scroll;
+}
+
+/* Login overview */
+.main {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.headerDesc {
+  margin: 0;
+}
+
+.header {
+  margin-bottom: 5px;
+}
+
+.loginRow {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ebebeb;
+  border-radius: 9px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  max-width: 500px;
+  height: 650px;
+  margin-top: 20px;
+}
+
+.detailsContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  width: 100%;
+  min-height: 650px;
+  margin-top: 20px;
+  min-width: 1250px;
+  gap: 50px;
+}
+
+.backButton {
+  color: white;
+  background-color: black;
+
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 20px;
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+.detailsSection {
+  width: 900px;
+  min-width: 700px;
+  background-color: white;
+  border: 1px solid #ebebeb;
+  border-radius: 9px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.detailsLogin {
+  background-color: white;
+  border: 1px solid #ebebeb;
+  border-radius: 9px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.productHeader {
+  margin-bottom: 5px;
+}
+
+.productRow {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-size: 18px;
+  gap: 10px;
 }

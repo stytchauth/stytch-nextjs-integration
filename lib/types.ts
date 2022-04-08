@@ -1,6 +1,12 @@
-export enum LoginMethod {
-  API,
-  SDK,
-  EMAIL_WEBAUTHN,
-  SDK_OAUTH,
-}
+export type LoginProduct = {
+  icon: any;
+  name: string;
+};
+
+export type LoginType = {
+  title: string;
+  details: string;
+  id: string;
+  component: JSX.Element;
+  products: LoginProduct[];
+};

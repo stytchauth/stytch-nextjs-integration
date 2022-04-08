@@ -3,7 +3,6 @@ import StytchContainer from '../StytchContainer';
 import styles from '../../styles/Home.module.css';
 import { registerWebAuthn, registerWebAuthnStart } from '../../lib/webAuthnUtils';
 import * as webauthnJson from '@github/webauthn-json';
-import withSession, { ServerSideProps } from '../../lib/withSession';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -13,11 +12,11 @@ type Props = {
 const WebAuthnRegister = ({ isPending }: Props) => {
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isPending) {
-      router.push('/');
-    }
-  }, [isPending, router]);
+  // useEffect(() => {
+  //   if (!isPending) {
+  //     router.push('/');
+  //   }
+  // }, [isPending, router]);
 
   const register = async () => {
     const options = await registerWebAuthnStart();
@@ -41,15 +40,13 @@ const WebAuthnRegister = ({ isPending }: Props) => {
   );
 };
 
-const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
-  // Get the user's session based on the request
-  const isPending = req.session.get('webauthn_pending') || false;
-  const props: Props = {
-    isPending,
-  };
-  return { props };
-};
-
-export const getServerSideProps = withSession(getServerSidePropsHandler);
+// export const getServerSideProps = async ({ req }) => {
+//   // // Get the user's session based on the request
+//   // const isPending = req.session.get('webauthn_pending') || false;
+//   // const props: Props = {
+//   //   isPending,
+//   // };
+//   // return { props };
+// };
 
 export default WebAuthnRegister;
