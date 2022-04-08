@@ -22,12 +22,8 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     const { token } = req.query;
     try {
       const { user_id } = await client.magicLinks.authenticate(token as string);
-      // req.session.destroy();
       setCookies('webauthn_pending', true, { req, res, maxAge: 60 * 60 * 24 });
-      // req.session.set('webauthn_pending', true);
-      // req.session.set('user_id', user_id);
       setCookies('user_id', user_id, { req, res, maxAge: 60 * 60 * 24 });
-      // await req.session.save();
       try {
         await client.webauthn.authenticateStart({
           user_id,

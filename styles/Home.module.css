@@ -6,7 +6,7 @@
   justify-content: space-evenly;
   gap: 20px;
   padding: 20px;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .container {

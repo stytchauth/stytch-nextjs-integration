@@ -25,17 +25,11 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       const client = loadStytch();
       const data = JSON.parse(req.body);
       try {
-        const { user_id } = await client.webauthn.register({
+        await client.webauthn.register({
           user_id: user_id_cookie as string,
           public_key_credential: data.credential,
         });
-
-        // REGISTRATION SUCCESSFUL, NOW AUTHENTICATE
-        await client.webauthn.authenticateStart({
-          user_id,
-          domain: DOMAIN,
-        });
-        return res.redirect(`/webauthn_authenticate`);
+        return res.status(200).end();
       } catch (error) {
         const errorString = JSON.stringify(error);
         console.log(error);
