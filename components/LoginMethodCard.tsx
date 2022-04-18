@@ -13,7 +13,6 @@ const LoginMethodCard = ({ login, onClick }: Props) => {
     <div className={styles.card}>
       <div className={styles.cardUpper}>
         <h2>{login.title}</h2>
-        <p>{login.details}</p>
         {login.products && <h3 className={styles.productHeader}>Products:</h3>}
         {login.products?.map((product) => {
           return (
@@ -22,6 +21,8 @@ const LoginMethodCard = ({ login, onClick }: Props) => {
             </div>
           );
         })}
+        <p>{login.details}</p>
+        <p>{login.description}</p>
       </div>
       <div className={styles.cardLower}>
         <button className={styles.entryButton} onClick={onClick}>

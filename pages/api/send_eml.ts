@@ -9,10 +9,10 @@ type ErrorData = {
 
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'POST') {
-    const client = loadStytch();
+    const stytchClient = loadStytch();
     const data = JSON.parse(req.body);
     try {
-      await client.magicLinks.email.loginOrCreate({
+      await stytchClient.magicLinks.email.loginOrCreate({
         email: data.email,
         login_magic_link_url: `${REDIRECT_URL_BASE}/api/authenticate_magic_link_with_webauthn`,
         signup_magic_link_url: `${REDIRECT_URL_BASE}/api/authenticate_magic_link_with_webauthn`,

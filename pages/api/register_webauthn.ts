@@ -22,10 +22,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
 
   if (req.method === 'POST') {
     if (user_id_cookie && webauthn_pending) {
-      const client = loadStytch();
+      const stytchClient = loadStytch();
       const data = JSON.parse(req.body);
       try {
-        await client.webauthn.register({
+        await stytchClient.webauthn.register({
           user_id: user_id_cookie as string,
           public_key_credential: data.credential,
         });

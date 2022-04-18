@@ -5,8 +5,11 @@ export type LoginProduct = {
 
 export type LoginType = {
   title: string;
+  description: string;
   details: string;
   id: string;
+  instructions: string;
   component: JSX.Element;
+  code: string;
   products: LoginProduct[];
 };

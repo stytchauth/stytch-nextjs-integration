@@ -19,7 +19,7 @@ const LoginProducts: Record<string, LoginProduct> = {
   },
   WEBAUTHN: {
     icon: webauthnIcon,
-    name: 'WebAuthN',
+    name: 'WebAuthn',
   },
 };
 

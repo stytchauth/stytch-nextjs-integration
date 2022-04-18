@@ -18,14 +18,14 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
 
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'GET') {
-    const client = loadStytch();
+    const stytchClient = loadStytch();
     const { token } = req.query;
     try {
-      const { user_id } = await client.magicLinks.authenticate(token as string);
+      const { user_id } = await stytchClient.magicLinks.authenticate(token as string);
       setCookies('webauthn_pending', true, { req, res, maxAge: 60 * 60 * 24 });
       setCookies('user_id', user_id, { req, res, maxAge: 60 * 60 * 24 });
       try {
-        await client.webauthn.authenticateStart({
+        await stytchClient.webauthn.authenticateStart({
           user_id,
           domain: DOMAIN,
         });

@@ -204,16 +204,15 @@
 }
 
 .code {
-  background: #f3f5f6;
+  background: #19303d;
   border-radius: 5px;
-  color: #10232e;
+  color: #13E5C0;
   padding: 8px;
   font-size: 16px;
   font-family: IBM Plex Mono, monospace;
   margin-bottom: 16px;
   white-space: pre-wrap;
-  height: 300px;
-  overflow: scroll;
+  height:fit-content;
 }
 
 /* Login overview */
@@ -246,11 +245,18 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 40px;
   max-width: 500px;
-  height: 650px;
-  margin-top: 20px;
+  height: 550px;
+  position: relative;
+}
+
+.cardLower {
+  position:absolute;
+  bottom:0;
+  left: 10%;
+  width: 80%;
+  margin-bottom: 20px;
 }
 
 .detailsContainer {
@@ -265,29 +271,30 @@
 }
 
 .backButton {
-  color: white;
-  background-color: black;
-
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  margin-right: 20px;
+  width: fit-content;
+  height: 45px;
+  padding: 0 22px;
+  font-size: 18px;
+  white-space: nowrap;
+  border-radius: 3px;
+  position:relative;
+  bottom: 0;
+  background-color: #e5e8eb;
+  color: #19303d;
+  margin-bottom: 16px;
 }
+
 .row {
   display: flex;
   align-items: center;
 }
+
 .detailsSection {
-  width: 900px;
-  min-width: 700px;
   background-color: white;
   border: 1px solid #ebebeb;
   border-radius: 9px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
-  padding: 15px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
 }
@@ -299,8 +306,10 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
   padding: 30px;
   display: flex;
+  height: fit-content;
   flex-direction: column;
   align-items: center;
+  min-width: 450px;
 }
 
 .productHeader {

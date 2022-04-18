@@ -13,13 +13,14 @@ const LoginDetails = ({ login, onBack }: Props) => {
     <div className={styles.detailsContainer}>
       <div className={styles.detailsSection}>
         <div className={styles.row}>
-          <button className={styles.backButton} onClick={onBack}>
-            {'<'}
-          </button>
           <h2>{login.title}</h2>
         </div>
-
-        <p>{login.details}</p>
+        
+        <p>{login.instructions}</p>
+        <pre className={styles.code}>{login.code}</pre>
+        <button className={styles.backButton} onClick={onBack}>
+            {'Back'}
+        </button>
       </div>
 
       <div className={styles.detailsLogin}>

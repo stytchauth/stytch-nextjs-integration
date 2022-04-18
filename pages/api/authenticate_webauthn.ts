@@ -12,10 +12,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
   const webauthn_pending = getCookie('webauthn_pending', { req, res });
   if (req.method === 'POST') {
     if (user_id && webauthn_pending) {
-      const client = loadStytch();
+      const stytchClient = loadStytch();
       const data = JSON.parse(req.body);
       try {
-        const { session_token } = await client.webauthn.authenticate({
+        const { session_token } = await stytchClient.webauthn.authenticate({
           public_key_credential: data.credential,
           session_duration_minutes: data.session_duration_minutes,
         });

@@ -29,8 +29,8 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
   if (req.method === 'POST') {
     if (user_id && webauthn_pending) {
       try {
-        const client = loadStytch();
-        const authnResp = await client.webauthn.registerStart({
+        const stytchClient = loadStytch();
+        const authnResp = await stytchClient.webauthn.registerStart({
           user_id: user_id as string,
           domain: DOMAIN,
         });

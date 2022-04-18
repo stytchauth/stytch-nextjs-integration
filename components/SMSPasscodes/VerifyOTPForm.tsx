@@ -40,7 +40,7 @@ const VerifyOTPForm = (props: Props) => {
   const [currentMethodId, setCurrentMethodId] = React.useState(methodId);
   const [isError, setIsError] = React.useState(false);
   const router = useRouter();
-  const stytch = useStytchLazy();
+  const stytchClient = useStytchLazy();
 
   const strippedNumber = phoneNumber.replace(/\D/g, '');
   const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(
@@ -78,8 +78,8 @@ const VerifyOTPForm = (props: Props) => {
   };
 
   const resendCode = async () => {
-    const { method_id } = await stytch.otps.sms.loginOrCreate('+1' + phoneNumber);
-    setCurrentMethodId(methodId);
+    const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber);
+    setCurrentMethodId(method_id);
     resetPasscode();
     setIsError(false);
   };
@@ -94,7 +94,7 @@ const VerifyOTPForm = (props: Props) => {
       }
 
       try {
-        await stytch.otps.authenticate(otpInput, methodId, { session_duration_minutes: 30 });
+        await stytchClient.otps.authenticate(otpInput, methodId, { session_duration_minutes: 30 });
       } catch {
         setIsError(true);
         resetPasscode();
