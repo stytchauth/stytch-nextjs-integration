@@ -24,6 +24,7 @@ const magicLinksView = {
       { type: OAuthProvidersTypes.Microsoft },
       { type: OAuthProvidersTypes.Facebook },
       { type: OAuthProvidersTypes.Github },
+      { type: OAuthProvidersTypes.GitLab },
     ],
     loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
     signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
