@@ -1,6 +1,6 @@
 import React from 'react';
 import { SDKProductTypes, Stytch, OAuthProvidersTypes, StyleConfig } from '@stytch/stytch-react';
-import REDIRECT_URL_BASE from '../lib/getRedirectBaseUrl';
+import REDIRECT_URL_BASE from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
@@ -31,5 +31,4 @@ const magicLinksView = {
 };
 
 const LoginWithMagicLinks = () => <Stytch loginOrSignupView={magicLinksView} style={sdkStyle} />;
-
 export default LoginWithMagicLinks;

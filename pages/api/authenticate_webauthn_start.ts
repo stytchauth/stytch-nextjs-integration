@@ -1,6 +1,7 @@
 // This API route starts authentication for WebAuthn.
 import type { NextApiRequest, NextApiResponse } from 'next';
 import loadStytch from '../../lib/loadStytch';
+import { getStrippedDomain } from '../../lib/urlUtils';
 import { getCookie } from 'cookies-next';
 
 type Data = {
@@ -14,15 +15,6 @@ type ErrorData = {
   errorString: string;
 };
 
-let DOMAIN = '';
-if (process.env.VERCEL_URL?.includes('localhost')) {
-  DOMAIN = 'localhost';
-} else if (process.env.VERCEL_URL != undefined) {
-  DOMAIN = process.env.VERCEL_URL;
-} else {
-  DOMAIN = 'localhost';
-}
-
 export async function handler(req: NextApiRequest, res: NextApiResponse<Data | ErrorData>) {
   const user_id = getCookie('user_id', { req, res });
   const webauthn_pending = getCookie('webauthn_pending', { req, res });
@@ -32,7 +24,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
       try {
         const authnResp = await stytchClient.webauthn.authenticateStart({
           user_id: user_id as string,
-          domain: DOMAIN,
+          domain: getStrippedDomain(),
         });
         return res.status(200).json(authnResp);
       } catch (error) {

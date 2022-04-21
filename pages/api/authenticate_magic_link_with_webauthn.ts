@@ -1,20 +1,12 @@
 // This API route authenticates a Stytch magic link for WebAuthn.
 import type { NextApiRequest, NextApiResponse } from 'next';
 import loadStytch from '../../lib/loadStytch';
-import { getCookies, getCookie, setCookies, removeCookies } from 'cookies-next';
+import { getStrippedDomain } from '../../lib/urlUtils';
+import { setCookies } from 'cookies-next';
 
 type ErrorData = {
   errorString: string;
 };
-
-let DOMAIN = '';
-if (process.env.VERCEL_URL?.includes('localhost')) {
-  DOMAIN = 'localhost';
-} else if (process.env.VERCEL_URL != undefined) {
-  DOMAIN = process.env.VERCEL_URL;
-} else {
-  DOMAIN = 'localhost';
-}
 
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'GET') {
@@ -27,7 +19,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       try {
         await stytchClient.webauthn.authenticateStart({
           user_id,
-          domain: DOMAIN,
+          domain: getStrippedDomain(),
         });
         return res.redirect(`/webauthn_authenticate`);
       } catch {

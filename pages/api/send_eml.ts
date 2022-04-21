@@ -1,6 +1,6 @@
 // This API route sends a magic link to the specified email address.
 import type { NextApiRequest, NextApiResponse } from 'next';
-import REDIRECT_URL_BASE from '../../lib/getRedirectBaseUrl';
+import REDIRECT_URL_BASE from '../../lib/urlUtils';
 import loadStytch from '../../lib/loadStytch';
 
 type ErrorData = {
