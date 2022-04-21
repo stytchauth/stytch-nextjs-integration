@@ -30,6 +30,10 @@ const magicLinksView = {
   },
 };
 
-const LoginWithMagicLinks = () => <Stytch loginOrSignupView={magicLinksView} style={sdkStyle} />;
+const LoginWithMagicLinks = () => {
+  console.log(REDIRECT_URL_BASE);
+
+  return <Stytch loginOrSignupView={magicLinksView} style={sdkStyle} />;
+};
 
 export default LoginWithMagicLinks;

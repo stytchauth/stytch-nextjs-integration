@@ -10,11 +10,12 @@ let REDIRECT_URL_BASE = '';
 
 console.log('IN THE LIB', process.env.NEXT_PUBLIC_VERCEL_PROD_DOMAIN);
 if (process.env.NEXT_PUBLIC_VERCEL_PROD_DOMAIN) {
-  console.log();
+  console.log('SELECT FROM ENV');
   REDIRECT_URL_BASE = process.env.NEXT_PUBLIC_VERCEL_PROD_DOMAIN;
 } else if (process.env.VERCEL_URL?.includes('localhost')) {
   REDIRECT_URL_BASE = 'http://localhost:3000';
 } else if (process.env.VERCEL_URL != undefined) {
+  console.log('SELECT FROM VERCEL');
   REDIRECT_URL_BASE = `https://${process.env.VERCEL_URL}`;
 } else {
   REDIRECT_URL_BASE = 'http://localhost:3000';
