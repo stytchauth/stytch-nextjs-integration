@@ -1,3 +1,3 @@
-import WebAuthnAuthenticate, { getServerSideProps } from '../components/EmailWebAuthn/WebAuthnAuthenticate';
+import WebAuthnAuthenticate from '../components/EmailWebAuthn/WebAuthnAuthenticate';
 
-export { WebAuthnAuthenticate as default, getServerSideProps };
+export { WebAuthnAuthenticate as default };

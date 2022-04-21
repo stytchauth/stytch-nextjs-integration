@@ -1,9 +1,7 @@
 // This API route authenticates a Stytch magic link for WebAuthn.
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Session } from 'next-iron-session';
-import withSession from '../../lib/withSession';
 import loadStytch from '../../lib/loadStytch';
-type NextIronRequest = NextApiRequest & { session: Session };
+import { getCookies, getCookie, setCookies, removeCookies } from 'cookies-next';
 
 type ErrorData = {
   errorString: string;
@@ -18,18 +16,16 @@ if (process.env.VERCEL_URL?.includes('localhost')) {
   DOMAIN = 'localhost';
 }
 
-export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorData>) {
+export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
   if (req.method === 'GET') {
-    const client = loadStytch();
+    const stytchClient = loadStytch();
     const { token } = req.query;
     try {
-      const { user_id } = await client.magicLinks.authenticate(token as string);
-      req.session.destroy();
-      req.session.set('webauthn_pending', true);
-      req.session.set('user_id', user_id);
-      await req.session.save();
+      const { user_id } = await stytchClient.magicLinks.authenticate(token as string);
+      setCookies('webauthn_pending', true, { req, res, maxAge: 60 * 60 * 24 });
+      setCookies('user_id', user_id, { req, res, maxAge: 60 * 60 * 24 });
       try {
-        await client.webauthn.authenticateStart({
+        await stytchClient.webauthn.authenticateStart({
           user_id,
           domain: DOMAIN,
         });
@@ -47,4 +43,4 @@ export async function handler(req: NextIronRequest, res: NextApiResponse<ErrorDa
   }
 }
 
-export default withSession(handler);
+export default handler;

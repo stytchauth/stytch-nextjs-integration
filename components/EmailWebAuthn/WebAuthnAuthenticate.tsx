@@ -1,55 +1,62 @@
 import React, { useEffect } from 'react';
-import StytchContainer from '../StytchContainer';
 import styles from '../../styles/Home.module.css';
 import { authenticateWebAuthn, authenticateWebAuthnStart } from '../../lib/webAuthnUtils';
 import * as webauthnJson from '@github/webauthn-json';
-import withSession, { ServerSideProps } from '../../lib/withSession';
 import { useRouter } from 'next/router';
+import { getCookie } from 'cookies-next';
 
-type Props = {
-  isPending: boolean;
-};
-
-const WebAuthnAuthenticate = ({ isPending }: Props) => {
+const WebAuthnAuthenticate = () => {
   const router = useRouter();
+  const webauthn_pending = getCookie('webauthn_pending');
 
   useEffect(() => {
-    if (!isPending) {
+    if (!webauthn_pending) {
       router.push('/');
     }
-  }, [isPending, router]);
+  }, [webauthn_pending, router]);
 
   const authenticate = async () => {
     const options = await authenticateWebAuthnStart();
     const credential = await webauthnJson.get({
       publicKey: JSON.parse(options),
     });
-    await authenticateWebAuthn(JSON.stringify(credential));
+    await authenticateWebAuthn(JSON.stringify(credential), 30);
     router.push('/profile');
   };
 
+  const code = `
+  // Start WebAuthn authentication
+  await stytchClient.webauthn.authenticateStart({
+    user_id: user_id as string,
+    domain: DOMAIN,
+  });
+
+  // Authenticate WebAuthn
+  await stytchClient.webauthn.authenticate({
+    public_key_credential: data.credential,
+    session_duration_minutes: data.session_duration_minutes,
+  });`
+
   return (
-    <StytchContainer>
-      <div>
-        <h2>Authenticate with a WebAuthn device</h2>
-        <p>After registering a WebAuthn device, now the user can complete the authentication step.</p>
-        <button className={styles.primaryButton} onClick={authenticate}>
-          Authenticate
-        </button>
+    <div className={styles.detailsContainer}>
+    <div className={styles.detailsSection}>
+      <div className={styles.row}>
+        <h2>Authenticate with your WebAuthn device</h2>
       </div>
-    </StytchContainer>
+      
+      <p>{`You've registered your WebAuthn device, now it's time to authenticate with it! Just click the button to the right.`}</p>
+      <pre className={styles.code}>{code}</pre>
+    </div>
+
+    <div className={styles.detailsLogin}>
+      <h2>Continue to your profile</h2>
+      <p>Complete your login by providing your WebAuthn as a second factor</p>
+      <button className={styles.primaryButton} onClick={authenticate}>
+        Authenticate
+      </button>
+    </div>
+  </div>
   );
 };
-
-const getServerSidePropsHandler: ServerSideProps = async ({ req }) => {
-  // Get the user's session based on the request
-  const isPending = req.session.get('webauthn_pending') || false;
-  const props: Props = {
-    isPending,
-  };
-  return { props };
-};
-
-export const getServerSideProps = withSession(getServerSidePropsHandler);
 
 export default WebAuthnAuthenticate;

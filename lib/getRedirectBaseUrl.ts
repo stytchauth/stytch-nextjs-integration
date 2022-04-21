@@ -7,8 +7,9 @@ let REDIRECT_URL_BASE = '';
 //
 // VERCEL_URL only contains the domain of the site's URL, the scheme is not included so we must add it manually,
 // see https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables.
-
-if (process.env.VERCEL_URL?.includes('localhost')) {
+if (process.env.VERCEL_PROD_DOMAIN) {
+  REDIRECT_URL_BASE = process.env.VERCEL_PROD_DOMAIN;
+} else if (process.env.VERCEL_URL?.includes('localhost')) {
   REDIRECT_URL_BASE = 'http://localhost:3000';
 } else if (process.env.VERCEL_URL != undefined) {
   REDIRECT_URL_BASE = `https://${process.env.VERCEL_URL}`;

@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
-import StytchContainer from '../StytchContainer';
 import styles from '../../styles/Home.module.css';
 import { sendEML } from '../../lib/emlUtils';
 
@@ -32,7 +31,7 @@ const LoginWithEmail = () => {
   };
 
   return (
-    <StytchContainer>
+    <div>
       {emlSent ? (
         <div>
           <h2>Check your email</h2>
@@ -69,7 +68,7 @@ const LoginWithEmail = () => {
           </form>
         </div>
       )}
-    </StytchContainer>
+    </div>
   );
 };
 

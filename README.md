@@ -4,20 +4,21 @@ This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project 
 
 <p align="center"><img src="./public/example-app-image.png" alt="stytch" width="50%"/></p>
 
-In this repo, we have two sample auth flows:
+In this repo, we have three sample auth flows:
 
-- SDK integration: This flow uses Stytch's React component to create a login and sign-up flow using [Email Magic Links](https://stytch.com/docs/api/send-by-email).
-- API integration: This flow uses a custom UI with Stytch's backend API for [Onetime Passcodes(OTP) via SMS](https://stytch.com/docs/api/sms-otp-overview) authentication.
+- SDK with React component: This flow uses Stytch's React component to create a login and sign-up flow using [Email magic links](https://stytch.com/products/email-magic-links) and [OAuth logins](https://stytch.com/products/oauth).
+- SDK with custom UI: This flow uses a custom UI with Stytch's headless SDK to implement [Onetime Passcodes(OTP) via SMS](https://stytch.com/products/sms-passcodes) authentication.
+- Direct API: This flow uses a custom UI with Stytch's backend API for a two step authenticaiton which requires [Email magic links](https://stytch.com/products/email-magic-links) and [WebAuthn](https://stytch.com/products/webauthn).
 
-Both flows use Stytch's [Node client library](https://github.com/stytchauth/stytch-node) and [`iron-session`](https://github.com/vvo/next-iron-session) for session management.
-
-**Note:** By default this example app enables three of our OAuth providers, Google, Microsoft, and Apple. If you haven't set up these OAuth providers in your [Dashboard](https://stytch.com/dashboard/oauth), you'll receive a redirect error when you attempt to login via those providers. You may remove all OAuth methods by removing `SDKProductTypes.oauth` from the `products` array in [pages/index.tsx](pages/index.tsx) or adjust which ones are displayed by via `oauthOptions.providers` in the same file. More detail on working with OAuth providers in our SDK may be found in our [Docs](https://stytch.com/docs/javascript-sdk#javascript-sdk/oauth).
+**Note:** By default this example app enables five of our OAuth providers, Google, Microsoft, Facebook, Github, and Apple. If you haven't set up these OAuth providers in your [Dashboard](https://stytch.com/dashboard/oauth), you'll receive a redirect error when you attempt to login via those providers. You may remove all OAuth methods by removing `SDKProductTypes.oauth` from the `products` array in [components/LoginWithReactSDK.tsx](components/LoginWithReactSDK.tsx) or adjust which ones are displayed by via `oauthOptions.providers` in the same file. More detail on working with OAuth providers in our SDK may be found in our [Docs](https://stytch.com/docs/javascript-sdk#javascript-sdk/oauth).
 
 # Running with Vercel
 
 If you'd like to run this example app with [Vercel](https://vercel.com/), the first step is to configure the appropriate redirect URLs for your project.
 
-You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app` as both a login and sign-up redirect URL.  If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
+You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app/authenticate?type={}` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
+
+Additionally, you will need to configure the headless SDK settings. In your [SDK Configuration](https://stytch.com/dashboard/sdk-configuration) add `https://*.vercel.app` as an authorized domain and toggle on the Auth methods "Email magic links", "OAuth", and "SMS passcodes (OTP)".
 
 **Note:** To use Google One Tap in this example app, you'll need to deploy on Vercel first, then add the resulting URL, e.g. `https://<uuid>.vercel.app/` as both a Stytch Redirect URL and as a [Authorized JavaScript origins](https://console.cloud.google.com/apis/credentials/) in your Google OAuth dashboard.
 
@@ -39,10 +40,10 @@ cp .env.template .env.local
 # Replace your keys in new .env.local file
 ```
 
-Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `http://localhost:3000/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
-
+Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost:3000/authenticate?type={}` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `http://localhost:3000/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
 
 ## Running the example app
+
 Install dependencies by running
 
 ```bash
@@ -67,4 +68,3 @@ Learn more about some of Stytch's products used in this example app:
 
 - [Stytch React](https://www.npmjs.com/package/@stytch/stytch-react)
 - [Stytch's node client library](https://www.npmjs.com/package/stytch)
-- [iron-session](https://github.com/vvo/next-iron-session)

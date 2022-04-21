@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import SendOTPForm from './SendOTPForm';
 import VerifyOTPForm from './VerifyOTPForm';
-import StytchContainer from './StytchContainer';
 
 const LoginWithSMS = () => {
   const [otpSent, setOTPSent] = useState(false);
@@ -9,7 +8,7 @@ const LoginWithSMS = () => {
   const [methodId, setMethodId] = useState('');
 
   return (
-    <StytchContainer>
+    <div>
       {!otpSent ? (
         <SendOTPForm
           phoneNumber={phoneNumber}
@@ -20,7 +19,7 @@ const LoginWithSMS = () => {
       ) : (
         <VerifyOTPForm methodId={methodId} phoneNumber={phoneNumber} />
       )}
-    </StytchContainer>
+    </div>
   );
 };
 

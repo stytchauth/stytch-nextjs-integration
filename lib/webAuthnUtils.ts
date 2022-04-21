@@ -23,11 +23,12 @@ export async function authenticateWebAuthnStart() {
   return data.public_key_credential_request_options;
 }
 
-export async function authenticateWebAuthn(credential: string) {
+export async function authenticateWebAuthn(credential: string, session_duration_minutes: number) {
   return fetch('/api/authenticate_webauthn', {
     method: 'POST',
     body: JSON.stringify({
       credential,
+      session_duration_minutes,
     }),
   });
 }

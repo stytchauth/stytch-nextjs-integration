@@ -1,6 +1,6 @@
 import React from 'react';
-import { sendOTP } from '../lib/otpUtils';
-import styles from '../styles/Home.module.css';
+import { useStytchLazy } from '@stytch/stytch-react';
+import styles from '../../styles/Home.module.css';
 
 type Props = {
   phoneNumber: string;
@@ -10,6 +10,7 @@ type Props = {
 };
 
 const SendOTPForm = (props: Props): JSX.Element => {
+  const stytchClient = useStytchLazy();
   const { phoneNumber, setMethodId, setOTPSent, setPhoneNumber } = props;
   const [isDisabled, setIsDisabled] = React.useState(true);
 
@@ -34,8 +35,8 @@ const SendOTPForm = (props: Props): JSX.Element => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isValidNumber(phoneNumber)) {
-      const methodId = await sendOTP(phoneNumber);
-      setMethodId(methodId);
+      const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber);
+      setMethodId(method_id);
       setOTPSent(true);
     }
   };
