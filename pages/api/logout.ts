@@ -11,7 +11,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     try {
       // Remove custom session cookie
       removeCookies('stytch_session_eml_webauthn', { req, res });
-      return res.redirect('/');
+      return res.redirect(302, '/');
     } catch (error) {
       const errorString = JSON.stringify(error);
       console.log(error);
