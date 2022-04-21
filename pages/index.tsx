@@ -17,7 +17,8 @@ const Login: Record<string, LoginType> = {
     title: 'Pre-built UI + JavaScript SDK',
     details:
       'Use our pre-built UI component and JavaScript SDK to get started with Stytch as quickly as possible. The pre-built UI provides a beautiful and customizable login form to make sure your brand stays front and center and the SDK handles everything else for you.',
-    description: 'In this recipe we demonstrate a login flow that includes Email magic links and several OAuth options and Google One Tap.',
+    description:
+      'In this recipe we demonstrate a login flow that includes Email magic links and several OAuth options and Google One Tap.',
     instructions: `To the right you'll see our pre-built login form with several OAuth providers and Email magic links. Below you can see the configuration and customization parameters used to create the login form.`,
     component: <LoginWithMagicLinks />,
     products: [LoginProducts.EML, LoginProducts.OAUTH],
@@ -54,8 +55,7 @@ const Login: Record<string, LoginType> = {
   CUSTOM_UI_HEADLESS: {
     id: 'headless',
     title: 'Custom UI + JavaScript SDK',
-    details:
-      `In this example you can see what a typical SMS passcodes (OTP) login flow might look like; here we've built a custom phone number entry and passcode input UI that leverages our JavaScript SDK to handle the heavy lifting.`,
+    details: `In this example you can see what a typical SMS passcodes (OTP) login flow might look like; here we've built a custom phone number entry and passcode input UI that leverages our JavaScript SDK to handle the heavy lifting.`,
     description: `This gives you full control over the user experience while minimizing backend code and session logic by using our SDK.`,
     instructions: `To the right you'll see a phone number entry form built within this example app itself, not using our pre-built UI. Below you can see the two simple SDK calls to send the SMS passcode and authenticate the passcode input by the user.`,
     component: <LoginWithSMS />,
@@ -115,9 +115,9 @@ const App = () => {
           <div>
             <h1 className={styles.header}>Stytch authentication recipes</h1>
             <p className={styles.headerDesc}>
-              Stytch provides many options to build your perfect passwordless authentication experience including pre-built UI
-              components, a frontend JavaScript SDK, and a REST API for maximum flexability. Explore the recipes below to learn which
-              approach will work best for you.
+              Stytch provides many options to build your perfect passwordless authentication experience including
+              pre-built UI components, a frontend JavaScript SDK, and a REST API for maximum flexability. Explore the
+              recipes below to learn which approach will work best for you.
             </p>
             <div className={styles.loginRow}>
               <LoginMethodCard login={Login.REACT} onClick={() => setLoginMethod(Login.REACT)}></LoginMethodCard>

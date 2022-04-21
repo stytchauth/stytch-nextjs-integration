@@ -7,15 +7,6 @@ type ErrorData = {
   errorString: string;
 };
 
-let DOMAIN = '';
-if (process.env.VERCEL_URL?.includes('localhost')) {
-  DOMAIN = 'localhost';
-} else if (process.env.VERCEL_URL != undefined) {
-  DOMAIN = process.env.VERCEL_URL;
-} else {
-  DOMAIN = 'localhost';
-}
-
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
   const user_id_cookie = getCookie('user_id', { req, res });
   const webauthn_pending = getCookie('webauthn_pending', { req, res });
