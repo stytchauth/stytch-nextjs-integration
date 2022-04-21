@@ -8,14 +8,11 @@ let REDIRECT_URL_BASE = '';
 // VERCEL_URL only contains the domain of the site's URL, the scheme is not included so we must add it manually,
 // see https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables.
 
-console.log('IN THE LIB', process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL);
 if (process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL) {
-  console.log('SELECT FROM ENV');
   REDIRECT_URL_BASE = `https://${process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL}`;
 } else if (process.env.VERCEL_URL?.includes('localhost')) {
   REDIRECT_URL_BASE = 'http://localhost:3000';
 } else if (process.env.VERCEL_URL != undefined) {
-  console.log('SELECT FROM VERCEL');
   REDIRECT_URL_BASE = `https://${process.env.VERCEL_URL}`;
 } else {
   REDIRECT_URL_BASE = 'http://localhost:3000';
