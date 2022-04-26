@@ -6,7 +6,7 @@ import LoginProducts from './loginProduct';
 
 export const Recipes: Record<string, LoginType> = {
   REACT: {
-    id: 'ui-js-sdk',
+    id: 'sdk-ui-oauth',
     title: 'Pre-built UI + JavaScript SDK',
     details:
       'Use our pre-built UI component and JavaScript SDK to get started with Stytch as quickly as possible. The pre-built UI provides a beautiful and customizable login form to make sure your brand stays front and center and the SDK handles everything else for you.',
@@ -38,6 +38,7 @@ export const Recipes: Record<string, LoginType> = {
             { type: OAuthProvidersTypes.Microsoft },
             { type: OAuthProvidersTypes.Facebook },
             { type: OAuthProvidersTypes.Github },
+            { type: OAuthProvidersTypes.GitLab },
           ],
           loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
           signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
@@ -46,7 +47,7 @@ export const Recipes: Record<string, LoginType> = {
       `,
   },
   CUSTOM_UI_HEADLESS: {
-    id: 'headless',
+    id: 'sdk-sms',
     title: 'Custom UI + JavaScript SDK',
     details: `In this example you can see what a typical SMS passcodes (OTP) login flow might look like; here we've built a custom phone number entry and passcode input UI that leverages our JavaScript SDK to handle the heavy lifting.`,
     description: `This gives you full control over the user experience while minimizing backend code and session logic by using our SDK.`,
@@ -66,7 +67,7 @@ export const Recipes: Record<string, LoginType> = {
       `,
   },
   CUSTOM_UI_API: {
-    id: 'api',
+    id: 'api-webauthn',
     title: 'Custom UI + API integration',
     details:
       'For developers that want full control over the entire experience, you can interact directly with the Stytch API in your backend.',
@@ -87,7 +88,7 @@ export const Recipes: Record<string, LoginType> = {
       `,
   },
   CRYPTO_WALLETS: {
-    id: 'crypto-wallets',
+    id: 'sdk-crypto-wallets',
     title: 'Web3 with Crypto wallets',
     details:
       'Our Web3 login products let you seamlessly weave crypto wallets into your traditional Web2 app or your latest Web3 project.',
