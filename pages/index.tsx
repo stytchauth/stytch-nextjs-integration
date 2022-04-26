@@ -93,6 +93,29 @@ await stytchClient.otps.authenticate(
     await stytchClient.magicLinks.authenticate(token as string);
     `,
   },
+  CRYPTO_WALLETS: {
+    id: 'crypto-wallets',
+    title: 'Web3 with Crypto wallets',
+    details:
+      'Our Web3 login products let you seamlessly weave crypto wallets into your traditional Web2 app or your latest Web3 project.',
+    description: `Coming soon.`,
+    entryButtonText: `Coming soon`,
+    instructions: `Coming soon`,
+    component: <LoginWithEmailWebAuthn />,
+    products: [LoginProducts.WEB3],
+    code: ``,
+  },
+  FEEDBACK: {
+    id: 'feedback',
+    title: 'Feedback',
+    details:
+      `Don't see a recipe that you'd like to? Let us know below!`,
+    description: ``,
+    entryButtonText: `Send feedback`,
+    instructions: ``,
+    component: <LoginWithEmailWebAuthn />,
+    code: ``,
+  },
 };
 
 const App = () => {
@@ -128,6 +151,14 @@ const App = () => {
               <LoginMethodCard
                 login={Login.CUSTOM_UI_API}
                 onClick={() => setLoginMethod(Login.CUSTOM_UI_API)}
+              ></LoginMethodCard>
+              <LoginMethodCard
+                login={Login.CRYPTO_WALLETS}
+                onClick={() => {}}
+              ></LoginMethodCard>
+              <LoginMethodCard
+                login={Login.FEEDBACK}
+                onClick={() => {window.open(`mailto:support@stytch.com`)}}
               ></LoginMethodCard>
             </div>
           </div>
