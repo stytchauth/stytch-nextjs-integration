@@ -249,6 +249,7 @@
   max-width: 500px;
   height: 550px;
   position: relative;
+  margin-bottom: 40px;
 }
 
 .cardLower {

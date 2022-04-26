@@ -26,7 +26,7 @@ const LoginMethodCard = ({ login, onClick }: Props) => {
       </div>
       <div className={styles.cardLower}>
         <button className={styles.entryButton} onClick={onClick}>
-          Try Now
+          {login.entryButtonText || `Try now`} 
         </button>
       </div>
     </div>
