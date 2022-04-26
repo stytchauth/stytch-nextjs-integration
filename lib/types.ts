@@ -7,10 +7,15 @@ export type LoginType = {
   title: string;
   description: string;
   details: string;
-  entryButtonText?: string;
   id: string;
   instructions: string;
   component: JSX.Element;
   code: string;
   products?: LoginProduct[];
+  entryButton?: {
+    text: string;
+    disabled?: boolean;
+    onClick?: () => void;
+  };
+  preventClickthrough?: boolean;
 };

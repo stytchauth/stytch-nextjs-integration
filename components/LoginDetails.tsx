@@ -2,29 +2,36 @@ import React from 'react';
 import styles from '../styles/Home.module.css';
 import LoginWithMagicLinks from './LoginWithReactSDK';
 import { LoginType, LoginProduct } from '../lib/types';
+import { useRouter } from 'next/router';
 
 type Props = {
-  login: LoginType;
-  onBack: () => void;
+  recipe: LoginType;
 };
 
-const LoginDetails = ({ login, onBack }: Props) => {
+const LoginDetails = ({ recipe }: Props) => {
+  const router = useRouter();
+
+  const handleClick = (e: any) => {
+    e.preventDefault();
+    router.push(`/`);
+  };
+
   return (
     <div className={styles.detailsContainer}>
       <div className={styles.detailsSection}>
         <div className={styles.row}>
-          <h2>{login.title}</h2>
+          <h2>{recipe.title}</h2>
         </div>
-        
-        <p>{login.instructions}</p>
-        <pre className={styles.code}>{login.code}</pre>
-        <button className={styles.backButton} onClick={onBack}>
-            {'Back'}
+
+        <p>{recipe.instructions}</p>
+        <pre className={styles.code}>{recipe.code}</pre>
+        <button className={styles.backButton} onClick={handleClick}>
+          {'Back'}
         </button>
       </div>
 
       <div className={styles.detailsLogin}>
-        <div className={styles.authSection}>{login.component}</div>
+        <div className={styles.authSection}>{recipe.component}</div>
       </div>
     </div>
   );
