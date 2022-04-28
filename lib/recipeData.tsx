@@ -1,4 +1,5 @@
 import { LoginType } from './types';
+import LoginWithCryptoWallets from '../components/CryptoWallets/LoginWithCryptoWallets';
 import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
 import LoginWithMagicLinks from '../components/LoginWithReactSDK';
@@ -94,14 +95,9 @@ export const Recipes: Record<string, LoginType> = {
       'Our Web3 login products let you seamlessly weave crypto wallets into your traditional Web2 app or your latest Web3 project.',
     description: `Coming soon.`,
     instructions: `Coming soon`,
-    component: <LoginWithEmailWebAuthn />,
+    component: <LoginWithCryptoWallets />,
     products: [LoginProducts.WEB3],
     code: ``,
-    entryButton: {
-      text: `Coming soon`,
-      disabled: true,
-    },
-    preventClickthrough: true,
   },
   FEEDBACK: {
     id: 'feedback',
