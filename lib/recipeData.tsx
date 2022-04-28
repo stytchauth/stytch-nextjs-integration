@@ -93,11 +93,42 @@ export const Recipes: Record<string, LoginType> = {
     title: 'Web3 with Crypto wallets',
     details:
       'Our Web3 login products let you seamlessly weave crypto wallets into your traditional Web2 app or your latest Web3 project.',
-    description: `Coming soon.`,
-    instructions: `Coming soon`,
+    description: `In this example you can link your Ethereum based wallet with Stytch with just a few clicks!`,
+    instructions: `To the right you'll see button to sign in with your wallet, once clicked your wallet will open a prompt to get started. Below you can see the four simple steps to authenticate an Ethereum wallet; fetch the address, generate a challenge, sign the challenge, validate the signature with Stytch.`,
     component: <LoginWithCryptoWallets />,
     products: [LoginProducts.WEB3],
-    code: ``,
+    code: `
+const trigger = useCallback(async () => {
+  /* Request user's wallet address */
+  const [crypto_wallet_address] = await window.ethereum.request({ 
+    method: 'eth_requestAccounts',
+  });
+  
+
+  /* Ask Stytch to generate a challenge for the user */
+  const { challenge } = await stytchClient.cryptoWallets.authenticateStart({
+    crypto_wallet_address,
+    crypto_wallet_type: 'ethereum',
+  });
+  
+  /* Ask the user's browser to sign the challenge */
+  const signature = await window.ethereum.request({
+    method: 'personal_sign', 
+    params: [challenge, crypto_wallet_address],
+  });
+
+  /* Send the signature back to Stytch for validation */
+  await stytchClient.cryptoWallets.authenticate({
+    crypto_wallet_address,
+    crypto_wallet_type: 'ethereum',
+    signature,
+    session_duration_minutes: 60,
+  });
+  if (user) {
+    router.push('/profile');
+  }
+}, [stytchClient]);
+    `,
   },
   FEEDBACK: {
     id: 'feedback',
