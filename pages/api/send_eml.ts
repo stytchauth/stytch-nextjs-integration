@@ -14,8 +14,8 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     try {
       await stytchClient.magicLinks.email.loginOrCreate({
         email: data.email,
-        login_magic_link_url: `${REDIRECT_URL_BASE}/api/authenticate_magic_link_with_webauthn`,
-        signup_magic_link_url: `${REDIRECT_URL_BASE}/api/authenticate_magic_link_with_webauthn`,
+        login_magic_link_url: `${REDIRECT_URL_BASE}/recipes/api-webauthn/magic-link-authenticate`,
+        signup_magic_link_url: `${REDIRECT_URL_BASE}/recipes/api-webauthn/magic-link-authenticate`,
       });
       return res.status(200).end();
     } catch (error) {

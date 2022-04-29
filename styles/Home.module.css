@@ -126,6 +126,12 @@
 
 .link {
   text-decoration: underline;
+  color: #19303D;
+}
+
+.link:hover{
+  cursor: pointer;
+  color: #19303D;
 }
 
 .phoneNumber {
@@ -323,4 +329,22 @@
   height: 30px;
   font-size: 18px;
   gap: 10px;
+}
+
+.secretBox {
+  display: flex;
+  background-color: #ecfaff;
+  flex-grow: 1;
+  flex-direction: column;
+  margin: 50px 0px;
+  padding: 8px;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.secretBox > button {
+  color: #19303d;
+  width: auto;
+  padding: 10px;
+  background-color: #e5e8eb;
 }

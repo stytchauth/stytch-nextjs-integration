@@ -67,4 +67,5 @@ button, input[type="submit"] {
 
 button:hover, input[type="submit"]:hover {
   opacity: 0.8;
+  cursor: pointer;
 }

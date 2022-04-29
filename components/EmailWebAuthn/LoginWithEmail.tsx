@@ -2,8 +2,14 @@ import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
 import styles from '../../styles/Home.module.css';
 import { sendEML } from '../../lib/emlUtils';
 
+const STATUS = {
+  INIT: 0,
+  SENT: 1,
+  ERROR: 2,
+};
+
 const LoginWithEmail = () => {
-  const [emlSent, setEMLSent] = useState(false);
+  const [emlSent, setEMLSent] = useState(STATUS.INIT);
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -25,19 +31,25 @@ const LoginWithEmail = () => {
   const onSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
     if (isValidEmail(email)) {
-      await sendEML(email);
-      setEMLSent(true);
+      const resp = await sendEML(email);
+      if (resp.status === 200) {
+        setEMLSent(STATUS.SENT);
+      } else {
+        setEMLSent(STATUS.ERROR);
+      }
     }
   };
 
+  const handleTryAgain = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setEMLSent(STATUS.INIT);
+    setEmail('');
+  };
+
   return (
-    <div>
-      {emlSent ? (
-        <div>
-          <h2>Check your email</h2>
-          <p>{`An email was sent to ${email}`}</p>
-        </div>
-      ) : (
+    <>
+      {emlSent === STATUS.INIT && (
         <div>
           <h2>Sign up or log in</h2>
           <p>
@@ -68,7 +80,25 @@ const LoginWithEmail = () => {
           </form>
         </div>
       )}
-    </div>
+      {emlSent === STATUS.SENT && (
+        <div>
+          <h2>Check your email</h2>
+          <p>{`An email was sent to ${email}`}</p>
+          <a className={styles.link} onClick={handleTryAgain}>
+            Click here to try again.
+          </a>
+        </div>
+      )}
+      {emlSent === STATUS.ERROR && (
+        <div>
+          <h2>Something went wrong!</h2>
+          <p>{`Failed to send email to ${email}`}</p>
+          <a className={styles.link} onClick={handleTryAgain}>
+            Click here to try again.
+          </a>
+        </div>
+      )}
+    </>
   );
 };
 
