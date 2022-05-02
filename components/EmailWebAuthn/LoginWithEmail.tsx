@@ -30,6 +30,13 @@ const LoginWithEmail = () => {
 
   const onSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
+    // Disable button right away to prevent sending emails twice
+    if (isDisabled) {
+      return;
+    } else {
+      setIsDisabled(true);
+    }
+
     if (isValidEmail(email)) {
       const resp = await sendEML(email);
       if (resp.status === 200) {
