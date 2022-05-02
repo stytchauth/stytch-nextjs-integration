@@ -4,16 +4,14 @@ import styles from '../styles/Home.module.css';
 import { Recipes } from '../lib/recipeData';
 import LoginMethodCard from '../components/LoginMethodCard';
 import { useStytchUser } from '@stytch/stytch-react';
-import { getCookie } from 'cookies-next';
 
 const App = () => {
   const sdkUser = useStytchUser();
-  const customSession = getCookie('stytch_session_eml_webauthn');
 
   const router = useRouter();
 
   useEffect(() => {
-    if (sdkUser || customSession) {
+    if (sdkUser) {
       router.push('/profile');
     }
   });
