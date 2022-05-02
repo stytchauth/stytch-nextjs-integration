@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { NextPageContext, GetServerSideProps } from 'next/types';
+import { GetServerSideProps } from 'next/types';
 import styles from '../../../styles/Home.module.css';
 import loadStytch from '../../../lib/loadStytch';
 import { getStrippedDomain } from '../../../lib/urlUtils';
 import Cookies from 'cookies';
 import lock from '/public/lock.svg';
+import WebAuthnAuthenticateButton from '../../../components/EmailWebAuthn/WebAuthnAuthenticateButton';
 
 type Props = {
   user?: Object;
@@ -44,11 +45,6 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
     router.push('./webauthn-register');
   };
 
-  const handleAuthenticate = (e: any) => {
-    e.preventDefault();
-    router.push('./webauthn-authenticate');
-  };
-
   return (
     <div>
       {!user ? (
@@ -61,7 +57,7 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
             </div>
             <div className={styles.row}>
               <div className={styles.secretBox}>
-                <h3>Super Secret Area</h3>
+                <h3>Super secret area</h3>
                 {superSecretData ? (
                   <p>{superSecretData}</p>
                 ) : (
@@ -73,7 +69,7 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
                     </p>
                     {hasRegisteredWebAuthnDevice ? (
                       <>
-                        <button onClick={handleAuthenticate}>Authenticate</button>
+                        <WebAuthnAuthenticateButton />
                       </>
                     ) : (
                       <>
@@ -92,7 +88,7 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
           </div>
           <div className={styles.detailsSection}>
             <div className={styles.row}>
-              <h2>Stytch Objects</h2>
+              <h2>Stytch objects</h2>
             </div>
             <h3>Session</h3>
             <pre className={styles.code}>{JSON.stringify(session, null, 2).replace(' ', '')}</pre>
@@ -134,7 +130,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       session.authentication_factors.find((i) => i.delivery_method === 'webauthn_registration')
     ) {
       superSecretData =
-        'Welcome to the super secret data area. If you inspect your Stytch session on the right you will see you have two authentication factors: email and webauthn_registration.';
+        "Welcome to the super secret data area. If you inspect your Stytch session on the right you will see you have two authentication factors: email and webauthn_registration. You're only able to view the Super secret area because your session has both of these authentication factors.";
     }
     // Due to Date serialization issues in Next we do some fancy JSON translations
     return {

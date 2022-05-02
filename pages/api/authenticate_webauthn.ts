@@ -22,7 +22,8 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     const data = JSON.parse(req.body);
     const { session_token } = await stytchClient.webauthn.authenticate({
       public_key_credential: data.credential,
-      session_duration_minutes: 60,
+      // We set a shorter session for our second factor while making sensative operations
+      session_duration_minutes: 15,
       session_token: storedSession,
     });
     // Save updated Stytch session to a cookie

@@ -1,21 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from '../../styles/Home.module.css';
-import { authenticateWebAuthn, authenticateWebAuthnStart } from '../../lib/webAuthnUtils';
-import * as webauthnJson from '@github/webauthn-json';
-import { useRouter } from 'next/router';
+import WebAuthnAuthenticateButton from './WebAuthnAuthenticateButton';
 
 const WebAuthnAuthenticate = () => {
-  const router = useRouter();
-
-  const authenticate = async () => {
-    const options = await authenticateWebAuthnStart();
-    const credential = await webauthnJson.get({
-      publicKey: JSON.parse(options),
-    });
-    await authenticateWebAuthn(JSON.stringify(credential));
-    router.push('./profile');
-  };
-
   const code = `
   // Start WebAuthn authentication
   await stytchClient.webauthn.authenticateStart({
@@ -43,9 +30,7 @@ const WebAuthnAuthenticate = () => {
       <div className={styles.detailsLogin}>
         <h2>Continue to your profile</h2>
         <p>Complete your login by providing your WebAuthn as a second factor</p>
-        <button className={styles.primaryButton} onClick={authenticate}>
-          Authenticate
-        </button>
+        <WebAuthnAuthenticateButton />
       </div>
     </div>
   );
