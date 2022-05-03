@@ -16,7 +16,7 @@ In this repo, we have three sample auth flows:
 
 If you'd like to run this example app with [Vercel](https://vercel.com/), the first step is to configure the appropriate redirect URLs for your project.
 
-You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app/authenticate?type={}` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
+You'll set these magic link redirect URLs in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `https://*.vercel.app/authenticate?type={}` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://*.vercel.app/recipes/api-webauthn/magic-link-authenticate) example integration, add `https://*.vercel.app/api/authenticate_magic_link_with_webauthn` as a login and sign-up redirect URL as well.
 
 Additionally, you will need to configure the headless SDK settings. In your [SDK Configuration](https://stytch.com/dashboard/sdk-configuration) add `https://*.vercel.app` as an authorized domain and toggle on the Auth methods "Email magic links", "OAuth", and "SMS passcodes (OTP)".
 
