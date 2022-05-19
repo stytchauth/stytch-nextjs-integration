@@ -11,9 +11,9 @@ const sdkStyle: StyleConfig = {
 const magicLinksView = {
   products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
   emailMagicLinksOptions: {
-    loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
+    loginRedirectURL: REDIRECT_URL_BASE + '/authenticate',
     loginExpirationMinutes: 30,
-    signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
+    signupRedirectURL: REDIRECT_URL_BASE + '/authenticate',
     signupExpirationMinutes: 30,
     createUserAsPending: false,
   },
@@ -26,8 +26,8 @@ const magicLinksView = {
       { type: OAuthProvidersTypes.Github },
       { type: OAuthProvidersTypes.GitLab },
     ],
-    loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
-    signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
+    loginRedirectURL: REDIRECT_URL_BASE + '/authenticate',
+    signupRedirectURL: REDIRECT_URL_BASE + '/authenticate',
   },
 };
 

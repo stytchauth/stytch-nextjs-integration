@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useStytchUser, useStytchLazy } from '@stytch/stytch-react';
 
-const EMAIL_REDIRECT_TYPE = 'em';
-const OAUTH_REDIRECT_TYPE = 'oauth';
+const OAUTH_TOKEN = 'oauth';
+const MAGIC_LINKS_TOKEN = 'magic_links';
 
 const Authenticate = () => {
   const user = useStytchUser();
@@ -11,18 +11,16 @@ const Authenticate = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const stytch_token_type = router?.query?.stytch_token_type?.toString();
     const token = router?.query?.token?.toString();
-    if (token) {
-      const type = router?.query?.type?.toString();
-      if (type === OAUTH_REDIRECT_TYPE) {
-        stytch.oauth.authenticate(token, {
-          session_duration_minutes: 30,
-        });
-      } else if (type === EMAIL_REDIRECT_TYPE) {
-        stytch.magicLinks.authenticate(token, {
-          session_duration_minutes: 30,
-        });
-      }
+    if (token && stytch_token_type === OAUTH_TOKEN) {
+      stytch.oauth.authenticate(token, {
+        session_duration_minutes: 30,
+      });
+    } else if (token && stytch_token_type === MAGIC_LINKS_TOKEN) {
+      stytch.magicLinks.authenticate(token, {
+        session_duration_minutes: 30,
+      });
     }
   });
 
