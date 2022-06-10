@@ -22,13 +22,13 @@ const Authenticate = () => {
         session_duration_minutes: 30,
       });
     }
-  });
+  }, [router, stytch]);
 
   useEffect(() => {
-    if (process.browser && user) {
+    if (typeof window && user) {
       router.replace('/profile');
     }
-  });
+  }, [router, user]);
 
   return null;
 };
