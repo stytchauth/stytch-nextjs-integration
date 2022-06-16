@@ -16,13 +16,13 @@
   ],
   "dependencies": {
     "@github/webauthn-json": "^0.5.7",
-    "@stytch/stytch-js": "^3.1.2",
-    "@stytch/stytch-react": "^4.0.4",
+    "@stytch/stytch-js": "^3.3.0",
+    "@stytch/stytch-react": "^4.1.0",
     "cookies": "^0.8.0",
     "next": "^12.1.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "stytch": "^3.11.0"
+    "stytch": "^5.3.0"
   },
   "devDependencies": {
     "@types/cookies": "^0.7.7",
