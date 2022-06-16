@@ -99,36 +99,16 @@ export const Recipes: Record<string, LoginType> = {
     component: <LoginWithCryptoWalletsUI />,
     products: [LoginProducts.WEB3],
     code: `
-const trigger = useCallback(async () => {
-  /* Request user's wallet address */
-  const [crypto_wallet_address] = await window.ethereum.request({ 
-    method: 'eth_requestAccounts',
-  });
+  const sdkStyle: StyleConfig = {
+    fontFamily: '"Helvetica New", Helvetica, sans-serif',
+    primaryColor: '#19303d',
+    primaryTextColor: '#090909',
+    hideHeaderText: true,
+  };
   
-
-  /* Ask Stytch to generate a challenge for the user */
-  const { challenge } = await stytchClient.cryptoWallets.authenticateStart({
-    crypto_wallet_address,
-    crypto_wallet_type: 'ethereum',
-  });
-  
-  /* Ask the user's browser to sign the challenge */
-  const signature = await window.ethereum.request({
-    method: 'personal_sign', 
-    params: [challenge, crypto_wallet_address],
-  });
-
-  /* Send the signature back to Stytch for validation */
-  await stytchClient.cryptoWallets.authenticate({
-    crypto_wallet_address,
-    crypto_wallet_type: 'ethereum',
-    signature,
-    session_duration_minutes: 60,
-  });
-  if (user) {
-    router.push('/profile');
-  }
-}, [stytchClient]);
+  const magicLinksView = {
+    products: [SDKProductTypes.crypto],
+  };
     `,
   },
   FEEDBACK: {
