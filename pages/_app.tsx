@@ -9,7 +9,7 @@ import Script from 'next/script';
 import stytchLogo from '/public/stytch-logo.svg';
 import nextjsLogo from '/public/nextjs-logotype-dark.svg';
 
-const stytch = initStytch(process.env.STYTCH_PUBLIC_TOKEN || '');
+const stytch = initStytch(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN || '');
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
