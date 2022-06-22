@@ -28,7 +28,7 @@
     "@types/cookies": "^0.7.7",
     "@types/react": "17.0.22",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
-    "@typescript-eslint/parser": "^4.31.2",
+    "@typescript-eslint/parser": "^5.18.0",
     "eslint": "^7.32.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
