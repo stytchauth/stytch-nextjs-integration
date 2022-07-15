@@ -1,4 +1,4 @@
-import React, { useCallback }from 'react';
+import React, { useCallback } from 'react';
 import { useStytchLazy, useStytchUser } from '@stytch/stytch-react';
 import styles from '../../styles/Home.module.css';
 import { useRouter } from 'next/router';
@@ -12,20 +12,19 @@ export const LoginWithCryptoWalletsForm = () => {
 
   const trigger = useCallback(async () => {
     /* Request user's wallet address */
-    const [crypto_wallet_address] = await window.ethereum.request({ 
+    const [crypto_wallet_address] = await window.ethereum.request({
       method: 'eth_requestAccounts',
     });
-    
 
     /* Ask Stytch to generate a challenge for the user */
     const { challenge } = await stytchClient.cryptoWallets.authenticateStart({
       crypto_wallet_address,
       crypto_wallet_type: 'ethereum',
     });
-    
+
     /* Ask the user's browser to sign the challenge */
     const signature = await window.ethereum.request({
-      method: 'personal_sign', 
+      method: 'personal_sign',
       params: [challenge, crypto_wallet_address],
     });
 
@@ -39,12 +38,12 @@ export const LoginWithCryptoWalletsForm = () => {
     if (user) {
       router.push('/profile');
     }
-  }, [stytchClient]);
+  }, [stytchClient, router, user]);
 
   return (
     <div>
       <h2>Connect your Ethereum wallet</h2>
-      < br/>
+      <br />
       <button onClick={trigger} className={styles.primaryButton}>
         Sign in with Ethereum
       </button>

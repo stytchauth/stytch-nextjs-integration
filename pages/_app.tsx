@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <title>Stytch + Next.js example app</title>
       </Head>
-      <Script src={'https://js.stytch.com/stytch.js'} strategy="beforeInteractive" />
+
       <div className={styles.nav}>
         <div className={styles.navLogos}>
           <a href="https://stytch.com" rel="noopener noreferrer" target="_blank">
