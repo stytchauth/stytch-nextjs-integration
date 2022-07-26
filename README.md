@@ -1,6 +1,6 @@
 # Stytch + Next.js Example App
 
-This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). **Check out a live version of this site [here](stytch-nextjs-integration.vercel.app).**
+This is a [Stytch](https://stytch.com) + [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). **Check out a live version of this site [here](https://stytch-nextjs-integration.vercel.app/).**
 
 
 <p align="center"><img src="./public/example-app-image.png" alt="stytch" width="50%"/></p>
