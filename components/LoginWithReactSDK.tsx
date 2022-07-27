@@ -1,6 +1,6 @@
 import React from 'react';
 import { SDKProductTypes, Stytch, OAuthProvidersTypes, StyleConfig } from '@stytch/stytch-react';
-import REDIRECT_URL_BASE from '../lib/urlUtils';
+import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
@@ -11,9 +11,9 @@ const sdkStyle: StyleConfig = {
 const magicLinksView = {
   products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
   emailMagicLinksOptions: {
-    loginRedirectURL: REDIRECT_URL_BASE + '/authenticate',
+    loginRedirectURL: getDomainFromWindow() + '/authenticate',
     loginExpirationMinutes: 30,
-    signupRedirectURL: REDIRECT_URL_BASE + '/authenticate',
+    signupRedirectURL: getDomainFromWindow() + '/authenticate',
     signupExpirationMinutes: 30,
     createUserAsPending: false,
   },
@@ -26,8 +26,8 @@ const magicLinksView = {
       { type: OAuthProvidersTypes.Github },
       { type: OAuthProvidersTypes.GitLab },
     ],
-    loginRedirectURL: REDIRECT_URL_BASE + '/authenticate',
-    signupRedirectURL: REDIRECT_URL_BASE + '/authenticate',
+    loginRedirectURL: getDomainFromWindow() + '/authenticate',
+    signupRedirectURL: getDomainFromWindow() + '/authenticate',
   },
 };
 

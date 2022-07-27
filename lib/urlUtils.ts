@@ -1,36 +1,31 @@
-let REDIRECT_URL_BASE = '';
+import { NextIncomingMessage } from 'next/dist/server/request-meta';
 
-// Set the URL base for redirect URLs. The three cases are as follows:
-// 1. Running locally via `vercel dev`; NEXT_PUBLIC_VERCEL_URL will contain localhost, but will not be https.
-// 2. Deploying via Vercel; NEXT_PUBLIC_VERCEL_URL will be generated on runtime and use https.
-// 3. Running locally via `npm run dev`; NEXT_PUBLIC_VERCEL_URL will be undefined and the app will be at localhost.
-//
-// NEXT_PUBLIC_VERCEL_URL only contains the domain of the site's URL, the scheme is not included so we must add it manually,
-// see https://vercel.com/docs/concepts/projects/environment-variables#system-environment-variables.
+// Helper functions to account for the fact this applications is deployed on many different domains via Vercel, and on localhost
 
-if (process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL) {
-  REDIRECT_URL_BASE = `https://${process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL}`;
-} else if (process.env.NEXT_PUBLIC_VERCEL_URL?.includes('localhost')) {
-  REDIRECT_URL_BASE = 'http://localhost:3000';
-} else if (process.env.NEXT_PUBLIC_VERCEL_URL != undefined) {
-  REDIRECT_URL_BASE = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-} else {
-  REDIRECT_URL_BASE = 'http://localhost:3000';
-}
-
-export const getStrippedDomain = () => {
-  let DOMAIN = '';
-  if (process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL) {
-    DOMAIN = process.env.NEXT_PUBLIC_VERCEL_AUTOMATIC_URL;
-  } else if (process.env.NEXT_PUBLIC_VERCEL_URL?.includes('localhost')) {
-    DOMAIN = 'localhost';
-  } else if (process.env.NEXT_PUBLIC_VERCEL_URL != undefined) {
-    DOMAIN = process.env.NEXT_PUBLIC_VERCEL_URL;
-  } else {
-    DOMAIN = 'localhost';
+// Use on the frontend (React components) to get domain
+export const getDomainFromWindow = () => {
+  // First, check if this function is being called on the frontend. If so, get domain from windown
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
   }
 
-  return DOMAIN;
+  return null;
 };
 
-export default REDIRECT_URL_BASE;
+// Use on the backend (API, getServerSideProps) to get the host domain
+export const getDomainFromRequest = (req: NextIncomingMessage, isWebAuthN: boolean = false) => {
+  const host = req.headers.host || '';
+  const protocol = req.headers['x-forwarded-proto'] ? 'https://' : 'http://';
+
+  // WebAuthN uses the host but doesn't require protocol
+  if (isWebAuthN) {
+    // WebAuthN requires port number is stripped from localhost
+    if (host?.includes('localhost:')) {
+      return 'localhost';
+    } else {
+      return host;
+    }
+  }
+
+  return protocol + host;
+};

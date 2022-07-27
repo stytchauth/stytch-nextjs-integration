@@ -1,6 +1,6 @@
 // This API route sends a magic link to the specified email address.
 import type { NextApiRequest, NextApiResponse } from 'next';
-import REDIRECT_URL_BASE from '../../lib/urlUtils';
+import { getDomainFromRequest } from '../../lib/urlUtils';
 import loadStytch from '../../lib/loadStytch';
 
 type ErrorData = {
@@ -12,10 +12,11 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     const stytchClient = loadStytch();
     const data = JSON.parse(req.body);
     try {
+      const domain = getDomainFromRequest(req);
       await stytchClient.magicLinks.email.loginOrCreate({
         email: data.email,
-        login_magic_link_url: `${REDIRECT_URL_BASE}/recipes/api-webauthn/magic-link-authenticate`,
-        signup_magic_link_url: `${REDIRECT_URL_BASE}/recipes/api-webauthn/magic-link-authenticate`,
+        login_magic_link_url: `${domain}/recipes/api-webauthn/magic-link-authenticate`,
+        signup_magic_link_url: `${domain}/recipes/api-webauthn/magic-link-authenticate`,
       });
       return res.status(200).end();
     } catch (error) {
