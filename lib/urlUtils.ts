@@ -17,10 +17,13 @@ export const getDomainFromRequest = (req: NextIncomingMessage, isWebAuthN: boole
   const host = req.headers.host;
   const protocol = req.headers['x-forwarded-proto'] ? 'https://' : 'http://';
 
-  // WebAuthN registration on localhost needs the port number stripped
+  // WebAuthN uses the host but doesn't require protocol
   if (isWebAuthN) {
+    // WebAuthN requires port number is stripped from localhost
     if (host?.includes('localhost:')) {
       return 'localhost';
+    } else {
+      return host;
     }
   }
 
