@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import styles from '../../../styles/Home.module.css';
 import loadStytch from '../../../lib/loadStytch';
-import { getStrippedDomain } from '../../../lib/urlUtils';
+import { getDomainFromRequest } from '../../../lib/urlUtils';
 import Cookies from 'cookies';
 import lock from '/public/lock.svg';
 import WebAuthnAuthenticateButton from '../../../components/EmailWebAuthn/WebAuthnAuthenticateButton';
@@ -120,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     // Determine from the user object if this user has registered a webauthn device at this domain
     const hasRegisteredWebAuthnDevice =
       user.webauthn_registrations.length > 0 &&
-      user.webauthn_registrations.find((i) => i.domain === getStrippedDomain()) !== undefined;
+      user.webauthn_registrations.find((i) => i.domain === getDomainFromRequest(context.req, true)) !== undefined;
 
     // Determine if user has access to the super secret area data
     let superSecretData = null;

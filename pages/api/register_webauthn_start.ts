@@ -1,7 +1,7 @@
 // This API route that starts WebAuthn registration.
 import type { NextApiRequest, NextApiResponse } from 'next';
 import loadStytch from '../../lib/loadStytch';
-import { getStrippedDomain } from '../../lib/urlUtils';
+import { getDomainFromRequest } from '../../lib/urlUtils';
 import Cookies from 'cookies';
 
 type Data = {
@@ -30,7 +30,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
     // Begin webauthn registration
     const authnResp = await stytchClient.webauthn.registerStart({
       user_id: session.user_id,
-      domain: getStrippedDomain(),
+      domain: getDomainFromRequest(req, true),
     });
     return res.status(200).json(authnResp);
   } catch (error) {
