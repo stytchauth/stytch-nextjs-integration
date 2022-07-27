@@ -9,14 +9,11 @@ const WebAuthnRegister = () => {
 
   const register = async () => {
     const options = await registerWebAuthnStart();
-    console.log('cred', options);
     const credential = await webauthnJson.create({
       publicKey: JSON.parse(options),
     });
-    console.log('reg');
     await registerWebAuthn(JSON.stringify(credential));
     // Now that we have registered, we will authenticate
-    console.log('push');
     router.push('./webauthn-authenticate');
   };
 
