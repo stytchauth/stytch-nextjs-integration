@@ -14,7 +14,7 @@ export const getDomainFromWindow = () => {
 
 // Use on the backend (API, getServerSideProps) to get the host domain
 export const getDomainFromRequest = (req: NextIncomingMessage, isWebAuthN: boolean = false) => {
-  const host = req.headers.host;
+  const host = req.headers.host || '';
   const protocol = req.headers['x-forwarded-proto'] ? 'https://' : 'http://';
 
   // WebAuthN uses the host but doesn't require protocol
