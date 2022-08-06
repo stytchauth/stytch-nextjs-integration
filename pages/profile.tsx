@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import styles from '../styles/Home.module.css';
 import { useRouter } from 'next/router';
-import { useStytchUser, useStytchLazy, useStytchSession } from '@stytch/stytch-react';
+import { useStytchUser, useStytch, useStytchSession } from '@stytch/nextjs';
 
 const Profile = () => {
-  const user = useStytchUser();
-  const session = useStytchSession();
-  const stytch = useStytchLazy();
+  const {user, isInitialized} = useStytchUser();
+  const {session} = useStytchSession();
+  const stytch = useStytch();
   const router = useRouter();
 
   useEffect(() => {
-    if (process.browser && !user) {
+    if(isInitialized && !user) {
       router.replace('/');
     }
-  });
+  }, [user, isInitialized]);
 
   const signOut = async () => {
     await stytch.session.revoke();

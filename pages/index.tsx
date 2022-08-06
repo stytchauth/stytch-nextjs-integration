@@ -3,18 +3,18 @@ import { useRouter } from 'next/router';
 import styles from '../styles/Home.module.css';
 import { Recipes } from '../lib/recipeData';
 import LoginMethodCard from '../components/LoginMethodCard';
-import { useStytchUser } from '@stytch/stytch-react';
+import { useStytchUser } from '@stytch/nextjs';
 
 const App = () => {
-  const sdkUser = useStytchUser();
+  const {user} = useStytchUser();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (sdkUser) {
+    if (user) {
       router.push('/profile');
     }
-  });
+  }, [user]);
 
   return (
     <div className={styles.root}>
