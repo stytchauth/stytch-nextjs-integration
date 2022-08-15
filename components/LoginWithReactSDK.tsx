@@ -1,5 +1,5 @@
 import React from 'react';
-import { SDKProductTypes, Stytch, OAuthProvidersTypes, StyleConfig } from '@stytch/stytch-react';
+import { SDKProductTypes, Stytch, OAuthProvidersTypes, StyleConfig, OTPMethods } from '@stytch/stytch-react';
 import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
@@ -9,7 +9,7 @@ const sdkStyle: StyleConfig = {
 };
 
 const magicLinksView = {
-  products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
+  products: [SDKProductTypes.otp],
   emailMagicLinksOptions: {
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
     loginExpirationMinutes: 30,
@@ -28,6 +28,10 @@ const magicLinksView = {
     ],
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
     signupRedirectURL: getDomainFromWindow() + '/authenticate',
+  },
+  otpOptions: {
+    methods: [OTPMethods.SMS],
+    expirationMinutes: 3,
   },
 };
 
