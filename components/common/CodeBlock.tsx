@@ -22,7 +22,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   code: {
     color: 'rgb(19, 229, 192)',
-    overflowX: 'scroll',
+    overflowX: 'auto',
     whiteSpace: 'pre',
     fontSize: '16px',
     fontFamily: '"IBM Plex Mono", monospace',
