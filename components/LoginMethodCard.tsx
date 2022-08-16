@@ -59,7 +59,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   textContent: {
     flexGrow: 1,
-    overflow: 'scroll',
+    overflow: 'auto',
     marginBottom: '16px',
   },
   button: {
