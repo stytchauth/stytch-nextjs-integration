@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useStytchLazy, useStytchUser } from '@stytch/stytch-react';
-import styles from '../../styles/Home.module.css';
 import { useRouter } from 'next/router';
 
 declare let window: any;
@@ -44,7 +43,7 @@ export const LoginWithCryptoWalletsForm = () => {
     <div>
       <h2>Connect your Ethereum wallet</h2>
       <br />
-      <button onClick={trigger} className={styles.primaryButton}>
+      <button onClick={trigger} className="primaryButton">
         Sign in with Ethereum
       </button>
     </div>

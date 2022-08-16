@@ -6,6 +6,7 @@ const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
   primaryColor: '#19303d',
   primaryTextColor: '#090909',
+  width: '100%',
 };
 
 const magicLinksView = {
@@ -31,5 +32,9 @@ const magicLinksView = {
   },
 };
 
-const LoginWithMagicLinks = () => <Stytch loginOrSignupView={magicLinksView} style={sdkStyle} />;
+const LoginWithMagicLinks = () => (
+  <div style={{ paddingRight: '20px' }}>
+    <Stytch loginOrSignupView={magicLinksView} style={sdkStyle} />
+  </div>
+);
 export default LoginWithMagicLinks;

@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
-import styles from '../../styles/Home.module.css';
 import { sendEML } from '../../lib/emlUtils';
 
 const STATUS = {
@@ -61,29 +60,24 @@ const LoginWithEmail = () => {
           <h2>Sign up or log in</h2>
           <p>
             Make sure to add the appropriate Redirect URL in your{' '}
-            <a
-              className={styles.link}
-              href="https://stytch.com/dashboard/redirect-urls"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <a className="link" href="https://stytch.com/dashboard/redirect-urls" target="_blank" rel="noreferrer">
               Stytch Dashboard
             </a>
             , and check out our full{' '}
-            <a className={styles.link} href="https://stytch.com/docs/webauthn" target="_blank" rel="noreferrer">
+            <a className="link" href="https://stytch.com/docs/webauthn" target="_blank" rel="noreferrer">
               WebAuthn guide
             </a>
             .
           </p>
           <form onSubmit={onSubmit}>
             <input
-              className={styles.emailInput}
+              style={styles.emailInput}
               placeholder="example@email.com"
               value={email}
               onChange={onEmailChange}
               type="email"
             />
-            <input className={styles.primaryButton} disabled={isDisabled} id="button" type="submit" value="Continue" />
+            <input className="primaryButton" disabled={isDisabled} id="button" type="submit" value="Continue" />
           </form>
         </div>
       )}
@@ -91,7 +85,7 @@ const LoginWithEmail = () => {
         <div>
           <h2>Check your email</h2>
           <p>{`An email was sent to ${email}`}</p>
-          <a className={styles.link} onClick={handleTryAgain}>
+          <a className="link" onClick={handleTryAgain}>
             Click here to try again.
           </a>
         </div>
@@ -100,13 +94,21 @@ const LoginWithEmail = () => {
         <div>
           <h2>Something went wrong!</h2>
           <p>{`Failed to send email to ${email}`}</p>
-          <a className={styles.link} onClick={handleTryAgain}>
+          <a className="link" onClick={handleTryAgain}>
             Click here to try again.
           </a>
         </div>
       )}
     </>
   );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  emailInput: {
+    width: '100%',
+    fontSize: '18px',
+    marginBottom: '8px',
+  },
 };
 
 export default LoginWithEmail;

@@ -1,8 +1,7 @@
 import React from 'react';
-import styles from '../styles/Home.module.css';
-import LoginWithMagicLinks from './LoginWithReactSDK';
-import { LoginType, LoginProduct } from '../lib/types';
+import { LoginType } from '../lib/types';
 import { useRouter } from 'next/router';
+import CodeBlock from './common/CodeBlock';
 
 type Props = {
   recipe: LoginType;
@@ -17,24 +16,52 @@ const LoginDetails = ({ recipe }: Props) => {
   };
 
   return (
-    <div className={styles.detailsContainer}>
-      <div className={styles.detailsSection}>
-        <div className={styles.row}>
-          <h2>{recipe.title}</h2>
-        </div>
-
+    <div style={styles.container}>
+      <div style={styles.details}>
+        <h2>{recipe.title}</h2>
         <p>{recipe.instructions}</p>
-        <pre className={styles.code}>{recipe.code}</pre>
-        <button className={styles.backButton} onClick={handleClick}>
+        <CodeBlock codeString={recipe.code} />
+        <button style={styles.backButton} onClick={handleClick}>
           {'Back'}
         </button>
       </div>
-
-      <div className={styles.detailsLogin}>
-        <div className={styles.authSection}>{recipe.component}</div>
-      </div>
+      <div style={styles.component}>{recipe.component}</div>
     </div>
   );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: 'flex',
+    margin: '48px 24px',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'center',
+    gap: '48px',
+  },
+  details: {
+    backgroundColor: '#FFF',
+    padding: '48px',
+    flexBasis: '600px',
+    flexGrow: 1,
+  },
+  component: {
+    backgroundColor: '#FFF',
+    padding: '48px',
+    maxWidth: '500px',
+  },
+  backButton: {
+    width: 'fit-content',
+    height: '45px',
+    padding: '0 22px',
+    fontSize: '18px',
+    whiteSpace: 'nowrap',
+    borderRadius: '3px',
+    position: 'relative',
+    bottom: '0',
+    backgroundColor: '#e5e8eb',
+    color: '#19303d',
+    margin: '16px 0px',
+  },
 };
 
 export default LoginDetails;
