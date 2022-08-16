@@ -72,7 +72,9 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
                   ) : (
                     <>
                       <p>You have not yet registered a device for Webauthn as a second factor.</p>
-                      <button onClick={handleRegister}>Register now</button>
+                      <button onClick={handleRegister} className="primaryButton">
+                        Register now
+                      </button>
                     </>
                   )}
                 </>
@@ -130,9 +132,8 @@ const styles2: Record<string, React.CSSProperties> = {
     flexGrow: '1',
     flexDirection: 'column',
     margin: '50px 0px',
-    padding: '8px',
     alignItems: 'center',
-    paddingBottom: '20px',
+    padding: '8px 24px',
   },
 };
 
