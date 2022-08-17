@@ -1,6 +1,5 @@
 import React from 'react';
 import { useStytch } from '@stytch/nextjs';
-import styles from '../../styles/Home.module.css';
 
 type Props = {
   phoneNumber: string;
@@ -46,24 +45,53 @@ const SendOTPForm = (props: Props): JSX.Element => {
       <h2>Enter phone number</h2>
       <p>Enter your phone number to receive a passcode for authentication.</p>
       <form onSubmit={onSubmit}>
-        <div className={styles.telInput}>
-          <input className={styles.flag} name="intlCode" type="text" value="+1" readOnly />
+        <div style={styles.telInput}>
+          <input style={styles.flag} name="intlCode" type="text" value="+1" readOnly />
           <input
-            id={styles.phoneNumber}
-            className={styles.phoneNumber}
+            style={styles.phoneNumber}
             placeholder="(123) 456-7890"
             value={phoneNumber}
             onChange={onPhoneNumberChange}
             type="tel"
           />
         </div>
-        <p className={styles.smsDisclaimer}>
+        <p style={styles.smsDisclaimer}>
           By continuing, you consent to receive an SMS for verification. Message and data rates may apply.
         </p>
-        <input className={styles.primaryButton} disabled={isDisabled} id="button" type="submit" value="Continue" />
+        <input className="primaryButton" disabled={isDisabled} id="button" type="submit" value="Continue" />
       </form>
     </div>
   );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  telInput: {
+    display: 'flex',
+    marginTop: '20px',
+    whiteSpace: 'nowrap',
+  },
+  phoneNumber: {
+    borderLeft: 'none',
+    borderRadius: '0 3px 3px 0',
+    paddingLeft: '0',
+    flexGrow: '1',
+    fontSize: '18px',
+    width: 'calc(100%)',
+  },
+  smsDisclaimer: {
+    color: '#5c727d',
+    fontSize: '14px',
+    lineHeight: '20px',
+    marginBottom: '16px',
+    marginTop: '24px',
+  },
+  flag: {
+    background: "url('/stars-and-stripes.png') no-repeat scroll 8px 16px",
+    borderRight: 'none',
+    borderRadius: '3px 0 0 3px',
+    width: '80px',
+    paddingLeft: '48px',
+  },
 };
 
 export default SendOTPForm;

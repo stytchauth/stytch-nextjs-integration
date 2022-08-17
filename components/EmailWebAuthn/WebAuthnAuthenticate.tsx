@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from '../../styles/Home.module.css';
+import CodeBlock from '../common/CodeBlock';
 import WebAuthnAuthenticateButton from './WebAuthnAuthenticateButton';
 
 const WebAuthnAuthenticate = () => {
-  const code = `
-  // Start WebAuthn authentication
+  const code = `  // Start WebAuthn authentication
   await stytchClient.webauthn.authenticateStart({
     user_id: user_id as string,
     domain: DOMAIN,
@@ -17,23 +16,42 @@ const WebAuthnAuthenticate = () => {
   });`;
 
   return (
-    <div className={styles.detailsContainer}>
-      <div className={styles.detailsSection}>
-        <div className={styles.row}>
-          <h2>Authenticate with your WebAuthn device</h2>
-        </div>
+    <div style={styles.container}>
+      <div style={styles.details}>
+        <h2>Authenticate with your WebAuthn device</h2>
 
         <p>{`You've registered your WebAuthn device, now it's time to authenticate with it! Just click the button to the right.`}</p>
-        <pre className={styles.code}>{code}</pre>
+        <CodeBlock codeString={code} />
       </div>
 
-      <div className={styles.detailsLogin}>
+      <div style={styles.authenticate}>
         <h2>Continue to your profile</h2>
         <p>Complete your login by providing your WebAuthn as a second factor</p>
         <WebAuthnAuthenticateButton />
       </div>
     </div>
   );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: 'flex',
+    margin: '48px 24px',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'center',
+    gap: '48px',
+  },
+  details: {
+    backgroundColor: '#FFF',
+    padding: '48px',
+    flexBasis: '600px',
+    flexGrow: 1,
+  },
+  authenticate: {
+    backgroundColor: '#FFF',
+    padding: '48px',
+    maxWidth: '500px',
+  },
 };
 
 export default WebAuthnAuthenticate;

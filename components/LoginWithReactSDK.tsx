@@ -1,15 +1,16 @@
 import React from 'react';
-import {Stytch} from '@stytch/nextjs';
-import {Config, OAuthProviders, OneTapPositions, Products, StyleConfig} from '@stytch/vanilla-js';
+import {StytchLogin} from '@stytch/nextjs';
+import {StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig} from '@stytch/vanilla-js';
 import {getDomainFromWindow} from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
   primaryColor: '#19303d',
   primaryTextColor: '#090909',
+  width: '100%',
 };
 
-const sdkConfig: Config  = {
+const sdkConfig: StytchLoginConfig  = {
   products: [Products.oauth, Products.emailMagicLinks],
   emailMagicLinksOptions: {
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
@@ -32,5 +33,9 @@ const sdkConfig: Config  = {
   },
 };
 
-const LoginWithMagicLinks = () => <Stytch config={sdkConfig} styles={sdkStyle} />;
+const LoginWithMagicLinks = () => (
+  <div style={{ paddingRight: '20px' }}>
+    <StytchLogin config={sdkConfig} styles={sdkStyle} />
+  </div>
+);
 export default LoginWithMagicLinks;
