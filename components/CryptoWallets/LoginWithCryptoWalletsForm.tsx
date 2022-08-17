@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect} from 'react';
-import {useStytch, useStytchUser} from '@stytch/nextjs';
-import {useRouter} from 'next/router';
+import React, { useCallback, useEffect } from 'react';
+import { useStytch, useStytchUser } from '@stytch/nextjs';
+import { useRouter } from 'next/router';
 
 declare let window: any;
 
 export const LoginWithCryptoWalletsForm = () => {
   const stytchClient = useStytch();
   const router = useRouter();
-  const {user} = useStytchUser();
+  const { user } = useStytchUser();
 
   useEffect(() => {
     if (user) {
       router.push('/profile');
     }
-  }, [user]);
+  }, [user, router]);
 
   const trigger = useCallback(async () => {
     /* Request user's wallet address */
@@ -22,7 +22,7 @@ export const LoginWithCryptoWalletsForm = () => {
     });
 
     /* Ask Stytch to generate a challenge for the user */
-    const {challenge} = await stytchClient.cryptoWallets.authenticateStart({
+    const { challenge } = await stytchClient.cryptoWallets.authenticateStart({
       crypto_wallet_address,
       crypto_wallet_type: 'ethereum',
     });
@@ -40,7 +40,7 @@ export const LoginWithCryptoWalletsForm = () => {
       signature,
       session_duration_minutes: 60,
     });
-  }, [stytchClient, router]);
+  }, [stytchClient]);
 
   return (
     <div>

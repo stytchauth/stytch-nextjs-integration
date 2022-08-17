@@ -1,12 +1,12 @@
 import React from 'react';
-import {useStytchUser} from '@stytch/nextjs';
+import { useStytchUser } from '@stytch/nextjs';
 import LoginWithCryptoWalletsForm from './LoginWithCryptoWalletsForm';
 import { useRouter } from 'next/router';
 
 declare let window: any;
 
 const LoginWithCryptoWallets = () => {
-  const {user} = useStytchUser();
+  const { user } = useStytchUser();
   const router = useRouter();
   const hasEthereumWallet = window.ethereum?.request({
     method: 'eth_requestAccounts',

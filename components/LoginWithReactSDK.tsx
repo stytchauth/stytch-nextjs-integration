@@ -1,7 +1,7 @@
 import React from 'react';
-import {StytchLogin} from '@stytch/nextjs';
-import {StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig} from '@stytch/vanilla-js';
-import {getDomainFromWindow} from '../lib/urlUtils';
+import { StytchLogin } from '@stytch/nextjs';
+import { StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig } from '@stytch/vanilla-js';
+import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
@@ -9,7 +9,7 @@ const sdkStyle: StyleConfig = {
   primaryTextColor: '#090909',
 };
 
-const sdkConfig: StytchLoginConfig  = {
+const sdkConfig: StytchLoginConfig = {
   products: [Products.oauth, Products.emailMagicLinks],
   emailMagicLinksOptions: {
     loginRedirectURL: getDomainFromWindow() + '/authenticate',

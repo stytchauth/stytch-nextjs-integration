@@ -5,7 +5,7 @@ import LoginMethodCard from '../components/LoginMethodCard';
 import { useStytchUser } from '@stytch/nextjs';
 
 const App = () => {
-  const {user} = useStytchUser();
+  const { user } = useStytchUser();
 
   const router = useRouter();
 
@@ -13,7 +13,7 @@ const App = () => {
     if (user) {
       router.push('/profile');
     }
-  }, [user]);
+  }, [user, router]);
 
   return (
     <div style={{ padding: '0px 40px' }}>

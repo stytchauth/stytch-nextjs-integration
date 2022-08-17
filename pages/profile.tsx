@@ -4,16 +4,16 @@ import { useStytchUser, useStytch, useStytchSession } from '@stytch/nextjs';
 import CodeBlock from '../components/common/CodeBlock';
 
 const Profile = () => {
-  const {user, isInitialized} = useStytchUser();
-  const {session} = useStytchSession();
+  const { user, isInitialized } = useStytchUser();
+  const { session } = useStytchSession();
   const stytch = useStytch();
   const router = useRouter();
 
   useEffect(() => {
-    if(isInitialized && !user) {
+    if (isInitialized && !user) {
       router.replace('/');
     }
-  }, [user, isInitialized]);
+  }, [user, isInitialized, router]);
 
   const signOut = async () => {
     await stytch.session.revoke();
