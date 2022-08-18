@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useStytchUser, useStytch } from '@stytch/nextjs';
+import { useStytchUser, useStytchLazy } from '@stytch/stytch-react';
 
 const OAUTH_TOKEN = 'oauth';
 const MAGIC_LINKS_TOKEN = 'magic_links';
 
 const Authenticate = () => {
-  const { user, isInitialized } = useStytchUser();
-  const stytch = useStytch();
+  const user = useStytchUser();
+  const stytch = useStytchLazy();
   const router = useRouter();
 
   useEffect(() => {
@@ -25,13 +25,10 @@ const Authenticate = () => {
   }, [router, stytch]);
 
   useEffect(() => {
-    if (!isInitialized) {
-      return;
-    }
-    if (user) {
+    if (typeof window && user) {
       router.replace('/profile');
     }
-  }, [router, user, isInitialized]);
+  }, [router, user]);
 
   return null;
 };

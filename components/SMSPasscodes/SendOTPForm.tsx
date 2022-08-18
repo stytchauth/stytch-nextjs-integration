@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStytch } from '@stytch/nextjs';
+import { useStytchLazy } from '@stytch/stytch-react';
 
 type Props = {
   phoneNumber: string;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const SendOTPForm = (props: Props): JSX.Element => {
-  const stytchClient = useStytch();
+  const stytchClient = useStytchLazy();
   const { phoneNumber, setMethodId, setOTPSent, setPhoneNumber } = props;
   const [isDisabled, setIsDisabled] = React.useState(true);
 

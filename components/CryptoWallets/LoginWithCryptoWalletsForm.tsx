@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
-import { useStytch, useStytchUser } from '@stytch/nextjs';
+import React, { useCallback } from 'react';
+import { useStytchLazy, useStytchUser } from '@stytch/stytch-react';
 import { useRouter } from 'next/router';
 
 declare let window: any;
 
 export const LoginWithCryptoWalletsForm = () => {
-  const stytchClient = useStytch();
+  const stytchClient = useStytchLazy();
   const router = useRouter();
-  const { user } = useStytchUser();
-
-  useEffect(() => {
-    if (user) {
-      router.push('/profile');
-    }
-  }, [user, router]);
+  const user = useStytchUser();
 
   const trigger = useCallback(async () => {
     /* Request user's wallet address */
@@ -40,7 +34,10 @@ export const LoginWithCryptoWalletsForm = () => {
       signature,
       session_duration_minutes: 60,
     });
-  }, [stytchClient]);
+    if (user) {
+      router.push('/profile');
+    }
+  }, [stytchClient, router, user]);
 
   return (
     <div>
