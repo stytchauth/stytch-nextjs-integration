@@ -67,6 +67,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 Learn more about some of Stytch's products used in this example app:
 
-- [Stytch Web SDK](https://www.npmjs.com/package/@stytch/vanilla-js)
-- [Stytch NextJS](https://www.npmjs.com/package/@stytch/nextjs)
+- [Stytch React](https://www.npmjs.com/package/@stytch/stytch-react)
 - [Stytch's node client library](https://www.npmjs.com/package/stytch)

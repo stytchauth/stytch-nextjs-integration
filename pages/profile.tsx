@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useStytchUser, useStytch, useStytchSession } from '@stytch/nextjs';
+import { useStytchUser, useStytchLazy, useStytchSession } from '@stytch/stytch-react';
 import CodeBlock from '../components/common/CodeBlock';
 
 const Profile = () => {
-  const { user, isInitialized } = useStytchUser();
-  const { session } = useStytchSession();
-  const stytch = useStytch();
+  const user = useStytchUser();
+  const session = useStytchSession();
+  const stytch = useStytchLazy();
   const router = useRouter();
 
   useEffect(() => {
-    if (isInitialized && !user) {
+    if (process.browser && !user) {
       router.replace('/');
     }
-  }, [user, isInitialized, router]);
+  });
 
   const signOut = async () => {
     await stytch.session.revoke();

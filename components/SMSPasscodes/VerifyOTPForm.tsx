@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStytch } from '@stytch/nextjs';
+import { useStytchLazy } from '@stytch/stytch-react';
 import { useRouter } from 'next/router';
 
 // Handles auto-tabbing to next passcode digit input.
@@ -39,7 +39,7 @@ const VerifyOTPForm = (props: Props) => {
   const [currentMethodId, setCurrentMethodId] = React.useState(methodId);
   const [isError, setIsError] = React.useState(false);
   const router = useRouter();
-  const stytchClient = useStytch();
+  const stytchClient = useStytchLazy();
 
   const strippedNumber = phoneNumber.replace(/\D/g, '');
   const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(

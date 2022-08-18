@@ -1,12 +1,11 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import React from 'react';
-import { StytchProvider } from '@stytch/nextjs';
-import { createStytchUIClient } from '@stytch/nextjs/ui';
+import { StytchProvider, initStytch } from '@stytch/stytch-react';
 import Head from 'next/head';
 import NavBar from '../components/NavBar';
 
-const stytch = createStytchUIClient(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN || '');
+const stytch = initStytch(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN || '');
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

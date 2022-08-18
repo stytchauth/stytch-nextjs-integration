@@ -1,16 +1,16 @@
 import React from 'react';
-import { StytchLogin } from '@stytch/nextjs';
-import { StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig } from '@stytch/vanilla-js';
+import { SDKProductTypes, Stytch, OAuthProvidersTypes, StyleConfig } from '@stytch/stytch-react';
 import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
   primaryColor: '#19303d',
   primaryTextColor: '#090909',
+  width: '100%',
 };
 
-const sdkConfig: StytchLoginConfig = {
-  products: [Products.oauth, Products.emailMagicLinks],
+const magicLinksView = {
+  products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
   emailMagicLinksOptions: {
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
     loginExpirationMinutes: 30,
@@ -20,12 +20,12 @@ const sdkConfig: StytchLoginConfig = {
   },
   oauthOptions: {
     providers: [
-      { type: OAuthProviders.Google, one_tap: true, position: OneTapPositions.embedded },
-      { type: OAuthProviders.Apple },
-      { type: OAuthProviders.Microsoft },
-      { type: OAuthProviders.Facebook },
-      { type: OAuthProviders.Github },
-      { type: OAuthProviders.GitLab },
+      { type: OAuthProvidersTypes.Google, one_tap: true, position: 'embedded' },
+      { type: OAuthProvidersTypes.Apple },
+      { type: OAuthProvidersTypes.Microsoft },
+      { type: OAuthProvidersTypes.Facebook },
+      { type: OAuthProvidersTypes.Github },
+      { type: OAuthProvidersTypes.GitLab },
     ],
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
     signupRedirectURL: getDomainFromWindow() + '/authenticate',
@@ -34,7 +34,7 @@ const sdkConfig: StytchLoginConfig = {
 
 const LoginWithMagicLinks = () => (
   <div style={{ paddingRight: '20px' }}>
-    <StytchLogin config={sdkConfig} styles={sdkStyle} />
+    <Stytch loginOrSignupView={magicLinksView} style={sdkStyle} />
   </div>
 );
 export default LoginWithMagicLinks;
