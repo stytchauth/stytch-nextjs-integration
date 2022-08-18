@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Recipes } from '../lib/recipeData';
 import LoginMethodCard from '../components/LoginMethodCard';
-import { useStytchUser } from '@stytch/stytch-react';
+import { useStytchUser } from '@stytch/nextjs';
 
 const App = () => {
-  const sdkUser = useStytchUser();
+  const { user } = useStytchUser();
 
   const router = useRouter();
 
   useEffect(() => {
-    if (sdkUser) {
+    if (user) {
       router.push('/profile');
     }
-  });
+  }, [user, router]);
 
   return (
     <div style={{ padding: '0px 40px' }}>
