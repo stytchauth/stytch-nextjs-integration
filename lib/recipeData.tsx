@@ -34,7 +34,7 @@ export const Recipes: Record<string, LoginType> = {
         },
         oauthOptions: {
           providers: [
-            { type: OAuthProvidersTypes.Google, one_tap: true, position: 'embedded' },
+            { type: OAuthProvidersTypes.Google },
             { type: OAuthProvidersTypes.Apple },
             { type: OAuthProvidersTypes.Microsoft },
             { type: OAuthProvidersTypes.Facebook },
