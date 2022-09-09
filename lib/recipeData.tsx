@@ -22,28 +22,29 @@ export const Recipes: Record<string, LoginType> = {
     primaryTextColor: '#090909',
 };
       
-const magicLinksView = {
-    products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
-    emailMagicLinksOptions: {
-      loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
-      loginExpirationMinutes: 30,
-      signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
-      signupExpirationMinutes: 30,
-      createUserAsPending: false,
-    },
-    oauthOptions: {
-      providers: [
-        { type: OAuthProvidersTypes.Google, one_tap: true, position: 'embedded' },
-        { type: OAuthProvidersTypes.Apple },
-        { type: OAuthProvidersTypes.Microsoft },
-        { type: OAuthProvidersTypes.Facebook },
-        { type: OAuthProvidersTypes.Github },
-        { type: OAuthProvidersTypes.GitLab },
-      ],
-      loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
-      signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
-    },
-  };`,
+      const magicLinksView = {
+        products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
+        emailMagicLinksOptions: {
+          loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
+          loginExpirationMinutes: 30,
+          signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
+          signupExpirationMinutes: 30,
+          createUserAsPending: false,
+        },
+        oauthOptions: {
+          providers: [
+            { type: OAuthProvidersTypes.Google },
+            { type: OAuthProvidersTypes.Apple },
+            { type: OAuthProvidersTypes.Microsoft },
+            { type: OAuthProvidersTypes.Facebook },
+            { type: OAuthProvidersTypes.Github },
+            { type: OAuthProvidersTypes.GitLab },
+          ],
+          loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
+          signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
+        },
+      };
+      `,
   },
   CUSTOM_UI_HEADLESS: {
     id: 'sdk-sms',
