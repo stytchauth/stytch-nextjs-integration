@@ -1,6 +1,5 @@
 import React from 'react';
-import styles from '../../styles/Home.module.css';
-import { useStytchLazy } from '@stytch/stytch-react';
+import { useStytch } from '@stytch/nextjs';
 import { useRouter } from 'next/router';
 
 // Handles auto-tabbing to next passcode digit input.
@@ -40,7 +39,7 @@ const VerifyOTPForm = (props: Props) => {
   const [currentMethodId, setCurrentMethodId] = React.useState(methodId);
   const [isError, setIsError] = React.useState(false);
   const router = useRouter();
-  const stytchClient = useStytchLazy();
+  const stytchClient = useStytch();
 
   const strippedNumber = phoneNumber.replace(/\D/g, '');
   const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(
@@ -50,7 +49,7 @@ const VerifyOTPForm = (props: Props) => {
 
   const isValidPasscode = () => {
     const regex = /^[0-9]$/g;
-    const inputs = document.getElementsByClassName(styles.passcodeInput);
+    const inputs = document.getElementsByClassName('OTPInput');
     for (let i = 0; i < inputs.length; i++) {
       if (!(inputs[i] as HTMLInputElement).value.match(regex)) {
         return false;
@@ -69,7 +68,7 @@ const VerifyOTPForm = (props: Props) => {
   };
 
   const resetPasscode = () => {
-    const inputs = document.getElementsByClassName(styles.passcodeInput);
+    const inputs = document.getElementsByClassName('OTPInput');
     for (let i = 0; i < inputs.length; i++) {
       (inputs[i] as HTMLInputElement).value = '';
     }
@@ -88,7 +87,7 @@ const VerifyOTPForm = (props: Props) => {
     e.preventDefault();
     if (isValidPasscode()) {
       let otpInput = '';
-      const inputs = document.getElementsByClassName(styles.passcodeInput);
+      const inputs = document.getElementsByClassName('OTPInput');
       for (let i = 0; i < inputs.length; i++) {
         otpInput += (inputs[i] as HTMLInputElement).value;
       }
@@ -109,7 +108,7 @@ const VerifyOTPForm = (props: Props) => {
       inputs.push(
         <input
           autoFocus={i === 0}
-          className={styles.passcodeInput}
+          className="OTPInput"
           id={`digit-${i}`}
           key={i}
           maxLength={1}
@@ -118,6 +117,7 @@ const VerifyOTPForm = (props: Props) => {
           placeholder="0"
           size={1}
           type="text"
+          style={styles.passcodeInput}
         />,
       );
     }
@@ -127,24 +127,62 @@ const VerifyOTPForm = (props: Props) => {
   return (
     <div>
       <h2>Enter passcode</h2>
-      <p className={styles.smsInstructions}>
+      <p>
         A 6-digit passcode was sent to you at <strong>{parsedPhoneNumber}</strong>.
       </p>
       <form onSubmit={onSubmit}>
-        <div className={styles.passcodeContainer}>
-          <p className={styles.errorText}>{isError ? 'Invalid code. Please try again.' : ''}</p>
-          <div className={styles.passcodeInputContainer}>{renderPasscodeInputs()}</div>
-        </div>
-        <div className={styles.resendCodeContainer}>
-          <p className={styles.resendCodeText}>Didn’t get it? </p>
-          <button className={`${styles.resendCodeButton} ${styles.resendCodeText}`} onClick={resendCode} type="button">
+        <p style={styles.error}>{isError ? 'Invalid code. Please try again.' : ''}</p>
+        <div style={styles.passcodeInputContainer}>{renderPasscodeInputs()}</div>
+        <div style={styles.resendCodeContainer}>
+          <p style={styles.resendCodeText}>Didn’t get it? </p>
+          <button style={{ ...styles.resendCodeButton, ...styles.resendCodeText }} onClick={resendCode} type="button">
             Resend code
           </button>
         </div>
-        <input className={styles.primaryButton} disabled={isDisabled} id="button" type="submit" value="Continue" />
+        <input className="primaryButton" disabled={isDisabled} id="button" type="submit" value="Continue" />
       </form>
     </div>
   );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  passcodeInput: {
+    borderRadius: '3px',
+    fontSize: '20px',
+    width: '48px',
+    height: '45px',
+    textAlign: 'center',
+  },
+  error: {
+    color: 'red',
+    fontSize: '14px',
+    height: '20px',
+    lineHeight: '20px',
+  },
+  passcodeInputContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  resendCodeContainer: {
+    margin: '24px 0px',
+  },
+  resendCodeText: {
+    color: '#5c727d',
+    display: 'inline',
+    fontSize: '16px',
+    lineHeight: '20px',
+  },
+  resendCodeButton: {
+    backgroundColor: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    fontWeight: '500',
+    height: 'fit-content',
+    padding: '0',
+    width: 'fit-content',
+  },
 };
 
 export default VerifyOTPForm;

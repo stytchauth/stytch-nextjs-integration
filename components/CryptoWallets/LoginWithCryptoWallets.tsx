@@ -1,16 +1,14 @@
 import React from 'react';
-import { useStytchUser } from '@stytch/stytch-react';
+import { useStytchUser } from '@stytch/nextjs';
 import LoginWithCryptoWalletsForm from './LoginWithCryptoWalletsForm';
-import styles from '../../styles/Home.module.css';
 import { useRouter } from 'next/router';
 
 declare let window: any;
 
-
 const LoginWithCryptoWallets = () => {
-  const user = useStytchUser();
+  const { user } = useStytchUser();
   const router = useRouter();
-  const hasEthereumWallet = window.ethereum?.request({ 
+  const hasEthereumWallet = window.ethereum?.request({
     method: 'eth_requestAccounts',
   });
 
@@ -21,13 +19,13 @@ const LoginWithCryptoWallets = () => {
   return (
     <div>
       {hasEthereumWallet ? (
-        <LoginWithCryptoWalletsForm/>
+        <LoginWithCryptoWalletsForm />
       ) : (
         <div>
           <h2>Please install an Ethereum wallet</h2>
-          < br/>
+          <br />
           <p>{`You'll need an Ethereum based wallet, like MetaMask, to use this demo.`}</p>
-          <button onClick={ () => window.open('https://ethereum.org/en/wallets/find-wallet/')} className={styles.primaryButton}>
+          <button onClick={() => window.open('https://ethereum.org/en/wallets/find-wallet/')} className="primaryButton">
             Find a wallet
           </button>
         </div>

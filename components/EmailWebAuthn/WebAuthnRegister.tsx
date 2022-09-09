@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import styles from '../../styles/Home.module.css';
+import React from 'react';
 import { registerWebAuthn, registerWebAuthnStart } from '../../lib/webAuthnUtils';
 import * as webauthnJson from '@github/webauthn-json';
 import { useRouter } from 'next/router';
+import CodeBlock from '../common/CodeBlock';
 
 const WebAuthnRegister = () => {
   const router = useRouter();
@@ -17,8 +17,7 @@ const WebAuthnRegister = () => {
     router.push('./webauthn-authenticate');
   };
 
-  const code = `
-  // Start WebAuthn registration
+  const code = `  // Start WebAuthn registration
   await stytchClient.webauthn.registerStart({
     user_id: user_id as string,
     domain: DOMAIN,
@@ -31,25 +30,42 @@ const WebAuthnRegister = () => {
   });`;
 
   return (
-    <div className={styles.detailsContainer}>
-      <div className={styles.detailsSection}>
-        <div className={styles.row}>
-          <h2>Register your WebAuthn device</h2>
-        </div>
-
+    <div style={styles.container}>
+      <div style={styles.details}>
+        <h2>Register your WebAuthn device</h2>
         <p>{`Now that you've authenticated with your primary factor, a magic link, you're going to register a WebAuthn device for your second factor.`}</p>
-        <pre className={styles.code}>{code}</pre>
+        <CodeBlock codeString={code} />
       </div>
-
-      <div className={styles.detailsLogin}>
+      <div style={styles.register}>
         <h2>Register a WebAuthn device</h2>
         <p> First a user selects which WebAuthn device they would like to register, e.g. Apple TouchID or a Yubikey.</p>
-        <button className={styles.primaryButton} onClick={register}>
+        <button className="primaryButton" onClick={register}>
           Register Device
         </button>
       </div>
     </div>
   );
+};
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: 'flex',
+    margin: '48px 24px',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'center',
+    gap: '48px',
+  },
+  details: {
+    backgroundColor: '#FFF',
+    padding: '48px',
+    flexBasis: '600px',
+    flexGrow: 1,
+  },
+  register: {
+    backgroundColor: '#FFF',
+    padding: '48px',
+    maxWidth: '500px',
+  },
 };
 
 export default WebAuthnRegister;

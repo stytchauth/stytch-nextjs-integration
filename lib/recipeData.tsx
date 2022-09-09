@@ -16,12 +16,11 @@ export const Recipes: Record<string, LoginType> = {
     instructions: `To the right you'll see our pre-built login form with several OAuth providers and Email magic links. Below you can see the configuration and customization parameters used to create the login form.`,
     component: <LoginWithMagicLinks />,
     products: [LoginProducts.EML, LoginProducts.OAUTH],
-    code: `
-      const sdkStyle: StyleConfig = {
-        fontFamily: '"Helvetica New", Helvetica, sans-serif',
-        primaryColor: '#19303d',
-        primaryTextColor: '#090909',
-      };
+    code: `const sdkStyle: StyleConfig = {
+    fontFamily: '"Helvetica New", Helvetica, sans-serif',
+    primaryColor: '#19303d',
+    primaryTextColor: '#090909',
+};
       
       const magicLinksView = {
         products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],

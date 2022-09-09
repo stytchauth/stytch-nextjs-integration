@@ -1,7 +1,14 @@
-html,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+
 body {
   padding: 0;
   margin: 0;
+  background-color: #ecfaff;
+  min-height: 100vh;
 }
 
 a {
@@ -68,4 +75,25 @@ button, input[type="submit"] {
 button:hover, input[type="submit"]:hover {
   opacity: 0.8;
   cursor: pointer;
+}
+
+.primaryButton {
+  background-color: #19303d;
+  margin-bottom: 10px;
+}
+
+.primaryButton:disabled {
+  background-color: #f3f5f6;
+  color: #5c727d;
+  opacity: 1;
+}
+
+.link {
+  text-decoration: underline;
+  color: #19303D;
+}
+
+.link:hover{
+  cursor: pointer;
+  color: #19303D;
 }

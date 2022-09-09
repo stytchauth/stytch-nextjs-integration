@@ -1,7 +1,5 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
-import styles from '../../../styles/Home.module.css';
 import loadStytch from '../../../lib/loadStytch';
 import Cookies from 'cookies';
 
@@ -15,7 +13,7 @@ const AuthenticateMagicLink = ({ error }: Props) => {
       <div>
         <p>{`Error: ${error}`}</p>
         <Link href="../../recipes/api-webauthn">
-          <a className={styles.link}>Click here to start over</a>
+          <a className="link">Click here to start over</a>
         </Link>
       </div>
     );
