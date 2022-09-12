@@ -4,6 +4,7 @@ import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
 import LoginWithMagicLinks from '../components/LoginWithReactSDK';
 import LoginProducts from './loginProduct';
+import SignInWithGoogleForm from '../components/NewWindownOAuth.tsx/SignInWithGoogleForm';
 
 export const Recipes: Record<string, LoginType> = {
   REACT: {
@@ -128,6 +129,16 @@ const trigger = useCallback(async () => {
   }
 }, [stytchClient]);
     `,
+  },
+  NEW_WINDOW_OAUTH: {
+    id: 'oauth',
+    title: 'New window OAuth',
+    details: '',
+    description: ``,
+    instructions: ``,
+    component: <SignInWithGoogleForm />,
+    products: [LoginProducts.OAUTH],
+    code: ` `,
   },
   FEEDBACK: {
     id: 'feedback',
