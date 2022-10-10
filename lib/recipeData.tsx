@@ -3,6 +3,7 @@ import LoginWithCryptoWallets from '../components/CryptoWallets/LoginWithCryptoW
 import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
 import LoginWithMagicLinks from '../components/LoginWithReactSDK';
+import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 
 export const Recipes: Record<string, LoginType> = {
@@ -128,6 +129,36 @@ const trigger = useCallback(async () => {
   }
 }, [stytchClient]);
     `,
+  },
+  PASSWORDS: {
+    id: 'passwords',
+    title: 'Passwords',
+    details:
+      'Build an email/password authentication experience including passwords resets, password strength checking, and magic links using prebuilt Stytch UI components.',
+    description: ``,
+    instructions: `To the right you'll the Stytch UI configured for email/password login. Enter a new email address and you will be prompted to create an account with a secure password.`,
+    component: <LoginWithPasswords />,
+    products: [LoginProducts.PASSWORDS],
+    code: `import React from 'react';
+import { Products } from '@stytch/vanilla-js';
+import { StytchLogin } from '@stytch/nextjs';
+
+const config = {
+  passwordOptions: {
+    loginExpirationMinutes: 30,
+    loginRedirectURL: 'https://example.com/authenticate',
+    resetPasswordExpirationMinutes: 30,
+    resetPasswordRedirectURL: 'https://example.com/authenticate',
+  },
+  products: [
+    Products.passwords,
+  ],
+};
+
+export const Login = () => {
+  return (
+      <StytchLogin config={config} />  );
+};`,
   },
   FEEDBACK: {
     id: 'feedback',
