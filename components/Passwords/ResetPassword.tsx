@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { registerWebAuthn, registerWebAuthnStart } from '../../lib/webAuthnUtils';
-import * as webauthnJson from '@github/webauthn-json';
 import { useRouter } from 'next/router';
 import CodeBlock from '../common/CodeBlock';
 import { getDomainFromWindow } from '../../lib/urlUtils';
@@ -60,7 +58,6 @@ const ResetPassword = () => {
       </div>
     </div>
   );
-  return <p>Test 2</p>;
 };
 
 const styles: Record<string, React.CSSProperties> = {
