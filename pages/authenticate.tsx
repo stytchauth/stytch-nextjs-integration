@@ -4,6 +4,7 @@ import { useStytchUser, useStytch } from '@stytch/nextjs';
 
 const OAUTH_TOKEN = 'oauth';
 const MAGIC_LINKS_TOKEN = 'magic_links';
+const RESET_LOGIN = 'login';
 
 const Authenticate = () => {
   const { user, isInitialized } = useStytchUser();
@@ -17,7 +18,7 @@ const Authenticate = () => {
       stytch.oauth.authenticate(token, {
         session_duration_minutes: 30,
       });
-    } else if (token && stytch_token_type === MAGIC_LINKS_TOKEN) {
+    } else if (token && stytch_token_type && [MAGIC_LINKS_TOKEN, RESET_LOGIN].includes(stytch_token_type)) {
       stytch.magicLinks.authenticate(token, {
         session_duration_minutes: 30,
       });
