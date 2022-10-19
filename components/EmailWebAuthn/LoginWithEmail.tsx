@@ -77,7 +77,9 @@ const LoginWithEmail = () => {
               onChange={onEmailChange}
               type="email"
             />
-            <input className="primaryButton" disabled={isDisabled} id="button" type="submit" value="Continue" />
+            <button className="full-width" disabled={isDisabled} id="button" type="submit">
+              Continue
+            </button>
           </form>
         </div>
       )}

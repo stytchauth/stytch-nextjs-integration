@@ -58,7 +58,9 @@ const SendOTPForm = (props: Props): JSX.Element => {
         <p style={styles.smsDisclaimer}>
           By continuing, you consent to receive an SMS for verification. Message and data rates may apply.
         </p>
-        <input className="primaryButton" disabled={isDisabled} id="button" type="submit" value="Continue" />
+        <button className="full-width" disabled={isDisabled} id="button" type="submit">
+          Continue
+        </button>
       </form>
     </div>
   );

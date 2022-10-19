@@ -14,7 +14,7 @@ function WebAuthnAuthenticateButton() {
     router.push('./profile');
   };
   return (
-    <button className="primaryButton" onClick={authenticate}>
+    <button className="full-width" onClick={authenticate}>
       Authenticate
     </button>
   );

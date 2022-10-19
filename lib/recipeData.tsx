@@ -76,17 +76,15 @@ export const Recipes: Record<string, LoginType> = {
     instructions: `To the right you'll see an email address entry form built within this example app, not using our pre-built UI. You'll start off the flow by using Email magic links as a primary factor, then you'll be prompted to register and authenticate via WebAuthn as a second factor in a multi factor authentication flow.`,
     component: <LoginWithEmailWebAuthn />,
     products: [LoginProducts.EML, LoginProducts.WEBAUTHN],
-    code: `
-      // Send the Email magic link
-      await stytchClient.magicLinks.email.loginOrCreate({
-        email: data.email,
-        login_magic_link_url:  REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
-        signup_magic_link_url: REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
-      });
+    code: `// Send the Email magic link
+await stytchClient.magicLinks.email.loginOrCreate({
+  email: data.email,
+  login_magic_link_url:  REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
+  signup_magic_link_url: REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
+});
   
-      // Authenticate the Email magic link
-      await stytchClient.magicLinks.authenticate(token as string);
-      `,
+// Authenticate the Email magic link
+await stytchClient.magicLinks.authenticate(token as string);`,
   },
   CRYPTO_WALLETS: {
     id: 'sdk-crypto-wallets',

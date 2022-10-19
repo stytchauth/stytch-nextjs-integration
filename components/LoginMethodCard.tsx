@@ -17,12 +17,12 @@ const LoginMethodCard = ({ recipe }: Props) => {
 
   return (
     <div style={styles.container}>
-      <h2>{recipe.title}</h2>
-      {recipe.products && <h3 style={styles.header}>Products:</h3>}
+      <h3>{recipe.title}</h3>
+      {recipe.products && <h4>Products:</h4>}
       {recipe.products?.map((product) => {
         return (
           <div key={product.name} style={styles.row}>
-            <Image alt="" height={24} width={24} src={product.icon} /> {product.name}
+            <Image alt="" height={24} width={24} src={product.icon} /> <span>{product.name}</span>
           </div>
         );
       })}
@@ -33,6 +33,7 @@ const LoginMethodCard = ({ recipe }: Props) => {
 
       <div>
         <button
+          className={'full-width'}
           disabled={recipe.entryButton?.disabled}
           style={styles.button}
           onClick={recipe.entryButton?.onClick || handleClick}
@@ -61,13 +62,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexGrow: 1,
     overflow: 'auto',
     marginBottom: '16px',
-  },
-  button: {
-    backgroundColor: '#e5e8eb',
-    color: '#19303d',
-  },
-  header: {
-    marginBottom: '4px',
+    marginTop: '16px',
   },
   row: {
     display: 'flex',

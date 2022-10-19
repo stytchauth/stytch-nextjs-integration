@@ -39,7 +39,7 @@ const WebAuthnRegister = () => {
       <div style={styles.register}>
         <h2>Register a WebAuthn device</h2>
         <p> First a user selects which WebAuthn device they would like to register, e.g. Apple TouchID or a Yubikey.</p>
-        <button className="primaryButton" onClick={register}>
+        <button className="full-width" onClick={register}>
           Register Device
         </button>
       </div>
