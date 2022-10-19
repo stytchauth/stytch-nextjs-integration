@@ -15,14 +15,14 @@ function NavBar() {
 
       <div style={styles.linkContainer}>
         <a
-          className="btn outlined"
+          className="no-underline"
           href="https://github.com/stytchauth/stytch-nextjs-integration"
           rel="noopener noreferrer"
           target="_blank"
         >
           View on Github
         </a>
-        <a className="btn outlined" href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
+        <a className="no-underline" href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
           Stytch docs
         </a>
       </div>
@@ -37,7 +37,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#c7f1ff',
     top: 0,
     justifyContent: 'space-between',
-    padding: '8px 16px',
+    padding: '16px 16px',
   },
   logoContainer: {
     display: 'flex',
