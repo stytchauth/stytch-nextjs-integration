@@ -22,7 +22,7 @@ function NavBar() {
           View on Github
         </a>
         <a className="no-underline" href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
-          Stytch docs
+          Stytch Docs
         </a>
       </div>
     </div>
