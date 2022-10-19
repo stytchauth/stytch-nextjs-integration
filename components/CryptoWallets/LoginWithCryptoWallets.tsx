@@ -25,7 +25,7 @@ const LoginWithCryptoWallets = () => {
           <h2>Please install an Ethereum wallet</h2>
           <br />
           <p>{`You'll need an Ethereum based wallet, like MetaMask, to use this demo.`}</p>
-          <button onClick={() => window.open('https://ethereum.org/en/wallets/find-wallet/')} className="primaryButton">
+          <button onClick={() => window.open('https://ethereum.org/en/wallets/find-wallet/')} className="full-width">
             Find a wallet
           </button>
         </div>

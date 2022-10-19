@@ -5,25 +5,17 @@ type Props = {
 };
 
 function CodeBlock({ codeString }: Props) {
-  return (
-    <div style={styles.container}>
-      <div style={styles.code}>{codeString}</div>
-    </div>
-  );
+  return <div style={styles.code}>{codeString}</div>;
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: 'inline-grid',
+  code: {
     backgroundColor: 'rgb(25, 48, 61)',
-    minWidth: '100%',
     borderRadius: '4px',
     padding: '24px',
-  },
-  code: {
     color: 'rgb(19, 229, 192)',
-    overflowX: 'auto',
-    whiteSpace: 'pre',
+    whiteSpace: 'pre-wrap',
+    overflowWrap: 'anywhere',
     fontSize: '16px',
     fontFamily: '"IBM Plex Mono", monospace',
   },

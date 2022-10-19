@@ -26,7 +26,7 @@ const Profile = () => {
         <p>Below is your user object that you just created in our API.</p>
         <CodeBlock codeString={JSON.stringify(user, null, 2).replace(' ', '')} />
 
-        <button style={styles.button} onClick={signOut}>
+        <button className="mt2" onClick={signOut}>
           Sign out
         </button>
       </div>
@@ -52,19 +52,6 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '48px',
     flexBasis: '900px',
     flexGrow: 1,
-  },
-  button: {
-    width: '100%',
-    height: '45px',
-    padding: '0 22px',
-    fontSize: '18px',
-    whiteSpace: 'nowrap',
-    borderRadius: '3px',
-    position: 'relative',
-    bottom: '0',
-    backgroundColor: '#e5e8eb',
-    color: '#19303d',
-    margin: '16px 0px',
   },
 };
 

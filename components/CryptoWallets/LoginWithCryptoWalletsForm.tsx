@@ -46,7 +46,7 @@ export const LoginWithCryptoWalletsForm = () => {
     <div>
       <h2>Connect your Ethereum wallet</h2>
       <br />
-      <button onClick={trigger} className="primaryButton">
+      <button onClick={trigger} className="full-width">
         Sign in with Ethereum
       </button>
     </div>

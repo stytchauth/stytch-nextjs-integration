@@ -72,7 +72,7 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
                   ) : (
                     <>
                       <p>You have not yet registered a device for Webauthn as a second factor.</p>
-                      <button onClick={handleRegister} className="primaryButton">
+                      <button onClick={handleRegister} className="full-width">
                         Register now
                       </button>
                     </>
@@ -81,9 +81,7 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
               )}
             </div>
 
-            <button style={styles2.button} onClick={signOut}>
-              Sign out
-            </button>
+            <button onClick={signOut}>Sign out</button>
           </div>
           <div style={styles2.details}>
             <h2>Stytch objects</h2>
@@ -112,19 +110,6 @@ const styles2: Record<string, React.CSSProperties> = {
     padding: '48px',
     flexBasis: '900px',
     flexGrow: 1,
-  },
-  button: {
-    width: '100%',
-    height: '45px',
-    padding: '0 22px',
-    fontSize: '18px',
-    whiteSpace: 'nowrap',
-    borderRadius: '3px',
-    position: 'relative',
-    bottom: '0',
-    backgroundColor: '#e5e8eb',
-    color: '#19303d',
-    margin: '16px 0px',
   },
   secretBox: {
     display: 'flex',

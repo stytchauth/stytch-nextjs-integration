@@ -133,13 +133,12 @@ const VerifyOTPForm = (props: Props) => {
       <form onSubmit={onSubmit}>
         <p style={styles.error}>{isError ? 'Invalid code. Please try again.' : ''}</p>
         <div style={styles.passcodeInputContainer}>{renderPasscodeInputs()}</div>
-        <div style={styles.resendCodeContainer}>
-          <p style={styles.resendCodeText}>Didn’t get it? </p>
-          <button style={{ ...styles.resendCodeButton, ...styles.resendCodeText }} onClick={resendCode} type="button">
-            Resend code
-          </button>
-        </div>
-        <input className="primaryButton" disabled={isDisabled} id="button" type="submit" value="Continue" />
+        <button className="full-width" disabled={isDisabled} id="button" type="submit">
+          Continue
+        </button>
+        <button className="full-width no-fill mt2" onClick={resendCode} type="button">
+          Resend code
+        </button>
       </form>
     </div>
   );
@@ -164,24 +163,10 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     justifyContent: 'space-between',
     width: '100%',
+    marginBottom: '24px',
   },
   resendCodeContainer: {
     margin: '24px 0px',
-  },
-  resendCodeText: {
-    color: '#5c727d',
-    display: 'inline',
-    fontSize: '16px',
-    lineHeight: '20px',
-  },
-  resendCodeButton: {
-    backgroundColor: 'white',
-    border: 'none',
-    cursor: 'pointer',
-    fontWeight: '500',
-    height: 'fit-content',
-    padding: '0',
-    width: 'fit-content',
   },
 };
 
