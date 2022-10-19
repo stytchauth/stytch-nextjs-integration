@@ -11,11 +11,6 @@ function NavBar() {
         <Link href={'/'}>
           <Image alt="Stytch logo" height={20} src={stytchLogo} width={105} />
         </Link>
-
-        <span style={styles.logoFont}> + </span>
-        <a href="https://nextjs.org" rel="noopener noreferrer" target="_blank">
-          <Image alt="Next.js logo" height={40} src={nextjsLogo} width={105} />
-        </a>
       </div>
 
       <div style={styles.linkContainer}>

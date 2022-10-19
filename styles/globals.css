@@ -116,6 +116,7 @@ button {
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 button:hover {
@@ -151,6 +152,7 @@ a.btn {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  white-space: nowrap;
 }
 
 a.btn:hover {
@@ -185,5 +187,5 @@ a.btn.outlined {
 }
 
 .mb3 {
-  margin-bottom: 24px
+  margin-bottom: 24px;
 }

@@ -62,6 +62,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexGrow: 1,
     overflow: 'auto',
     marginBottom: '16px',
+    marginTop: '16px',
   },
   row: {
     display: 'flex',
