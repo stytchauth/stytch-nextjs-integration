@@ -3,7 +3,6 @@ html {
   padding: 0;
 }
 
-
 body {
   padding: 0;
   margin: 0;
@@ -19,9 +18,17 @@ body {
   background-color: #ecfaff;
 }
 
-h1, h2, h3, h4, h5, p, span, button, a {
-  color: #19303D;
-  font-family: IBM Plex Sans, "sans-serif";
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span,
+button,
+a {
+  color: #19303d;
+  font-family: IBM Plex Sans, 'sans-serif';
 }
 
 h1 {
@@ -37,7 +44,7 @@ h2 {
   font-weight: 600;
   font-size: 30px;
   line-height: 40px;
-  margin-bottom: 8px; 
+  margin-bottom: 8px;
 }
 
 h3 {
@@ -55,7 +62,6 @@ h4 {
   line-height: 30px;
 }
 
-
 h5 {
   font-style: normal;
   font-weight: 400;
@@ -63,11 +69,13 @@ h5 {
   line-height: 30px;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #5C727D;
+  color: #5c727d;
 }
 
-
-span, p, button, a {
+span,
+p,
+button,
+a {
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -79,10 +87,10 @@ p {
 }
 
 input {
-  border: 1px solid #ADBCC5;
+  border: 1px solid #adbcc5;
   box-sizing: border-box;
   border-radius: 3px;
-  color: #19303D;
+  color: #19303d;
   font-size: 18px;
   height: 45px;
   line-height: 25px;
@@ -91,7 +99,7 @@ input {
 
 input:disabled {
   background-color: white;
-  color: #19303D;
+  color: #19303d;
 }
 
 input:focus {
@@ -99,7 +107,7 @@ input:focus {
 }
 
 input::placeholder {
-  color: #ADBCC5;
+  color: #adbcc5;
 }
 
 /* Links */
@@ -111,28 +119,28 @@ a.no-underline {
 }
 
 a.no-underline:hover {
-  color: #5C727D;
+  color: #5c727d;
 }
-
 
 /* Buttons */
 button {
-  color: #FFFFFF;
-  background-color: #19303D;
+  color: #ffffff;
+  background-color: #19303d;
   width: fit-content;
   height: 45px;
   padding: 0 22px;
-  border-radius: 3px; 
+  border-radius: 3px;
   border: 0;
   min-width: 64px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
 }
 
 button:hover {
-  background-color: #5C727D;
+  background-color: #5c727d;
 }
 
 button.full-width {
@@ -141,24 +149,25 @@ button.full-width {
 
 button.no-fill {
   background-color: initial;
-  color: #19303D;
+  color: #19303d;
 }
 
 button.no-fill:hover {
-  background-color: #E5E8EB;
+  background-color: #e5e8eb;
 }
 
 /* Button links */
 a.btn {
-  color: #FFFFFF;
-  background-color: #19303D;
+  color: #ffffff;
+  background-color: #19303d;
   width: fit-content;
   height: 45px;
   padding: 0 22px;
-  border-radius: 3px; 
+  border-radius: 3px;
   border: 0;
   min-width: 64px;
-  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -168,13 +177,13 @@ a.btn {
 }
 
 a.btn:hover {
-  background-color: #5C727D;
+  background-color: #5c727d;
 }
 
 a.btn.outlined {
   background-color: initial;
-  color: #19303D;
-  border: 1px solid #19303D;
+  color: #19303d;
+  border: 1px solid #19303d;
 }
 
 /* Helper classes to add margin quickly */
@@ -187,7 +196,7 @@ a.btn.outlined {
 }
 
 .mt3 {
-  margin-top: 24px
+  margin-top: 24px;
 }
 
 .mb1 {
