@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import stytchLogo from '/public/stytch-logo.svg';
-import nextjsLogo from '/public/nextjs-logotype-dark.svg';
 import Link from 'next/link';
 
 function NavBar() {
@@ -9,7 +8,7 @@ function NavBar() {
     <div style={styles.container}>
       <div style={styles.logoContainer}>
         <Link href={'/'}>
-          <Image alt="Stytch logo" height={20} src={stytchLogo} width={105} />
+          <Image alt="Stytch logo" height={30} src={stytchLogo} width={152} />
         </Link>
       </div>
 
