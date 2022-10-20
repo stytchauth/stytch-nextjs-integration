@@ -57,6 +57,8 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '40px',
     display: 'flex',
     flexDirection: 'column',
+    marginLeft: ' 8px',
+    marginRight: '8px',
   },
   textContent: {
     flexGrow: 1,
