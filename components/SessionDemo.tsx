@@ -137,8 +137,8 @@ function SessionDemo() {
       </p>
 
       <p>
-        A <strong>session token</strong> is an opaque, random string. Your current <code>session_token</code> is <code>{token}</code>
-        . Session tokens are authenticated by making an API call to the{' '}
+        A <strong>session token</strong> is an opaque, random string. Your current <code>session_token</code> is{' '}
+        <code>{token}</code>. Session tokens are authenticated by making an API call to the{' '}
         <a href="https://stytch.com/docs/api/session-auth" target={'_blank'} rel="noreferrer">
           Authenticate session
         </a>{' '}
@@ -162,8 +162,9 @@ function SessionDemo() {
       <div className="mt3">
         <h3>Session object</h3>
         <p>
-          {`The session object contains information about the authentication factor(s) used to create the session, the
-          <code>user_id</code> associated with the session, and more. You can see your active session object, and it's contents below.`}
+          The session object contains information about the authentication factor(s) used to create the session, the{' '}
+          <code>user_id</code> associated with the session, and more. You can see your active session object, and it
+          {"'"}s contents below.
         </p>
         <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} maxHeight="500px" />
       </div>
