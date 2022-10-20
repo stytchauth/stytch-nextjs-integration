@@ -108,7 +108,7 @@ function SessionDemo() {
                   setTokenMetrics({ requestTime: Math.floor(end - start), authenticateTime: data.net_ms });
                 }}
               >
-                Authenticate
+                Test
               </button>
             </td>
             <td style={{ textAlign: 'center', paddingTop: '8px' }}>
@@ -124,7 +124,7 @@ function SessionDemo() {
                   setJwtMetrics({ requestTime: Math.floor(end - start), authenticateTime: data.net_ms });
                 }}
               >
-                Authenticate
+                Test
               </button>
             </td>
           </tr>
