@@ -137,7 +137,7 @@ function SessionDemo() {
       </p>
 
       <p>
-        A <strong>session token</strong> is an opaque, random string. Your current session token is <code>{token}</code>
+        A <strong>session token</strong> is an opaque, random string. Your current <code>session_token</code> is <code>{token}</code>
         . Session tokens are authenticated by making an API call to the{' '}
         <a href="https://stytch.com/docs/api/session-auth" target={'_blank'} rel="noreferrer">
           Authenticate session
