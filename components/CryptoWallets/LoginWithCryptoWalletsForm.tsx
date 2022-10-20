@@ -38,7 +38,7 @@ export const LoginWithCryptoWalletsForm = () => {
       crypto_wallet_address,
       crypto_wallet_type: 'ethereum',
       signature,
-      session_duration_minutes: 60,
+      session_duration_minutes: 60 * 24,
     });
   }, [stytchClient]);
 

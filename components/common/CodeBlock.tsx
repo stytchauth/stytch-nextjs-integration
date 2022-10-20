@@ -2,10 +2,11 @@ import React from 'react';
 
 type Props = {
   codeString: string;
+  maxHeight?: string;
 };
 
-function CodeBlock({ codeString }: Props) {
-  return <div style={styles.code}>{codeString}</div>;
+function CodeBlock({ codeString, maxHeight }: Props) {
+  return <div style={{ ...styles.code, maxHeight }}>{codeString}</div>;
 }
 
 const styles: Record<string, React.CSSProperties> = {
@@ -18,6 +19,7 @@ const styles: Record<string, React.CSSProperties> = {
     overflowWrap: 'anywhere',
     fontSize: '16px',
     fontFamily: '"IBM Plex Mono", monospace',
+    overflowY: 'scroll',
   },
 };
 

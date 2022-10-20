@@ -16,11 +16,11 @@ const Authenticate = () => {
     const token = router?.query?.token?.toString();
     if (token && stytch_token_type === OAUTH_TOKEN) {
       stytch.oauth.authenticate(token, {
-        session_duration_minutes: 30,
+        session_duration_minutes: 60 * 24,
       });
     } else if (token && stytch_token_type && [MAGIC_LINKS_TOKEN, RESET_LOGIN].includes(stytch_token_type)) {
       stytch.magicLinks.authenticate(token, {
-        session_duration_minutes: 30,
+        session_duration_minutes: 60 * 24,
       });
     }
   }, [router, stytch]);

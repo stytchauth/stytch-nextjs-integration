@@ -93,7 +93,7 @@ const VerifyOTPForm = (props: Props) => {
       }
 
       try {
-        await stytchClient.otps.authenticate(otpInput, methodId, { session_duration_minutes: 30 });
+        await stytchClient.otps.authenticate(otpInput, methodId, { session_duration_minutes: 60 * 24 });
         router.push('/profile');
       } catch {
         setIsError(true);

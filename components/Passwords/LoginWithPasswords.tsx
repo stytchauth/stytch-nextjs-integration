@@ -13,6 +13,9 @@ const config = {
     resetPasswordExpirationMinutes: 30,
     resetPasswordRedirectURL: getDomainFromWindow() + '/recipes/passwords/reset',
   },
+  sessionOptions: {
+    sessionDurationMinutes: 60 * 24,
+  },
   products: [Products.passwords],
 };
 
