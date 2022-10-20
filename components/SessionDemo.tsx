@@ -163,7 +163,7 @@ function SessionDemo() {
         <h3>Session object</h3>
         <p>
           {`The session object contains information about the authentication factor(s) used to create the session, the
-          user ID associated with the session, and more. You can see your active session object, and it's contents below.`}
+          <code>user_id</code> associated with the session, and more. You can see your active session object, and it's contents below.`}
         </p>
         <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} maxHeight="500px" />
       </div>
