@@ -49,9 +49,9 @@ const styles: Record<string, React.CSSProperties> = {
   details: {
     backgroundColor: '#FFF',
     padding: '24px',
-    flexBasis: '300px',
+    flexBasis: '450px',
     flexGrow: 1,
-    flexShrink: 0,
+    flexShrink: 1,
   },
 };
 
