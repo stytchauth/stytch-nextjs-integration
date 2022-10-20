@@ -33,36 +33,15 @@ function SessionDemo() {
         how sessions work below.
       </p>
       <h3>Authentication</h3>
-      <p>
-        Authenticate sessions on your backend before taking sensitive actions and returning protected data for a given
-        user. The Stytch SDK provides the session object in two forms: a token and a JWT. Both are automatically stored
-        as browser cookies named <code>stytch_session</code> and <code>stytch_session_jwt</code> respectively.
-      </p>
-
-      <p>
-        A <strong>session token</strong> is an opaque, random string. Your current session token is <code>{token}</code>
-        . Session tokens are authenticated by making an API call to the{' '}
-        <a href="https://stytch.com/docs/api/session-auth" target={'_blank'} rel="noreferrer">
-          Authenticate session
-        </a>{' '}
-        endpoint. Session tokens can be invalidated at any time by revoking the underlying session.
-      </p>
-
-      <p>
-        A <strong>session JWT</strong> is a JSON Web Token representing the session. A JWT can be authenticated from the
-        backend using a JSON Web Key (JWK) without any additional API calls which makes JWT authentication very fast.
-        However, once a JWT is issued it can not be revoked. For this reason, a session JWT has a fixed lifetime of 5
-        minutes. The Stytch SDK will automatically refresh, and replace the active JWT, so that it does not expire.
-      </p>
-
-      <p>
-        You can try out authenticating your session token and JWT below. The <strong>authentication time</strong> is the
-        amount of time the server spent on session authentication. The <strong>response time</strong> is the total
-        elasped time from when your browser made the authenticate request to when it received a response. This value
-        will vary depending on your location, and internet speed.
-      </p>
       <div
-        style={{ padding: '16px', border: '1px solid #E5E8EB', borderRadius: '4px', maxWidth: '750px', margin: 'auto' }}
+        style={{
+          padding: '16px',
+          border: '1px solid #E5E8EB',
+          borderRadius: '4px',
+          maxWidth: '750px',
+          margin: 'auto',
+          marginBottom: '16px',
+        }}
       >
         <table
           style={{
@@ -151,6 +130,35 @@ function SessionDemo() {
           </tr>
         </table>
       </div>
+      <p>
+        Authenticate sessions on your backend before taking sensitive actions and returning protected data for a given
+        user. The Stytch SDK provides the session object in two forms: a token and a JWT. Both are automatically stored
+        as browser cookies named <code>stytch_session</code> and <code>stytch_session_jwt</code> respectively.
+      </p>
+
+      <p>
+        A <strong>session token</strong> is an opaque, random string. Your current session token is <code>{token}</code>
+        . Session tokens are authenticated by making an API call to the{' '}
+        <a href="https://stytch.com/docs/api/session-auth" target={'_blank'} rel="noreferrer">
+          Authenticate session
+        </a>{' '}
+        endpoint. Session tokens can be invalidated at any time by revoking the underlying session.
+      </p>
+
+      <p>
+        A <strong>session JWT</strong> is a JSON Web Token representing the session. A JWT can be authenticated from the
+        backend using a JSON Web Key (JWK) without any additional API calls which makes JWT authentication very fast.
+        However, once a JWT is issued it can not be revoked. For this reason, a session JWT has a fixed lifetime of 5
+        minutes. The Stytch SDK will automatically refresh, and replace the active JWT, so that it does not expire.
+      </p>
+
+      <p>
+        You can try out authenticating your session token and JWT above. The <strong>authentication time</strong> is the
+        amount of time the server spent on session authentication. The <strong>response time</strong> is the total
+        elasped time from when your browser made the authenticate request to when it received a response. This value
+        will vary depending on your location, and internet speed.
+      </p>
+
       <div className="mt3">
         <h3>Session object</h3>
         <p>
