@@ -35,7 +35,6 @@ function SessionDemo() {
       <h3>Authentication</h3>
       <div
         style={{
-          padding: '16px',
           border: '1px solid #E5E8EB',
           borderRadius: '4px',
           maxWidth: '750px',
@@ -45,7 +44,9 @@ function SessionDemo() {
       >
         <table
           style={{
-            padding: '8px',
+            paddingLeft: '4px',
+            paddingRight: '4px',
+            paddingBottom: '4px',
             width: '100%',
           }}
         >
@@ -60,7 +61,7 @@ function SessionDemo() {
           </tr>
           <tr>
             <td>
-              <h5>Authentication time</h5>
+              <h5>Authenticate time</h5>
             </td>
             <td style={{ textAlign: 'center' }}>
               <span>
@@ -108,7 +109,7 @@ function SessionDemo() {
                   setTokenMetrics({ requestTime: Math.floor(end - start), authenticateTime: data.net_ms });
                 }}
               >
-                Authenticate
+                Test
               </button>
             </td>
             <td style={{ textAlign: 'center', paddingTop: '8px' }}>
@@ -124,7 +125,7 @@ function SessionDemo() {
                   setJwtMetrics({ requestTime: Math.floor(end - start), authenticateTime: data.net_ms });
                 }}
               >
-                Authenticate
+                Test
               </button>
             </td>
           </tr>

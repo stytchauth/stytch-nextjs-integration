@@ -48,10 +48,10 @@ const styles: Record<string, React.CSSProperties> = {
   },
   details: {
     backgroundColor: '#FFF',
-    padding: '48px',
+    padding: '24px',
     flexBasis: '450px',
     flexGrow: 1,
-    flexShrink: 0,
+    flexShrink: 1,
   },
 };
 
