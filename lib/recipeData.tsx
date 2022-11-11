@@ -2,7 +2,7 @@ import { LoginType } from './types';
 import LoginWithCryptoWallets from '../components/CryptoWallets/LoginWithCryptoWallets';
 import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
-import LoginWithStytchSDKUI from '../components/LoginWithStytchSDKUI';
+import LoginWithMagicLinks from '../components/LoginWithMagicLinks';
 import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 
@@ -15,42 +15,37 @@ export const Recipes: Record<string, LoginType> = {
     description:
       'In this recipe we demonstrate a login flow that includes Email magic links and several OAuth options and Google One Tap.',
     instructions: `To the right you'll see our pre-built login form with several OAuth providers and Email magic links. Below you can see the configuration and customization parameters used to create the login form.`,
-    component: <LoginWithStytchSDKUI />,
+    component: <LoginWithMagicLinks />,
     products: [LoginProducts.EML, LoginProducts.OAUTH],
     code: `const sdkStyle: StyleConfig = {
-  fontFamily: '"Helvetica New", Helvetica, sans-serif',
-  buttons: {
-    primary: {
-      backgroundColor: '#19303d',
-      textColor: '#ffffff',
-    },
-  },
+    fontFamily: '"Helvetica New", Helvetica, sans-serif',
+    primaryColor: '#19303d',
+    primaryTextColor: '#090909',
 };
-
-const sdkConfig: StytchLoginConfig = {
-  products: [Products.oauth, Products.emailMagicLinks],
-  emailMagicLinksOptions: {
-    loginRedirectURL: getDomainFromWindow() + '/authenticate',
-    loginExpirationMinutes: 30,
-    signupRedirectURL: getDomainFromWindow() + '/authenticate',
-    signupExpirationMinutes: 30,
-    createUserAsPending: false,
-  },
-  oauthOptions: {
-    providers: [
-      { type: OAuthProviders.Google, one_tap: true, position: OneTapPositions.embedded },
-      { type: OAuthProviders.Apple },
-      { type: OAuthProviders.Microsoft },
-      { type: OAuthProviders.Facebook },
-      { type: OAuthProviders.Github },
-      { type: OAuthProviders.GitLab },
-    ],
-    loginRedirectURL: getDomainFromWindow() + '/authenticate',
-    signupRedirectURL: getDomainFromWindow() + '/authenticate',
-  },
-};
-
-const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;`,
+      
+      const magicLinksView = {
+        products: [SDKProductTypes.oauth, SDKProductTypes.emailMagicLinks],
+        emailMagicLinksOptions: {
+          loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
+          loginExpirationMinutes: 30,
+          signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=em',
+          signupExpirationMinutes: 30,
+          createUserAsPending: false,
+        },
+        oauthOptions: {
+          providers: [
+            { type: OAuthProvidersTypes.Google },
+            { type: OAuthProvidersTypes.Apple },
+            { type: OAuthProvidersTypes.Microsoft },
+            { type: OAuthProvidersTypes.Facebook },
+            { type: OAuthProvidersTypes.Github },
+            { type: OAuthProvidersTypes.GitLab },
+          ],
+          loginRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
+          signupRedirectURL: REDIRECT_URL_BASE + '/authenticate?type=oauth',
+        },
+      };
+      `,
   },
   CUSTOM_UI_HEADLESS: {
     id: 'sdk-sms',
