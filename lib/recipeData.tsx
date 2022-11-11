@@ -2,7 +2,7 @@ import { LoginType } from './types';
 import LoginWithCryptoWallets from '../components/CryptoWallets/LoginWithCryptoWallets';
 import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
-import LoginWithMagicLinks from '../components/LoginWithMagicLinks';
+import LoginWithMagicLinks from '../components/LoginWithReactSDK';
 import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 
