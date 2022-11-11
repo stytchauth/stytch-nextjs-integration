@@ -36,6 +36,6 @@ const sdkConfig: StytchLoginConfig = {
   },
 };
 
-const LoginWithMagicLinks = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;
+const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;
 
-export default LoginWithMagicLinks;
+export default LoginWithStytchSDKUI;
