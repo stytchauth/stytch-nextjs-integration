@@ -5,8 +5,12 @@ import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
-  primaryColor: '#19303d',
-  primaryTextColor: '#090909',
+  buttons: {
+    primary: {
+      backgroundColor: '#19303d',
+      textColor: '#ffffff',
+    },
+  },
 };
 
 const sdkConfig: StytchLoginConfig = {
@@ -32,9 +36,5 @@ const sdkConfig: StytchLoginConfig = {
   },
 };
 
-const LoginWithMagicLinks = () => (
-  <div style={{ paddingRight: '20px' }}>
-    <StytchLogin config={sdkConfig} styles={sdkStyle} />
-  </div>
-);
+const LoginWithMagicLinks = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;
 export default LoginWithMagicLinks;
