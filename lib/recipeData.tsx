@@ -2,7 +2,7 @@ import { LoginType } from './types';
 import LoginWithCryptoWallets from '../components/CryptoWallets/LoginWithCryptoWallets';
 import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
-import LoginWithMagicLinks from '../components/LoginWithReactSDK';
+import LoginWithStytchSDKUI from '../components/LoginWithStytchSDKUI';
 import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 
@@ -15,7 +15,7 @@ export const Recipes: Record<string, LoginType> = {
     description:
       'In this recipe we demonstrate a login flow that includes Email magic links and several OAuth options and Google One Tap.',
     instructions: `To the right you'll see our pre-built login form with several OAuth providers and Email magic links. Below you can see the configuration and customization parameters used to create the login form.`,
-    component: <LoginWithMagicLinks />,
+    component: <LoginWithStytchSDKUI />,
     products: [LoginProducts.EML, LoginProducts.OAUTH],
     code: `const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
@@ -50,7 +50,7 @@ const sdkConfig: StytchLoginConfig = {
   },
 };
 
-const LoginWithMagicLinks = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;`,
+const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;`,
   },
   CUSTOM_UI_HEADLESS: {
     id: 'sdk-sms',
