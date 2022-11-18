@@ -128,7 +128,7 @@ const trigger = useCallback(async () => {
     details:
       'Build an email/password authentication experience including passwords resets, password strength checking, and magic links using prebuilt Stytch UI components.',
     description: ``,
-    instructions: `To the right you'll the Stytch UI configured for password login. Enter a new email address and you will be prompted to create an account with a secure password.`,
+    instructions: `To the right you'll see the Stytch UI configured for password login. Enter a new email address and you will be prompted to create an account with a secure password.`,
     component: <LoginWithPasswords />,
     products: [LoginProducts.PASSWORDS],
     code: `const loginConfig: StytchLoginConfig = {
