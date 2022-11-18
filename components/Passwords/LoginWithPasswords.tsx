@@ -1,12 +1,10 @@
 import React from 'react';
-import { Products } from '@stytch/vanilla-js';
+import { Products, StytchEvent, StytchError, StytchLoginConfig } from '@stytch/vanilla-js';
 import { useStytchUser, StytchLogin } from '@stytch/nextjs';
 import { useRouter } from 'next/router';
 import { getDomainFromWindow } from '../../lib/urlUtils';
 
-declare let window: any;
-
-const config = {
+const loginConfig: StytchLoginConfig = {
   passwordOptions: {
     loginExpirationMinutes: 30,
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
@@ -19,6 +17,11 @@ const config = {
   products: [Products.passwords],
 };
 
+const callbackConfig = {
+  onEvent: (message: StytchEvent) => console.log(message),
+  onError: (error: StytchError) => console.log(error),
+}
+
 const LoginWithPasswords = () => {
   const { user } = useStytchUser();
   const router = useRouter();
@@ -27,7 +30,7 @@ const LoginWithPasswords = () => {
     router.push('/profile');
   }
 
-  return <StytchLogin config={config} />;
+  return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;
 };
 
 export default LoginWithPasswords;

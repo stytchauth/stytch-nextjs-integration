@@ -17,16 +17,7 @@ export const Recipes: Record<string, LoginType> = {
     instructions: `To the right you'll see our pre-built login form with several OAuth providers and Email magic links. Below you can see the configuration and customization parameters used to create the login form.`,
     component: <LoginWithStytchSDKUI />,
     products: [LoginProducts.EML, LoginProducts.OAUTH],
-    code: `const sdkStyle: StyleConfig = {
-  fontFamily: '"Helvetica New", Helvetica, sans-serif',
-  buttons: {
-    primary: {
-      backgroundColor: '#19303d',
-      textColor: '#ffffff',
-    },
-  },
-};
-const sdkConfig: StytchLoginConfig = {
+    code: `const sdkConfig: StytchLoginConfig = {
   products: [Products.oauth, Products.emailMagicLinks],
   emailMagicLinksOptions: {
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
@@ -48,7 +39,7 @@ const sdkConfig: StytchLoginConfig = {
     signupRedirectURL: getDomainFromWindow() + '/authenticate',
   },
 };
-const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} />;`,
+const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} callbacks={callbackConfig} />;`,
   },
   CUSTOM_UI_HEADLESS: {
     id: 'sdk-sms',
@@ -137,29 +128,31 @@ const trigger = useCallback(async () => {
     details:
       'Build an email/password authentication experience including passwords resets, password strength checking, and magic links using prebuilt Stytch UI components.',
     description: ``,
-    instructions: `To the right you'll the Stytch UI configured for email/password login. Enter a new email address and you will be prompted to create an account with a secure password.`,
+    instructions: `To the right you'll see the Stytch UI configured for password login. Enter a new email address and you will be prompted to create an account with a secure password.`,
     component: <LoginWithPasswords />,
     products: [LoginProducts.PASSWORDS],
-    code: `import React from 'react';
-import { Products } from '@stytch/vanilla-js';
-import { StytchLogin } from '@stytch/nextjs';
-
-const config = {
+    code: `const loginConfig: StytchLoginConfig = {
   passwordOptions: {
     loginExpirationMinutes: 30,
-    loginRedirectURL: 'https://example.com/authenticate',
+    loginRedirectURL: getDomainFromWindow() + '/authenticate',
     resetPasswordExpirationMinutes: 30,
-    resetPasswordRedirectURL: 'https://example.com/authenticate',
+    resetPasswordRedirectURL: getDomainFromWindow() + '/recipes/passwords/reset',
   },
-  products: [
-    Products.passwords,
-  ],
+  sessionOptions: {
+    sessionDurationMinutes: 60 * 24,
+  },
+  products: [Products.passwords],
 };
 
-export const Login = () => {
-  return (
-      <StytchLogin config={config} />  );
-};`,
+const LoginWithPasswords = () => {
+  const { user } = useStytchUser();
+  const router = useRouter();
+
+  if (user) {
+    router.push('/profile');
+  }
+
+return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
   },
   FEEDBACK: {
     id: 'feedback',
