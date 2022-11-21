@@ -137,11 +137,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { session } = await stytchClient.sessions.authenticate({ session_token: storedSession });
     // Get the Stytch user object to display on page
     const user = await stytchClient.users.get(session.user_id);
+    console.log(user);
 
     // Determine from the user object if this user has registered a webauthn device at this domain
     const hasRegisteredWebAuthnDevice =
       user.webauthn_registrations.length > 0 &&
-      user.webauthn_registrations.find((i) => i.domain === getDomainFromRequest(context.req, true)) !== undefined;
+      user.webauthn_registrations.find((i) => i.domain === getDomainFromRequest(context.req, true) && i.verified) !==
+        undefined;
 
     // Determine if user has access to the super secret area data
     let superSecretData = null;
