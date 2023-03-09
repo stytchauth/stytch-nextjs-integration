@@ -5,6 +5,7 @@ import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
 import LoginWithStytchSDKUI from '../components/LoginWithStytchSDKUI';
 import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
+import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
 
 export const Recipes: Record<string, LoginType> = {
   REACT: {
@@ -153,6 +154,33 @@ const LoginWithPasswords = () => {
   }
 
 return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
+  },
+ONETAP: {
+    id: 'onetap',
+    title: 'Floating Google One Tap',
+    details:
+      'Render Google One Tap in a floating manner on your webpages, and nudge users down the login/signup flow from anywhere in your sites experience.',
+    description: `This authentication method can be used as a standalone login/signup method, or paired with other login methods such as email magic links.`,
+    instructions: `Google One Tap is powered through an iframe that Google provides compared to the traditional OAuth flow of redirecting the user to a separate Google page. As a result, the user can click directly on their desired account to login or create an account - hence, a “One Tap” experience. In the top right hand corner of this page you'll see the Stytch UI configured for Google One Tap if you have any active Chrome sessions in your browser.`,
+    component: <LoginWithOneTap />,
+    products: [LoginProducts.OAUTH],
+    code: `const sdkConfig: StytchLoginConfig = {
+  products: [Products.oauth],
+  oauthOptions: {
+    providers: [
+      { type: OAuthProviders.Google, one_tap: true, position: OneTapPositions.floating },
+    ],
+    loginRedirectURL: getDomainFromWindow() + '/authenticate',
+    signupRedirectURL: getDomainFromWindow() + '/authenticate',
+  },
+};
+
+const callbackConfig = {
+  onEvent: (message: StytchEvent) => console.log(message),
+  onError: (error: StytchError) => console.log(error),
+}
+
+const LoginWithOneTap = () => <StytchLogin config={sdkConfig} styles={sdkStyle} callbacks={callbackConfig} />;`,
   },
   FEEDBACK: {
     id: 'feedback',
