@@ -159,7 +159,7 @@ ONETAP: {
     id: 'onetap',
     title: 'Floating Google One Tap',
     details:
-      'Render Google One Tap in a floating manner on your webpages, and nudge users down the login/signup flow from anywhere in your sites experience.',
+      'Render Google One Tap in a floating manner on your webpages, and nudge users down the login/signup flow from anywhere in your user experience.',
     description: `This authentication method can be used as a standalone login/signup method, or paired with other login methods such as email magic links.`,
     instructions: `Google One Tap is powered through an iframe that Google provides compared to the traditional OAuth flow of redirecting the user to a separate Google page. As a result, the user can click directly on their desired account to login or create an account - hence, a “One Tap” experience. In the top right hand corner of this page you'll see the Stytch UI configured for Google One Tap if you have any active Chrome sessions in your browser.`,
     component: <LoginWithOneTap />,
@@ -180,7 +180,7 @@ const callbackConfig = {
   onError: (error: StytchError) => console.log(error),
 }
 
-const LoginWithOneTap = () => <StytchLogin config={sdkConfig} styles={sdkStyle} callbacks={callbackConfig} />;`,
+const LoginWithOneTap = () => <StytchLogin config={sdkConfig} callbacks={callbackConfig} />;`,
   },
   FEEDBACK: {
     id: 'feedback',
