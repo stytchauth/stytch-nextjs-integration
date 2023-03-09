@@ -16,6 +16,22 @@ const LoginDetails = ({ recipe }: Props) => {
     router.push(`/`);
   };
 
+  if (recipe.id == "onetap"){
+    return (
+      <div style={styles.container}>
+        <div style={styles.details}>
+          <h2>{recipe.title}</h2>
+          <p>{recipe.instructions}</p>
+          <CodeBlock codeString={recipe.code} />
+          <Link href="/">
+            <a className="btn outlined mt2">{'Back'}</a>
+          </Link>
+        </div>
+        {recipe.component}
+      </div>
+    );
+  }
+
   return (
     <div style={styles.container}>
       <div style={styles.details}>
