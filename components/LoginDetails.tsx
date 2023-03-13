@@ -16,19 +16,19 @@ const LoginDetails = ({ recipe }: Props) => {
     router.push(`/`);
   };
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.details}>
-        <h2>{recipe.title}</h2>
-        <p>{recipe.instructions}</p>
-        <CodeBlock codeString={recipe.code} />
-        <Link href="/">
-          <a className="btn outlined mt2">{'Back'}</a>
-        </Link>
-      </div>
-      <div style={styles.component}>{recipe.component}</div>
-    </div>
-  );
+  return (  
+      <div style={styles.container}>  
+        <div style={styles.details}>  
+          <h2>{recipe.title}</h2> 
+          <p>{recipe.instructions}</p>  
+          <CodeBlock codeString={recipe.code} />  
+          <Link href="/"> 
+            <a className="btn outlined mt2">{'Back'}</a>  
+          </Link> 
+        </div>  
+        {recipe.id == "onetap" ? recipe.component :  (<div style={styles.component}>{recipe.component}</div>)}
+      </div>  
+    );
 };
 
 const styles: Record<string, React.CSSProperties> = {
