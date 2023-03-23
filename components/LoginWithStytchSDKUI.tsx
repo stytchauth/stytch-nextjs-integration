@@ -24,12 +24,9 @@ const sdkConfig: StytchLoginConfig = {
   },
   oauthOptions: {
     providers: [
-      { type: OAuthProviders.Google, one_tap: true, position: OneTapPositions.embedded },
-      { type: OAuthProviders.Apple },
-      { type: OAuthProviders.Microsoft },
-      { type: OAuthProviders.Facebook },
-      { type: OAuthProviders.Github },
-      { type: OAuthProviders.GitLab },
+      { type: OAuthProviders.Github, custom_scopes: ['project', 'user'] },
+      { type: OAuthProviders.GitLab, custom_scopes: ['api'] },
+      { type: OAuthProviders.Bitbucket, custom_scopes: ['repository'] },
     ],
     loginRedirectURL: getDomainFromWindow() + '/authenticate',
     signupRedirectURL: getDomainFromWindow() + '/authenticate',
