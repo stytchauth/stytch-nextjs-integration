@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { useStytchUser, useStytch, useStytchSession } from '@stytch/nextjs';
 import CodeBlock from '../components/common/CodeBlock';
 import SessionDemo from '../components/SessionDemo';
@@ -55,4 +56,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default Profile;
+const ProfileNoSRR = dynamic(() => Promise.resolve(Profile), {
+  ssr: false,
+});
+
+export default ProfileNoSRR;
