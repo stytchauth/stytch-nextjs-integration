@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useStytchUser, useStytch, useStytchSession } from '@stytch/nextjs';
 import CodeBlock from '../components/common/CodeBlock';
 import SessionDemo from '../components/SessionDemo';
+import dynamic from 'next/dynamic';
 
 const Profile = () => {
   const { user, isInitialized } = useStytchUser();
@@ -11,6 +12,7 @@ const Profile = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("Stytch user: " + user + " Is initialized: " + isInitialized);
     if (isInitialized && !user) {
       router.replace('/');
     }
@@ -55,4 +57,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default Profile;
+const ProfileNoSRR = dynamic(() => Promise.resolve(Profile), {
+  ssr: false,
+});
+
+export default ProfileNoSRR;

@@ -16,8 +16,8 @@
   ],
   "dependencies": {
     "@github/webauthn-json": "^2.0.1",
-    "@stytch/nextjs": "^2.0.1",
-    "@stytch/vanilla-js": "^0.10.3",
+    "@stytch/nextjs": "^2.0.3",
+    "@stytch/vanilla-js": "^0.10.10",
     "cookies": "^0.8.0",
     "next": "^12.3.1",
     "react": "^18.2.0",
