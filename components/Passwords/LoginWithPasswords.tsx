@@ -1,5 +1,5 @@
 import React from 'react';
-import { Products, StytchEvent, StytchError, StytchLoginConfig } from '@stytch/vanilla-js';
+import { Products, StytchEvent, StytchError, StytchLoginConfig, OTPMethods } from '@stytch/vanilla-js';
 import { useStytchUser, StytchLogin } from '@stytch/nextjs';
 import { useRouter } from 'next/router';
 import { getDomainFromWindow } from '../../lib/urlUtils';
@@ -11,10 +11,16 @@ const loginConfig: StytchLoginConfig = {
     resetPasswordExpirationMinutes: 30,
     resetPasswordRedirectURL: getDomainFromWindow() + '/recipes/passwords/reset',
   },
+  otpOptions: {
+    methods: [
+      OTPMethods.Email
+    ],
+    expirationMinutes: 5
+  },
   sessionOptions: {
     sessionDurationMinutes: 60 * 24,
   },
-  products: [Products.passwords],
+  products: [Products.passwords, Products.otp],
 };
 
 const callbackConfig = {
