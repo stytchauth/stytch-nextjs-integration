@@ -16,7 +16,7 @@ The Authenticate page will render as a blank page while attempting to authentica
 
 If authentication is successful, the user is redirected to /profile.
 */
-const Authenticate: NextPage = () => {
+const Authenticate = () => {
   const { user, isInitialized } = useStytchUser();
   const [error, setError] = useState<any>();
   const stytch = useStytch();
