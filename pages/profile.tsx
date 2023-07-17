@@ -32,7 +32,9 @@ const Profile = () => {
         </button>
       </div>
       <div style={styles.details}>
-        <SessionDemo />
+      <h2>Session details</h2>
+        <p>Below is your Stytch session object, look for the idp object for your IdP tokens (e.g. GitHub access token). </p>
+        <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} maxHeight="500px" />
       </div>
     </div>
   );
