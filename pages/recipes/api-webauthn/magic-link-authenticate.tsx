@@ -32,9 +32,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     // Validate the token with Stytch, and create a session.
     const stytch = loadStytch();
-    const response = await stytch.magicLinks.authenticate(token as string, {
+    const authenticateParams = {
+      token: token as string,
       session_duration_minutes: 30,
-    });
+    };
+    const response = await stytch.magicLinks.authenticate(authenticateParams);
 
     // Save Stytch session to a cookie
     const cookies = new Cookies(context.req, context.res);
