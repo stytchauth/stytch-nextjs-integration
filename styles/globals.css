@@ -151,10 +151,6 @@ button {
   white-space: nowrap;
 }
 
-button:hover {
-  background-color: #5c727d;
-}
-
 button.full-width {
   width: 100%;
 }
