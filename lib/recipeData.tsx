@@ -6,6 +6,8 @@ import LoginWithStytchSDKUI from '../components/LoginWithStytchSDKUI';
 import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
+import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
+import {OTPMethods, Products, StytchLoginConfig} from "@stytch/vanilla-js";
 
 export const Recipes: Record<string, LoginType> = {
   REACT: {
@@ -127,7 +129,7 @@ const trigger = useCallback(async () => {
     id: 'passwords',
     title: 'Passwords',
     details:
-      'Build an email/password authentication experience including passwords resets, password strength checking, and magic links using prebuilt Stytch UI components.',
+        'Build an email/password authentication experience including passwords resets, password strength checking, and magic links using prebuilt Stytch UI components.',
     description: ``,
     instructions: `To the right you'll see the Stytch UI configured for password login. Enter a new email address and you will be prompted to create an account with a secure password.`,
     component: <LoginWithPasswords />,
@@ -152,14 +154,42 @@ const LoginWithPasswords = () => {
   if (user) {
     router.push('/profile');
   }
+return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
+  },
+  PASSKEYS: {
+    id: 'passkeys',
+    title: 'Passkeys',
+    details:
+        'Build an email/passkey authentication experience including passkey registrations and email OTPs using prebuilt Stytch UI components.',
+    description: ``,
+    instructions: 'To the right you\'ll see the Stytch UI configured for Email OTP and Passkey login. Continue with email to create an account. Then, once logged in, use the Passkey Registration SDK to create a passkey for your account.',
+    component: <LoginWithPasskeys />,
+    products: [LoginProducts.PASSKEYS],
+    code: `const loginConfig: StytchLoginConfig = 
+  sessionOptions: {
+    sessionDurationMinutes: 60,
+  },
+  products: [Products.passkeys, Products.otp],
+  otpOptions: {
+    expirationMinutes: 10,
+    methods: [OTPMethods.Email],
+  },
+};
+const LoginWithPasskeys = () => {
+  const { user } = useStytchUser();
+  const router = useRouter();
+
+  if (user) {
+    router.push('/recipes/passkeys/profile');
+  }
 
 return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
   },
-ONETAP: {
+  ONETAP: {
     id: 'onetap',
     title: 'Floating Google One Tap',
     details:
-      'Render Google One Tap in a floating manner on your webpages, and nudge users down the login/signup flow from anywhere in your user experience.',
+        'Render Google One Tap in a floating manner on your webpages, and nudge users down the login/signup flow from anywhere in your user experience.',
     description: `This authentication method can be used as a standalone login/signup method, or paired with other login methods such as email magic links.`,
     instructions: `Google One Tap is powered through an iframe that Google provides compared to the traditional OAuth flow of redirecting the user to a separate Google page. As a result, the user can click directly on their desired account to login or create an account - hence, a “One Tap” experience. In the top right hand corner of this page you'll see the Stytch UI configured for Google One Tap if you have any active Chrome sessions in your browser.`,
     component: <LoginWithOneTap />,
