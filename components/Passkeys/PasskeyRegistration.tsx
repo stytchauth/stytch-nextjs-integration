@@ -123,15 +123,22 @@ const PasskeyRegistration = () => {
             setDisplayView(PasskeyRegViews.StepUpWebAuthn);
         }
 
+        // If the user authenticates succesfully on the step-up page we should navigate to the registration view
+        if (displayView === PasskeyRegViews.StepUpEmail || displayView === PasskeyRegViews.StepUpWebAuthn
+            && !displayEmailStepUp && !displayPasskeyStepUp) {
+            setDisplayView(PasskeyRegViews.Register);
+        }
+
     },[session, user]);
 
     const callbackConfig = {
         onEvent: (message: StytchEvent) => {
             console.log(message)
             if (message.type === StytchEventType.PasskeySkip) {
+                alert("We just return to the start here, but you can do whatever you want!");
                 setDisplayView(PasskeyRegViews.Start);
             }
-            if (message.type === StytchEventType.PasskeyRegister) {
+            if (message.type === StytchEventType.PasskeyDone) {
                 setDisplayView(PasskeyRegViews.Success);
             }
         },
