@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AuthenticationFactor, Products, StytchError, StytchEvent, StytchEventType} from '@stytch/vanilla-js';
 import {StytchPasskeyRegistration, useStytch, useStytchSession, useStytchUser} from '@stytch/nextjs';
 
@@ -95,25 +95,44 @@ const StepUp = ({ type }: { type: StepUpType }) => {
 };
 
 
+enum PasskeyRegViews {
+    Start = "START",
+    Register = "REGISTER",
+    Success = "SUCCESS",
+    StepUpWebAuthn = "STEP_UP_WEBAUTHN",
+    StepUpEmail = "STEP_UP_EMAIL",
+}
+
 const PasskeyRegistration = () => {
-    const [displayRegistration, setDisplayRegistration] = useState(false);
+    const [displayView, setDisplayView] = useState(PasskeyRegViews.Start);
     const { session } = useStytchSession();
     const { user, isInitialized } = useStytchUser();
-    const sessionHasPasskeyFactor = session?.authentication_factors?.some(
-        (factor: AuthenticationFactor) => factor.delivery_method === "webauthn_registration",
-    );
-    const sessionHasEmailFactor = session?.authentication_factors?.some(
-        (factor: AuthenticationFactor) => factor.delivery_method === "email",
-    );
 
-    const displayPasskeyStepUp = sessionHasEmailFactor && !sessionHasPasskeyFactor &&  user?.webauthn_registrations?.length! > 0;
-    const displayEmailStepUp = !sessionHasEmailFactor && sessionHasPasskeyFactor;
+    useEffect(() => {
+        const sessionHasPasskeyFactor = session?.authentication_factors?.some(
+            (factor: AuthenticationFactor) => factor.delivery_method === "webauthn_registration",
+        );
+        const sessionHasEmailFactor = session?.authentication_factors?.some(
+            (factor: AuthenticationFactor) => factor.delivery_method === "email",
+        );
+        const displayPasskeyStepUp = sessionHasEmailFactor && !sessionHasPasskeyFactor &&  user?.webauthn_registrations?.length! > 0;
+        const displayEmailStepUp = !sessionHasEmailFactor && sessionHasPasskeyFactor;
+        if (displayEmailStepUp) {
+            setDisplayView(PasskeyRegViews.StepUpEmail);
+        } else if (displayPasskeyStepUp){
+            setDisplayView(PasskeyRegViews.StepUpWebAuthn);
+        }
+
+    },[session, user]);
 
     const callbackConfig = {
         onEvent: (message: StytchEvent) => {
             console.log(message)
-            if (message.type === StytchEventType.PasskeySkip || message.type === StytchEventType.PasskeyDone) {
-                setDisplayRegistration(false);
+            if (message.type === StytchEventType.PasskeySkip) {
+                setDisplayView(PasskeyRegViews.Start);
+            }
+            if (message.type === StytchEventType.PasskeyRegister) {
+                setDisplayView(PasskeyRegViews.Success);
             }
         },
         onError: (error: StytchError) => console.log(error),
@@ -121,28 +140,39 @@ const PasskeyRegistration = () => {
 
     return (
         <>
-            {!displayRegistration && (
-                <button style={styles.registerButton} onClick={() => setDisplayRegistration(true)}>
+            {displayView === PasskeyRegViews.Start && (
+                <button style={styles.registerButton} onClick={() => setDisplayView(PasskeyRegViews.Register)}>
                     Register a Passkey
                 </button>
             )}
-            {
-                displayRegistration && (
-                    <>
-                        {displayPasskeyStepUp && <StepUp type={StepUpType.webauthn} />}
-                        {displayEmailStepUp && <StepUp type={StepUpType.email} />}
-                        {
-                            !displayPasskeyStepUp && !displayEmailStepUp &&
-                            <StytchPasskeyRegistration
-                                styles={{ container: { width: "400px" } }}
-                                config={{ products: [Products.passkeys]}}
-                                callbacks={callbackConfig}
-                            />
-                        }
-
-                    </>
-                )
-            }
+            {displayView === PasskeyRegViews.StepUpWebAuthn && (
+                <StepUp type={StepUpType.webauthn} />
+            )}
+            {displayView === PasskeyRegViews.StepUpEmail && (
+                <StepUp type={StepUpType.email} />
+            )}
+            {displayView === PasskeyRegViews.Register && (
+                <StytchPasskeyRegistration
+                    styles={{ container: { width: "400px" } }}
+                    config={{ products: [Products.passkeys]}}
+                    callbacks={callbackConfig}
+                />
+            )}
+            {displayView === PasskeyRegViews.Success && (
+                <div>
+                    <h3>Passkey created!</h3>
+                    <p>
+                        You can now use your Passkey to sign in to your account.
+                    </p>
+                    <button
+                        className="mt2"
+                        onClick={() => {
+                            setDisplayView(PasskeyRegViews.Register);
+                        }}>
+                        Register Another Passkey
+                    </button>
+                </div>
+            )}
         </>
     );
 };
