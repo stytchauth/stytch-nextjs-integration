@@ -24,7 +24,7 @@ const sdkConfig: StytchLoginConfig = {
   },
   oauthOptions: {
     providers: [
-      { type: OAuthProviders.Google },
+      { type: OAuthProviders.Google, one_tap: true, position: 'forceLegacyEmbedded' },
       { type: OAuthProviders.Apple },
       { type: OAuthProviders.Microsoft },
       { type: OAuthProviders.Facebook },
