@@ -7,6 +7,7 @@ import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
 import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
+import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
 import {OTPMethods, Products, StytchLoginConfig} from "@stytch/vanilla-js";
 
 export const Recipes: Record<string, LoginType> = {
@@ -211,6 +212,25 @@ const callbackConfig = {
 }
 
 const LoginWithOneTap = () => <StytchLogin config={sdkConfig} callbacks={callbackConfig} />;`,
+  },
+  SMS_MFA: {
+    id: 'smsmfa',
+    title: 'Headless SDK + SMS MFA',
+    details:
+        'blah blah.',
+    description: `blah blah blah blahblah blahblah blahblah blahblah blahblah blahblah blahblah blahblah blahblah blah`,
+    instructions: `blah blah`,
+    component: <LoginWithSMSMFA />,
+    products: [LoginProducts.EML, LoginProducts.SMS],
+    code: `// Send the Email magic link
+    await stytchClient.magicLinks.email.loginOrCreate({
+      email: data.email,
+      login_magic_link_url:  REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
+      signup_magic_link_url: REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
+    });
+      
+    // Authenticate the Email magic link
+    await stytchClient.magicLinks.authenticate(token as string);`,
   },
   FEEDBACK: {
     id: 'feedback',

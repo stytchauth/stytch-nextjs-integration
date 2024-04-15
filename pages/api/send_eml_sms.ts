@@ -15,11 +15,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     try {
       const domain = getDomainFromRequest(req);
 
-
       await stytchClient.magicLinks.email.loginOrCreate({
         email: data.email,
-        login_magic_link_url: `${domain}/recipes/api-webauthn/magic-link-authenticate`,
-        signup_magic_link_url: `${domain}/recipes/api-webauthn/magic-link-authenticate`,
+        login_magic_link_url: `${domain}/recipes/api-sms-mfa/magic-link-authenticate`,
+        signup_magic_link_url: `${domain}/recipes/api-sms-mfa/magic-link-authenticate`,
       });
       return res.status(200).end();
     } catch (error) {
