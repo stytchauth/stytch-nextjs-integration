@@ -6,7 +6,7 @@ import loadStytch from '../../../lib/loadStytch';
 import { getDomainFromRequest } from '../../../lib/urlUtils';
 import Cookies from 'cookies';
 import lock from '/public/lock.svg';
-import WebAuthnAuthenticateButton from '../../../components/EmailWebAuthn/WebAuthnAuthenticateButton';
+import SMSOTPButton from '../../../components/EmailSMS/SMSOTPButton';
 import CodeBlock from '../../../components/common/CodeBlock';
 
 type Props = {
@@ -40,10 +40,10 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
     } catch {}
   };
 
-  const handleRegister = (e: any) => {
-    e.preventDefault();
-    router.push('./webauthn-register');
-  };
+  // const handleRegister = (e: any) => {
+  //   e.preventDefault();
+  //   router.push('./webauthn-register');
+  // };
 
   return (
     <div>
@@ -63,20 +63,9 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
                   <Image alt="Lock" src={lock} width={100} />
                   <p>
                     Super secret profile information is secured by two factor authentication. To unlock this area
-                    complete the WebAuthn flow.
+                    complete the SMS OTP flow.
                   </p>
-                  {hasRegisteredWebAuthnDevice ? (
-                    <>
-                      <WebAuthnAuthenticateButton />
-                    </>
-                  ) : (
-                    <>
-                      <p>You have not yet registered a device for Webauthn as a second factor.</p>
-                      <button onClick={handleRegister} className="full-width">
-                        Register now
-                      </button>
-                    </>
-                  )}
+                      <SMSOTPButton />
                 </>
               )}
             </div>
@@ -125,7 +114,7 @@ const styles2: Record<string, React.CSSProperties> = {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get session from cookie
   const cookies = new Cookies(context.req, context.res);
-  const storedSession = cookies.get('api_webauthn_session');
+  const storedSession = cookies.get('api_session');
   // If session does not exist display an error
   if (!storedSession) {
     return { props: { error: 'No user session found.' } };
