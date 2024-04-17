@@ -8,7 +8,7 @@ type Props = {
   setPhoneNumber: (phoneNumber: string) => void;
 };
 
-const SendOTPForm = (props: Props): JSX.Element => {
+const SMSRegister = (props: Props): JSX.Element => {
   const stytchClient = useStytch();
   const { phoneNumber, setMethodId, setOTPSent, setPhoneNumber } = props;
   const [isDisabled, setIsDisabled] = React.useState(true);
@@ -34,7 +34,7 @@ const SendOTPForm = (props: Props): JSX.Element => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isValidNumber(phoneNumber)) {
-      const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber);
+      const { method_id } = await stytchClient.otps.sms.send('+1' + phoneNumber);
       setMethodId(method_id);
       setOTPSent(true);
     }
@@ -96,4 +96,4 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default SendOTPForm;
+export default SMSRegister;

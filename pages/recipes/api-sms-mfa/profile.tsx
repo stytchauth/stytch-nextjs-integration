@@ -3,21 +3,19 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import loadStytch from '../../../lib/loadStytch';
-import { getDomainFromRequest } from '../../../lib/urlUtils';
 import Cookies from 'cookies';
 import lock from '/public/lock.svg';
-import SMSOTPButton from '../../../components/EmailSMS/SMSOTPButton';
 import CodeBlock from '../../../components/common/CodeBlock';
 
 type Props = {
   user?: Object;
   session?: Object;
   error?: string;
-  hasRegisteredWebAuthnDevice?: boolean;
+  hasRegisteredPhone?: boolean;
   superSecretData?: string;
 };
 
-const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecretData }: Props) => {
+const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData }: Props) => {
   const router = useRouter();
 
   if (error) {
@@ -40,10 +38,10 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
     } catch {}
   };
 
-  // const handleRegister = (e: any) => {
-  //   e.preventDefault();
-  //   router.push('./webauthn-register');
-  // };
+  const handleRegister = (e: any) => {
+    e.preventDefault();
+    router.push('./sms-register');
+  };
 
   return (
     <div>
@@ -63,9 +61,20 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
                   <Image alt="Lock" src={lock} width={100} />
                   <p>
                     Super secret profile information is secured by two factor authentication. To unlock this area
-                    complete the SMS OTP flow.
+                    complete the WebAuthn flow.
                   </p>
-                      <SMSOTPButton user={user as {phone_numbers: {phone_number: string}[]}} />
+                  {hasRegisteredPhone ? (
+                    <>
+                      {/* <SMSOTPButton /> */}
+                    </>
+                  ) : (
+                    <>
+                      <p>You have not yet registered a device for SMS as a second factor.</p>
+                      <button onClick={handleRegister} className="full-width">
+                        Register now
+                      </button>
+                    </>
+                  )}
                 </>
               )}
             </div>
@@ -128,17 +137,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const user = await stytchClient.users.get({ user_id: session.user_id });
 
     // Determine from the user object if this user has registered a webauthn device at this domain
-    const hasRegisteredWebAuthnDevice =
-      user.webauthn_registrations.length > 0 &&
-      user.webauthn_registrations.find((i) => i.domain === getDomainFromRequest(context.req, true) && i.verified) !==
-        undefined;
+    const hasRegisteredPhone =
+      user.phone_numbers.length > 0
 
     // Determine if user has access to the super secret area data
     let superSecretData = null;
     if (
       session.authentication_factors.length === 2 &&
       session.authentication_factors.find((i) => i.delivery_method === 'email') &&
-      session.authentication_factors.find((i) => i.delivery_method === 'webauthn_registration')
+      session.authentication_factors.find((i) => i.delivery_method === 'sms')
     ) {
       superSecretData =
         "Welcome to the super secret data area. If you inspect your Stytch session on the right you will see you have two authentication factors: email and webauthn_registration. You're only able to view the Super secret area because your session has both of these authentication factors.";
@@ -148,7 +155,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       props: {
         user: JSON.parse(JSON.stringify(user)),
         session: JSON.parse(JSON.stringify(session)),
-        hasRegisteredWebAuthnDevice,
+        hasRegisteredPhone,
         superSecretData,
       },
     };

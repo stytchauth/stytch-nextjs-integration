@@ -49,22 +49,22 @@ const VerifyOTPForm = (props: Props) => {
     10,
   )}`;
 
-  useEffect(() => {
-    async function sendOTP() {
-      setOTPSent(true);
-      //console.log('verifyotpform');
-      const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber.replace('+1', ''));
-      //setOTPSent(true);
-      setCurrentMethodId(method_id);
+  // useEffect(() => {
+  //   async function sendOTP() {
+  //     setOTPSent(true);
+  //     //console.log('verifyotpform');
+  //     // const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber.replace('+1', ''));
+  //     //setOTPSent(true);
+  //     // setCurrentMethodId(method_id);
 
-    }
+  //   }
     
-    if (!otpSent) {
-      //setOTPSent(true);  //set the OTP before we rerender the state to hopefully prevent multiple calls & two SMS OTPs
-      sendOTP();
-      //setOTPSent(true);
-    }
-  },[otpSent, stytchClient, phoneNumber, setCurrentMethodId, setOTPSent]); //dependencies in the array for useEffect() - otpSent, stytchClient, phoneNumber, setCurrentMethodId, setOTPSent
+  //   if (!otpSent) {
+  //     //setOTPSent(true);  //set the OTP before we rerender the state to hopefully prevent multiple calls & two SMS OTPs
+  //     sendOTP();
+  //     //setOTPSent(true);
+  //   }
+  // },[otpSent, stytchClient, phoneNumber, setCurrentMethodId, setOTPSent]); //dependencies in the array for useEffect() - otpSent, stytchClient, phoneNumber, setCurrentMethodId, setOTPSent
 
   const isValidPasscode = () => {
     const regex = /^[0-9]$/g;

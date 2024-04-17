@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
-import SendOTPForm from './SendOTPForm';
+import SMSRegister from './SMSRegister';
 import VerifyOTPForm from './VerifyOTPForm';
 
-type Props = {
-  user: {
-    phone_numbers: {
-      phone_number: string
-    }[]
-  };
-}
+// type Props = {
+//   user: {
+//     phone_numbers: {
+//       phone_number: string
+//     }[]
+//   };
+// }
 
-const SMSOTPButton = (props: Props) => {
-  const { user } = props;
+const SMSOTPButton = () => {
+  // const { user } = props;
   const [otpSent, setOTPSent] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [methodId, setMethodId] = useState('');
 
-  if (!phoneNumber && user.phone_numbers.length > 0) {
-    setPhoneNumber(user.phone_numbers[0].phone_number);
-  }
+  // if (!phoneNumber && user.phone_numbers.length > 0) {
+  //   setPhoneNumber(user.phone_numbers[0].phone_number);
+  // }
 
   return (
     <div>
@@ -30,7 +30,7 @@ const SMSOTPButton = (props: Props) => {
           setOTPSent={setOTPSent}
         />
       ) : (
-        <SendOTPForm
+        <SMSRegister
           phoneNumber={phoneNumber}
           setMethodId={setMethodId}
           setOTPSent={setOTPSent}
