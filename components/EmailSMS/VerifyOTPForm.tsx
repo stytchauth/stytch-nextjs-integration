@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useStytch } from '@stytch/nextjs';
 import { useRouter } from 'next/router';
 
@@ -29,23 +29,42 @@ const autoTab = (target: HTMLInputElement, key?: string) => {
 };
 
 type Props = {
+  otpSent: boolean;
   methodId: string;
   phoneNumber: string;
+  setOTPSent: (submitted: boolean) => void;
 };
 
 const VerifyOTPForm = (props: Props) => {
-  const { methodId, phoneNumber } = props;
+  const { otpSent, methodId, phoneNumber, setOTPSent } = props;
   const [isDisabled, setIsDisabled] = React.useState(true);
   const [currentMethodId, setCurrentMethodId] = React.useState(methodId);
   const [isError, setIsError] = React.useState(false);
   const router = useRouter();
   const stytchClient = useStytch();
 
-  const strippedNumber = phoneNumber.replace(/\D/g, '');
+  const strippedNumber = phoneNumber.replace('+1', '').replace(/\D/g, '');
   const parsedPhoneNumber = `(${strippedNumber.slice(0, 3)}) ${strippedNumber.slice(3, 6)}-${strippedNumber.slice(
     6,
     10,
   )}`;
+
+  useEffect(() => {
+    async function sendOTP() {
+      setOTPSent(true);
+      //console.log('verifyotpform');
+      const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber.replace('+1', ''));
+      //setOTPSent(true);
+      setCurrentMethodId(method_id);
+
+    }
+    
+    if (!otpSent) {
+      //setOTPSent(true);  //set the OTP before we rerender the state to hopefully prevent multiple calls & two SMS OTPs
+      sendOTP();
+      //setOTPSent(true);
+    }
+  },[otpSent, stytchClient, phoneNumber, setCurrentMethodId, setOTPSent]); //dependencies in the array for useEffect() - otpSent, stytchClient, phoneNumber, setCurrentMethodId, setOTPSent
 
   const isValidPasscode = () => {
     const regex = /^[0-9]$/g;
@@ -77,7 +96,7 @@ const VerifyOTPForm = (props: Props) => {
   };
 
   const resendCode = async () => {
-    const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber);
+    const { method_id } = await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber.replace('+1', ''));
     setCurrentMethodId(method_id);
     resetPasscode();
     setIsError(false);
@@ -93,7 +112,7 @@ const VerifyOTPForm = (props: Props) => {
       }
 
       try {
-        await stytchClient.otps.authenticate(otpInput, methodId, { session_duration_minutes: 60 * 24 });
+        await stytchClient.otps.authenticate(otpInput, currentMethodId, { session_duration_minutes: 60 });
         router.push('/profile');
       } catch {
         setIsError(true);

@@ -65,7 +65,7 @@ const Profile = ({ error, user, session, hasRegisteredWebAuthnDevice, superSecre
                     Super secret profile information is secured by two factor authentication. To unlock this area
                     complete the SMS OTP flow.
                   </p>
-                      <SMSOTPButton />
+                      <SMSOTPButton user={user as {phone_numbers: {phone_number: string}[]}} />
                 </>
               )}
             </div>

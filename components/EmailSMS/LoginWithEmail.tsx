@@ -64,10 +64,6 @@ const LoginWithSMSMFA = () => {
             <a className="link" href="https://stytch.com/dashboard/redirect-urls" target="_blank" rel="noreferrer">
               Stytch Dashboard
             </a>
-            , and check out our full{' '}
-            <a className="link" href="https://stytch.com/docs/webauthn" target="_blank" rel="noreferrer">
-              WebAuthn guide
-            </a>
             .
           </p>
           <form onSubmit={onSubmit}>
