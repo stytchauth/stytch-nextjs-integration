@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, FormEventHandler, useState } from 'react';
-import { sendEMLSMS } from '../../lib/emlUtils';
+import { sendEML } from '../../lib/emlUtils';
 
 const STATUS = {
   INIT: 0,
@@ -38,7 +38,7 @@ const LoginWithSMSMFA = () => {
     }
 
     if (isValidEmail(email)) {
-      const resp = await sendEMLSMS(email);
+      const resp = await sendEML(email, '/recipes/api-sms-mfa/magic-link-authenticate', '/recipes/api-sms-mfa/magic-link-authenticate');
       if (resp.status === 200) {
         setEMLSent(STATUS.SENT);
       } else {

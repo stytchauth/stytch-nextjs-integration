@@ -37,7 +37,7 @@ const LoginWithEmail = () => {
     }
 
     if (isValidEmail(email)) {
-      const resp = await sendEML(email);
+      const resp = await sendEML(email, '/recipes/api-webauthn/magic-link-authenticate', '/recipes/api-webauthn/magic-link-authenticate');
       if (resp.status === 200) {
         setEMLSent(STATUS.SENT);
       } else {

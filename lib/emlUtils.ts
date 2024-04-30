@@ -1,17 +1,12 @@
-export const sendEML = async (email: string) =>
-
+export const sendEML = async (email: string, signup_redirect: string, login_redirect: string) =>
   fetch('/api/send_eml', {
     method: 'POST',
     body: JSON.stringify({
-      email
+      email,
+      signup_redirect,
+      login_redirect,
     }),
-  });
+});
 
-  export const sendEMLSMS = async (email: string) =>
 
-  fetch('/api/send_eml_sms', {
-    method: 'POST',
-    body: JSON.stringify({
-      email
-    }),
-  });
+

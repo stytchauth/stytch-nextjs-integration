@@ -1,99 +1,197 @@
-import React from 'react';
-import { useStytch } from '@stytch/nextjs';
+import React, { useState } from 'react';
+import { sendOTP, authOTP } from '../../lib/otpUtils';
+import { useRouter } from 'next/router';
 
-type Props = {
-  phoneNumber: string;
-  setMethodId: (methodId: string) => void;
-  setOTPSent: (submitted: boolean) => void;
-  setPhoneNumber: (phoneNumber: string) => void;
-};
 
-const SMSRegister = (props: Props): JSX.Element => {
-  const stytchClient = useStytch();
-  const { phoneNumber, setMethodId, setOTPSent, setPhoneNumber } = props;
-  const [isDisabled, setIsDisabled] = React.useState(true);
+function formatPhoneNumber(phoneNumber: string): string {
+  const cleaned = phoneNumber.replace(/\D/g, '').replace(/^1/, '');
+  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  }
+  return phoneNumber;
+}
 
-  const isValidNumber = (phoneNumberValue: string) => {
-    // Regex validates phone numbers in (xxx)xxx-xxxx, xxx-xxx-xxxx, xxxxxxxxxx, and xxx.xxx.xxxx format
-    const regex = /^[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/g;
-    if (phoneNumberValue.match(regex)) {
-      return true;
-    }
-    return false;
+function SMSRegister() {
+  const router = useRouter();
+  const [openModalPhone, setOpenModalPhone] = useState(false);
+  const [openModal, setOpenModal] = useState(false); // State variable to control the OTP modal visibility
+  const [otp, setOTP] = useState(''); // State variable to store the OTP input by the user
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [methodId, setMethodId] = useState(''); // State variable to store the method ID
+
+  const phoneModalOpen = async () => {
+    // Open the modal for phone number input
+    setOpenModalPhone(true);
   };
 
-  const onPhoneNumberChange = (e: React.ChangeEvent<{ value: string }>) => {
-    setPhoneNumber(e.target.value);
-    if (isValidNumber(e.target.value)) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
+  const handlePhoneModalClose = () => {
+    // Close the phone number input modal
+    setOpenModalPhone(false);
+  };
+
+  const handleOTPModalClose = () => {
+    // Clear OTP input and close the OTP modal
+    setOTP('');
+    setOpenModal(false);
+  };
+
+  const handleOTPSubmit = async () => {
+    try {
+      // Call the authOTP function with methodID and otp
+      await authOTP(methodId, otp);
+
+      // Redirect to profile page
+      router.push('./profile');
+    } catch (error) {
+      // Handle errors here, e.g., display an error message
+      console.error('Failed to authenticate OTP:', error);
     }
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isValidNumber(phoneNumber)) {
-      const { method_id } = await stytchClient.otps.sms.send('+1' + phoneNumber);
-      setMethodId(method_id);
-      setOTPSent(true);
+  const handlePhoneSubmit = async () => {
+    try {
+      // Send OTP with the provided phone number
+      const response = await sendOTP('+1' + phoneNumber);
+
+      // Check if response is empty
+      if (!response) {
+        console.error('Empty response received from sendOTP');
+        return;
+      }
+  
+      const responseData = await response;
+      console.log('Response data from sendOTP:', responseData);
+      setMethodId(responseData.phone_id);
+      console.log('Method id', responseData.phone_id);
+
+      // Close the phone number input modal and open the OTP input modal
+      setOpenModalPhone(false);
+      setOpenModal(true);
+    } catch (error) {
+      // Handle errors here, e.g., display an error message
+      console.error('Failed to send OTP:', error);
     }
   };
 
   return (
     <div>
-      <h2>Enter phone number</h2>
-      <p>Enter your phone number to receive a passcode for authentication.</p>
-      <form onSubmit={onSubmit}>
-        <div style={styles.telInput}>
-          <input style={styles.flag} name="intlCode" type="text" value="+1" readOnly />
-          <input
-            style={styles.phoneNumber}
-            placeholder="(123) 456-7890"
-            value={phoneNumber}
-            onChange={onPhoneNumberChange}
-            type="tel"
-          />
+      <button className="full-width" onClick={phoneModalOpen}>
+        Register
+      </button>
+      
+      {/* Modal for phone number input */}
+      {openModalPhone && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modal}>
+            <span style={styles.close} onClick={handlePhoneModalClose}>&times;</span>
+            <h2>Enter phone number</h2>
+            <p>Enter your phone number to receive a passcode for authentication.</p>
+            <div style={styles.telInput}>
+              <input style={styles.flag} name="intlCode" type="text" value="+1" readOnly />
+              <input
+                style={styles.phoneNumber}
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="(123) 456-7890"
+              />
+            </div>
+            <p style={styles.smsDisclaimer}>
+              By continuing, you consent to receive an SMS for verification. Message and data rates may apply.
+            </p>
+            <button className="full-width" onClick={handlePhoneSubmit}>Submit</button>
+          </div>
         </div>
-        <p style={styles.smsDisclaimer}>
-          By continuing, you consent to receive an SMS for verification. Message and data rates may apply.
-        </p>
-        <button className="full-width" disabled={isDisabled} id="button" type="submit">
-          Continue
-        </button>
-      </form>
+      )}
+
+      {/* Modal for OTP input */}
+      {openModal && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modal}>
+            <span style={styles.close} onClick={handleOTPModalClose}>&times;</span>
+            <h2>Enter Passcode</h2>
+            <p>
+              A 6-digit passcode was sent to you at <strong>{formatPhoneNumber(phoneNumber)}</strong>.
+            </p>
+            <input
+              style={styles.otpInput}
+              type="text"
+              value={otp}
+              onChange={(e) => setOTP(e.target.value)}
+              placeholder="Enter OTP"
+            />
+            <p style={styles.smsDisclaimer}>
+              Didn&apos;t receive a code? <a style={styles.smsDisclaimer} href="#" onClick={(e) => { e.preventDefault(); handlePhoneSubmit(); }}>Resend</a>
+            </p>
+            <button className="full-width" onClick={handleOTPSubmit}>Submit</button>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
+}
 
 const styles: Record<string, React.CSSProperties> = {
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    position: 'relative',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: '0 3px 3px 0',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
+  },
+  close: {
+    position: 'absolute',
+    top: 10,
+    right: 18,
+    cursor: 'pointer',
+  },
   telInput: {
     display: 'flex',
-    marginTop: '20px',
-    whiteSpace: 'nowrap',
+    alignItems: 'center',
+    border: '1px solid #ccc', 
+    borderRadius: '3px', 
+    marginBottom: '10px', 
+  },
+  flag: {
+    background: 'url("/stars-and-stripes.png") no-repeat scroll 8px 16px',
+    paddingLeft: 40,
+    borderRadius: 0,
+    width: 75,
+    border: 'none', 
   },
   phoneNumber: {
-    borderLeft: 'none',
-    borderRadius: '0 3px 3px 0',
-    paddingLeft: '0',
-    flexGrow: '1',
-    fontSize: '18px',
+    border: 'none',
+    paddingLeft: 10,
+    fontSize: 18,
+    flexGrow: 1,
     width: 'calc(100%)',
   },
   smsDisclaimer: {
     color: '#5c727d',
-    fontSize: '14px',
-    lineHeight: '20px',
-    marginBottom: '16px',
-    marginTop: '24px',
+    fontSize: 14,
+    marginBottom: 16,
+    marginTop: 15,
   },
-  flag: {
-    background: "url('/stars-and-stripes.png') no-repeat scroll 8px 16px",
-    borderRight: 'none',
-    borderRadius: '3px 0 0 3px',
-    width: '80px',
-    paddingLeft: '48px',
-  },
+  otpInput: {
+    display: 'flex',
+    alignItems: 'center',
+    border: '1px solid #ccc', 
+    borderRadius: '3px', 
+    marginBottom: '10px', 
+    width: '100%', 
+  }  
 };
 
 export default SMSRegister;
