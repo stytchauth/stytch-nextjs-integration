@@ -11,10 +11,6 @@ export async function sendOTP(phoneNumber: string) {
   }
   const data = await resp.json();
 
-  // Log the response data for debugging --> it's getting Logged
-  console.log('RESPONSE HERE: ', data);
-  console.log("loooooook:", data.phone_id);
-
   // Check if data is empty or missing required fields
   if (!data || !data.phone_id) {
     throw new Error('Failed to parse response: Unexpected format');

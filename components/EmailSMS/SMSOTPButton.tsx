@@ -53,7 +53,6 @@ function SMSOTPButton({ phoneNumber }: SMSOTPButtonProps) {
   const handleOTPSubmit = async () => {
     try {
       // Call the authOTP function with methodID and otp
-      console.log('METHOD', methodId);
       await authOTP(methodId, otp);
 
       // Redirect to profile page
