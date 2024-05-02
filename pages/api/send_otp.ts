@@ -41,9 +41,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
         session_token: storedSession
       });
 
-      // Send success response
-      console.log(res.status(200).json(authResp));
-      return res.status(200).end();
+      return res.status(200).json(authResp);
     } catch (error) {
         const errorString = JSON.stringify(error);
         console.log(error);
