@@ -42,6 +42,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
       });
 
       // Send success response
+      console.log(res.status(200).json(authResp));
       return res.status(200).end();
     } catch (error) {
         const errorString = JSON.stringify(error);
