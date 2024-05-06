@@ -41,12 +41,10 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
     } catch {}
   };
 
-  // Check if there is no user, if so, render <></>
   if (!user) {
     return <></>;
   }
 
-  // Render the rest of the JSX (if there is a user)
   return (
     <div style={styles.container}>
       <div style={styles.details}>

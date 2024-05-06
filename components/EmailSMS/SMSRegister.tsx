@@ -15,46 +15,37 @@ function formatPhoneNumber(phoneNumber: string): string {
 function SMSRegister() {
   const router = useRouter();
   const [openModalPhone, setOpenModalPhone] = useState(false);
-  const [openModal, setOpenModal] = useState(false); // State variable to control the OTP modal visibility
-  const [otp, setOTP] = useState(''); // State variable to store the OTP input by the user
+  const [openModal, setOpenModal] = useState(false);
+  const [otp, setOTP] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [methodId, setMethodId] = useState(''); // State variable to store the method ID
+  const [methodId, setMethodId] = useState('');
 
   const phoneModalOpen = async () => {
-    // Open the modal for phone number input
     setOpenModalPhone(true);
   };
 
   const handlePhoneModalClose = () => {
-    // Close the phone number input modal
     setOpenModalPhone(false);
   };
 
   const handleOTPModalClose = () => {
-    // Clear OTP input and close the OTP modal
     setOTP('');
     setOpenModal(false);
   };
 
   const handleOTPSubmit = async () => {
     try {
-      // Call the authOTP function with methodID and otp
       await authOTP(methodId, otp);
-
-      // Redirect to profile page
       router.push('./profile');
     } catch (error) {
-      // Handle errors here, e.g., display an error message
       console.error('Failed to authenticate OTP:', error);
     }
   };
 
   const handlePhoneSubmit = async () => {
     try {
-      // Send OTP with the provided phone number
       const response = await sendOTP('+1' + phoneNumber);
 
-      // Check if response is empty
       if (!response) {
         console.error('Empty response received from sendOTP');
         return;
@@ -65,11 +56,9 @@ function SMSRegister() {
       setMethodId(responseData.phone_id);
       console.log('Method id', responseData.phone_id);
 
-      // Close the phone number input modal and open the OTP input modal
       setOpenModalPhone(false);
       setOpenModal(true);
     } catch (error) {
-      // Handle errors here, e.g., display an error message
       console.error('Failed to send OTP:', error);
     }
   };

@@ -19,7 +19,6 @@ const LoginWithSMSMFA = () => {
   const path = "webauthn";
 
   const isValidEmail = (emailValue: string) => {
-    // Overly simple email address regex
     const regex = /\S+@\S+\.\S+/;
     return regex.test(emailValue);
   };
