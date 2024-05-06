@@ -33,8 +33,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
         return res.status(400).json({ errorString: 'Phone number is missing in the request body' });
       }
 
-    //   const domain = getDomainFromRequest(req);
-      // Send OTP via Stytch SMS
       const authResp = await stytchClient.otps.sms.send({
         phone_number: data.phoneNumber,
         expiration_minutes: 10,

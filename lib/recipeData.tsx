@@ -215,14 +215,14 @@ const LoginWithOneTap = () => <StytchLogin config={sdkConfig} callbacks={callbac
   },
   SMS_MFA: {
     id: 'smsmfa',
-    title: 'Headless SDK + SMS MFA',
+    title: 'SMS MFA',
     details:
         'For developers that want full control over the user experience while minimizing backend code and session logic, you can interact directly with Stytch’s Headless SDK and API’s. ',
-    description: `In this example we use custom UI elements and backend API logic to implement a two factor authentication flow with Email magic links as the primary factor and SMS OTP as the secondary factor.`,
+    description: `In this example we use custom UI elements and backend API logic to implement a two factor authentication flow with email magic links as the primary factor and SMS OTP as the secondary factor.`,
     instructions: `To the right you'll see an email address entry form built within this example app, not using our pre-built UI. You'll start off the flow by using Email magic links as a primary factor, then you'll be prompted to register and authenticate via SMS OTP as a second factor in a multi factor authentication flow.`,
     component: <LoginWithSMSMFA />,
     products: [LoginProducts.EML, LoginProducts.SMS],
-    code: `// Send the Email magic link
+    code: `// Send the email magic link
     await stytchClient.magicLinks.email.loginOrCreate({
       email: data.email,
       login_magic_link_url:  REDIRECT_URL_BASE + '/api-sms-mfa/magic-link-authenticate',

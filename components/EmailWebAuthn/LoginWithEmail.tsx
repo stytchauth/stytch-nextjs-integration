@@ -7,6 +7,11 @@ const STATUS = {
   ERROR: 2,
 };
 
+const auth_domain = {
+  login: '/recipes/api-webauthn/magic-link-authenticate',
+  signup: '/recipes/api-webauthn/magic-link-authenticate'
+}
+
 const LoginWithEmail = () => {
   const [emlSent, setEMLSent] = useState(STATUS.INIT);
   const [email, setEmail] = useState('');
@@ -37,7 +42,7 @@ const LoginWithEmail = () => {
     }
 
     if (isValidEmail(email)) {
-      const resp = await sendEML(email, '/recipes/api-webauthn/magic-link-authenticate', '/recipes/api-webauthn/magic-link-authenticate');
+      const resp = await sendEML(email, auth_domain.login, auth_domain.signup);
       if (resp.status === 200) {
         setEMLSent(STATUS.SENT);
       } else {

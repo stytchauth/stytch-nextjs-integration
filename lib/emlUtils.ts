@@ -7,6 +7,3 @@ export const sendEML = async (email: string, signup_redirect: string, login_redi
       login_redirect,
     }),
 });
-
-
-

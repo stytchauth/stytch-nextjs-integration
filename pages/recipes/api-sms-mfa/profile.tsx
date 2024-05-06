@@ -41,61 +41,52 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
     } catch {}
   };
 
-  const handleRegister = (e: any) => {
-    e.preventDefault();
-    router.push('./sms-register');
-  };
+  // Check if there is no user, if so, render <></>
+  if (!user) {
+    return <></>;
+  }
 
-  // Set phoneNumber with optional chaining to handle potential undefined
-  const phoneNumberToShow = phoneNumber ?? '';
-
+  // Render the rest of the JSX (if there is a user)
   return (
-    <div>
-      {!user ? (
-        <div />
-      ) : (
-        <div style={styles2.container}>
-          <div style={styles2.details}>
-            <h2>Welcome to your profile!</h2>
+    <div style={styles.container}>
+      <div style={styles.details}>
+        <h2>Welcome to your profile!</h2>
 
-            <div style={styles2.secretBox}>
-              <h3>Super secret area</h3>
-              {superSecretData ? (
-                <p>{superSecretData}</p>
+        <div style={styles.secretBox}>
+          <h3>Super secret area</h3>
+          {superSecretData ? (
+            <p>{superSecretData}</p>
+          ) : (
+            <>
+              <Image alt="Lock" src={lock} width={100} />
+              <p>
+                Super secret profile information is secured by two factor authentication. To unlock this area complete
+                the SMS OTP flow.
+              </p>
+              {hasRegisteredPhone && phoneNumber ? (
+                <SMSOTPButton phoneNumber={phoneNumber} />
               ) : (
-                <>
-                  <Image alt="Lock" src={lock} width={100} />
-                  <p>
-                    Super secret profile information is secured by two factor authentication. To unlock this area
-                    complete the SMS OTP flow.
-                  </p>
-                  { (hasRegisteredPhone && phoneNumberToShow) ? (
-                    <SMSOTPButton phoneNumber={phoneNumberToShow} />
-                  ) : (
-
-                    <SMSRegister/>
-                  )}
-                </>
+                <SMSRegister />
               )}
-            </div>
-
-            <button onClick={signOut}>Sign out</button>
-          </div>
-          <div style={styles2.details}>
-            <h2>Stytch objects</h2>
-
-            <h3>Session</h3>
-            <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} />
-            <h3>User</h3>
-            <CodeBlock codeString={JSON.stringify(user, null, 2).replace(' ', '')} />
-          </div>
+            </>
+          )}
         </div>
-      )}
+
+        <button onClick={signOut}>Sign out</button>
+      </div>
+      <div style={styles.details}>
+        <h2>Stytch objects</h2>
+
+        <h3>Session</h3>
+        <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} />
+        <h3>User</h3>
+        <CodeBlock codeString={JSON.stringify(user, null, 2).replace(' ', '')} />
+      </div>
     </div>
   );
 };
 
-const styles2: Record<string, React.CSSProperties> = {
+const styles: Record<string, React.CSSProperties> = {
   container: {
     display: 'flex',
     margin: '48px 24px',

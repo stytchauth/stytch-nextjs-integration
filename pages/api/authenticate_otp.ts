@@ -20,8 +20,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     const data = JSON.parse(req.body);
 
     try {
-      const domain = getDomainFromRequest(req);
-
       const { session_token } = await stytchClient.otps.authenticate({
         method_id: data.method_id,
         code: data.otp_code,
@@ -39,7 +37,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       return res.status(400).json({ errorString });
     }
   } else {
-    // Handle any other HTTP method
+    return res.status(405).json({ errorString: 'Method Not Allowed' });
   }
 }
 
