@@ -110,28 +110,24 @@ const styles: Record<string, React.CSSProperties> = {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // Get session from cookie
   const cookies = new Cookies(context.req, context.res);
   const storedSession = cookies.get('api_session');
-  // If session does not exist display an error
+
   if (!storedSession) {
     return { props: { error: 'No user session found.' } };
   }
 
   try {
     const stytchClient = loadStytch();
-    // Validate Stytch session
+
     const { session } = await stytchClient.sessions.authenticate({ session_token: storedSession });
-    // Get the Stytch user object to display on page
+
     const user = await stytchClient.users.get({ user_id: session.user_id });
 
-    // Determine from the user object if this user has registered a webauthn device at this domain
     const hasRegisteredPhone = user.phone_numbers.length > 0;
 
-    // Set phoneNumber with optional chaining to handle potential undefined
     const phoneNumber = user.phone_numbers[0]?.phone_number ?? '';
 
-    // Determine if user has access to the super secret area data
     let superSecretData = null;
     if (
       session.authentication_factors.length === 2 &&
@@ -152,7 +148,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    // If session authentication fails display the error.
     return { props: { error: JSON.stringify(error) } };
   }
 };

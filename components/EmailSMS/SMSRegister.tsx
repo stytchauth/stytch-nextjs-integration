@@ -52,9 +52,7 @@ function SMSRegister() {
       }
   
       const responseData = await response;
-      console.log('Response data from sendOTP:', responseData);
       setMethodId(responseData.phone_id);
-      console.log('Method id', responseData.phone_id);
 
       setOpenModalPhone(false);
       setOpenModal(true);

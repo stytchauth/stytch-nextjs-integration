@@ -7,29 +7,22 @@ const STATUS = {
   ERROR: 2,
 };
 
-const auth_domain = {
-  login: '/recipes/api-sms-mfa/magic-link-authenticate',
-  signup: '/recipes/api-sms-mfa/magic-link-authenticate'
-}
+const EML_REDIRECT = '/recipes/api-sms-mfa/magic-link-authenticate';
 
 const LoginWithSMSMFA = () => {
   const [emlSent, setEMLSent] = useState(STATUS.INIT);
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
-  const path = "webauthn";
 
   const isValidEmail = (emailValue: string) => {
+    // Overly simple email address regex
     const regex = /\S+@\S+\.\S+/;
     return regex.test(emailValue);
   };
 
   const onEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value);
-    if (isValidEmail(e.target.value)) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
+    setIsDisabled(!isValidEmail(e.target.value));
   };
 
   const onSubmit: FormEventHandler = async (e) => {
@@ -37,12 +30,11 @@ const LoginWithSMSMFA = () => {
     // Disable button right away to prevent sending emails twice
     if (isDisabled) {
       return;
-    } else {
-      setIsDisabled(true);
     }
+    setIsDisabled(true);
 
     if (isValidEmail(email)) {
-      const resp = await sendEML(email, auth_domain.login, auth_domain.signup);
+      const resp = await sendEML(email, EML_REDIRECT, EML_REDIRECT);
       if (resp.status === 200) {
         setEMLSent(STATUS.SENT);
       } else {

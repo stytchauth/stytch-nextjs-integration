@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { sendOTP, authOTP } from '../../lib/otpUtils';
-import * as webauthnJson from '@github/webauthn-json';
 import { useRouter } from 'next/router';
 
 interface SMSOTPButtonProps {
@@ -18,14 +17,15 @@ function formatPhoneNumber(phoneNumber: string): string {
 
 function SMSOTPButton({ phoneNumber }: SMSOTPButtonProps) {
   const router = useRouter();
-  const [openModal, setOpenModal] = useState(false); 
-  const [otp, setOTP] = useState('');
-  const [methodId, setMethodId] = useState('');
+  const [openModal, setOpenModal] = useState(false); // State variable to control the modal visibility
+  const [otp, setOTP] = useState(''); // State variable to store the OTP input by the user
+  const [methodId, setMethodId] = useState(''); // State variable to store the method ID
 
   const authenticate = async () => {
     try {
       const response = await sendOTP(phoneNumber);
 
+      // Check if response is empty
       if (!response) {
         console.error('Empty response received from sendOTP');
         return;
@@ -34,25 +34,38 @@ function SMSOTPButton({ phoneNumber }: SMSOTPButtonProps) {
       const responseData = await response;
       setMethodId(responseData.phone_id);
       
+      // Set state to open the modal
       setOpenModal(true);
 
     } catch (error) {
+      // Handle errors here, e.g., display an error message
       console.error('Failed to send OTP:', error);
     }
   };
 
   const handleModalClose = () => {
+    // Clear OTP input and close the modal
     setOTP('');
     setOpenModal(false);
   };
 
   const handleOTPSubmit = async () => {
     try {
+      // Call the authOTP function with methodID and otp
+      console.log('METHOD', methodId);
       await authOTP(methodId, otp);
+
+      // Redirect to profile page
       router.push('./profile');
     } catch (error) {
+      // Handle errors here, e.g., display an error message
       console.error('Failed to authenticate OTP:', error);
     }
+  };
+
+  const handleResend = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    authenticate();
   };
 
   return (
@@ -61,6 +74,7 @@ function SMSOTPButton({ phoneNumber }: SMSOTPButtonProps) {
         Authenticate
       </button>
       
+      {/* Modal for OTP input */}
       {openModal && (
         <div style={styles.modalOverlay}>
           <div style={styles.modal}>
@@ -77,7 +91,7 @@ function SMSOTPButton({ phoneNumber }: SMSOTPButtonProps) {
               placeholder="Enter OTP"
             />
             <p style={styles.smsDisclaimer}>
-            Didn&apos;t receive a code? <a style={styles.smsDisclaimer} href="#" onClick={(e) => { e.preventDefault(); authenticate(); }}>Resend</a>
+            Didn&apos;t receive a code? <a style={styles.smsDisclaimer} href="#" onClick={handleResend}>Resend</a>
             </p>
             <button className="full-width" onClick={handleOTPSubmit}>Submit</button>
           </div>
@@ -86,7 +100,6 @@ function SMSOTPButton({ phoneNumber }: SMSOTPButtonProps) {
     </div>
   );
 }
-
 
 const styles: Record<string, React.CSSProperties> = {
   modalOverlay: {

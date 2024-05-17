@@ -7,10 +7,7 @@ const STATUS = {
   ERROR: 2,
 };
 
-const auth_domain = {
-  login: '/recipes/api-webauthn/magic-link-authenticate',
-  signup: '/recipes/api-webauthn/magic-link-authenticate'
-}
+const EML_REDIRECT = "/recipes/api-webauthn/magic-link-authenticate";
 
 const LoginWithEmail = () => {
   const [emlSent, setEMLSent] = useState(STATUS.INIT);
@@ -42,7 +39,7 @@ const LoginWithEmail = () => {
     }
 
     if (isValidEmail(email)) {
-      const resp = await sendEML(email, auth_domain.login, auth_domain.signup);
+      const resp = await sendEML(email, EML_REDIRECT, EML_REDIRECT);
       if (resp.status === 200) {
         setEMLSent(STATUS.SENT);
       } else {
