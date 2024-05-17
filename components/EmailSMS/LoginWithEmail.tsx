@@ -7,9 +7,9 @@ const STATUS = {
   ERROR: 2,
 };
 
-const EML_REDIRECT = "/recipes/api-webauthn/magic-link-authenticate";
+const EML_REDIRECT = '/recipes/api-sms-mfa/magic-link-authenticate';
 
-const LoginWithEmail = () => {
+const LoginWithSMSMFA = () => {
   const [emlSent, setEMLSent] = useState(STATUS.INIT);
   const [email, setEmail] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
@@ -22,11 +22,7 @@ const LoginWithEmail = () => {
 
   const onEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value);
-    if (isValidEmail(e.target.value)) {
-      setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
-    }
+    setIsDisabled(!isValidEmail(e.target.value));
   };
 
   const onSubmit: FormEventHandler = async (e) => {
@@ -34,9 +30,8 @@ const LoginWithEmail = () => {
     // Disable button right away to prevent sending emails twice
     if (isDisabled) {
       return;
-    } else {
-      setIsDisabled(true);
     }
+    setIsDisabled(true);
 
     if (isValidEmail(email)) {
       const resp = await sendEML(email, EML_REDIRECT, EML_REDIRECT);
@@ -64,10 +59,6 @@ const LoginWithEmail = () => {
             Make sure to add the appropriate Redirect URL in your{' '}
             <a className="link" href="https://stytch.com/dashboard/redirect-urls" target="_blank" rel="noreferrer">
               Stytch Dashboard
-            </a>
-            , and check out our full{' '}
-            <a className="link" href="https://stytch.com/docs/webauthn" target="_blank" rel="noreferrer">
-              WebAuthn guide
             </a>
             .
           </p>
@@ -115,4 +106,4 @@ const styles: Record<string, React.CSSProperties> = {
   },
 };
 
-export default LoginWithEmail;
+export default LoginWithSMSMFA;

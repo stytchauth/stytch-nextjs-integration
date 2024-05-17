@@ -7,6 +7,7 @@ import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
 import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
+import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
 import {OTPMethods, Products, StytchLoginConfig} from "@stytch/vanilla-js";
 
 export const Recipes: Record<string, LoginType> = {
@@ -16,7 +17,7 @@ export const Recipes: Record<string, LoginType> = {
     details:
       'Use our pre-built UI component and JavaScript SDK to get started with Stytch as quickly as possible. The pre-built UI provides a beautiful and customizable login form to make sure your brand stays front and center and the SDK handles everything else for you.',
     description:
-      'In this recipe we demonstrate a login flow that includes Email magic links and several OAuth options and Google One Tap.',
+      'In this example we demonstrate a login flow that includes Email magic links and several OAuth options and Google One Tap.',
     instructions: `To the right you'll see our pre-built login form with several OAuth providers and Email magic links. Below you can see the configuration and customization parameters used to create the login form.`,
     component: <LoginWithStytchSDKUI />,
     products: [LoginProducts.EML, LoginProducts.OAUTH],
@@ -212,6 +213,26 @@ const callbackConfig = {
 
 const LoginWithOneTap = () => <StytchLogin config={sdkConfig} callbacks={callbackConfig} />;`,
   },
+  SMS_MFA: {
+    id: 'smsmfa',
+    title: 'SMS MFA',
+    details:
+        'For developers that want full control over the user experience while minimizing backend code and session logic, you can interact directly with Stytch’s Headless SDK and API’s. ',
+    description: `In this example we use custom UI elements and backend API logic to implement a two factor authentication flow with email magic links as the primary factor and SMS OTP as the secondary factor.`,
+    instructions: `To the right you'll see an email address entry form built within this example app, not using our pre-built UI. You'll start off the flow by using Email magic links as a primary factor, then you'll be prompted to register and authenticate via SMS OTP as a second factor in a multi factor authentication flow.`,
+    component: <LoginWithSMSMFA />,
+    products: [LoginProducts.EML, LoginProducts.SMS],
+    code: `// Send the email magic link
+    await stytchClient.magicLinks.email.loginOrCreate({
+      email: data.email,
+      login_magic_link_url:  REDIRECT_URL_BASE + '/api-sms-mfa/magic-link-authenticate',
+      signup_magic_link_url: REDIRECT_URL_BASE + '/api-sms-mfa/magic-link-authenticate',
+    });
+      
+    // Authenticate the Email magic link
+    await stytchClient.magicLinks.authenticate(token as string);`,
+  },
+
   FEEDBACK: {
     id: 'feedback',
     title: 'Feedback',
