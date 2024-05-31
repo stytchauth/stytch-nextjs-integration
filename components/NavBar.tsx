@@ -4,6 +4,10 @@ import stytchLogo from '/public/stytch-logo.svg';
 import Link from 'next/link';
 
 function NavBar() {
+  const [windowInnerWidth, setWindowInnerWidth] = React.useState<number>(window.innerWidth);
+  addEventListener('resize', () => {
+    setWindowInnerWidth(window.innerWidth);
+  });
   return (
     <div style={styles.container}>
       <div style={styles.leftNav}>
@@ -12,36 +16,40 @@ function NavBar() {
             <Image alt="Stytch logo" height={30} src={stytchLogo} width={152} />
           </Link>
         </div>
-        <div style={styles.leftLinks}>
-          <a className="no-underline" href="https://stytch.com" rel="noopener noreferrer" target="_blank">
-            Stytch.com
-          </a>
-          <a className="no-underline" href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
-            Documentation
-          </a>
-          <a
-            className="no-underline"
-            href="https://github.com/stytchauth/stytch-nextjs-integration"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Github
-          </a>
-          <a
-            className="no-underline"
-            href="https://stytch.com/docs/api/postman"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Postman
-          </a>
-        </div>
+        {windowInnerWidth > 1000 && (
+          <div style={styles.leftLinks}>
+            <a className="no-underline" href="https://stytch.com" rel="noopener noreferrer" target="_blank">
+              Stytch.com
+            </a>
+            <a className="no-underline" href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
+              Documentation
+            </a>
+            <a
+              className="no-underline"
+              href="https://github.com/stytchauth/stytch-nextjs-integration"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Github
+            </a>
+            <a
+              className="no-underline"
+              href="https://stytch.com/docs/api/postman"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Postman
+            </a>
+          </div>
+        )}
       </div>
 
       <div style={styles.rightLinks}>
-        <a className="no-underline" href="https://stytch.com/contact" rel="noopener noreferrer" target="_blank">
-          Contact Us
-        </a>
+        {windowInnerWidth > 600 && (
+          <a className="no-underline" href="https://stytch.com/contact" rel="noopener noreferrer" target="_blank">
+            Contact Us
+          </a>
+        )}
         <a
           className="no-underline"
           style={styles.secondaryButton}
