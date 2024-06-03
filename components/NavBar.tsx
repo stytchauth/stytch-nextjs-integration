@@ -4,10 +4,18 @@ import stytchLogo from '/public/stytch-logo.svg';
 import Link from 'next/link';
 
 function NavBar() {
-  const [windowInnerWidth, setWindowInnerWidth] = React.useState<number>(window.innerWidth);
-  addEventListener('resize', () => {
-    setWindowInnerWidth(window.innerWidth);
-  });
+  const [windowInnerWidth, setWindowInnerWidth] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowInnerWidth(window.innerWidth);
+    };
+    handleWindowResize();
+    window.addEventListener('resize', handleWindowResize);
+    // unsubscribe from the event on component unmount
+    return () => window.removeEventListener('resize', handleWindowResize);
+  }, []);
+
   return (
     <div style={styles.container}>
       <div style={styles.leftNav}>
