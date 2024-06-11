@@ -26,10 +26,22 @@ function NavBar() {
         </div>
         {windowInnerWidth > 1000 && (
           <div style={styles.leftLinks}>
-            <a className="no-underline" href="https://stytch.com" rel="noopener noreferrer" target="_blank">
+            <a
+              className="no-underline"
+              style={styles.leftLinkText}
+              href="https://stytch.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               Stytch.com
             </a>
-            <a className="no-underline" href="https://stytch.com/docs" rel="noopener noreferrer" target="_blank">
+            <a
+              className="no-underline"
+              style={styles.leftLinkText}
+              href="https://stytch.com/docs"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               Documentation
             </a>
             <a
@@ -37,11 +49,13 @@ function NavBar() {
               href="https://github.com/stytchauth/stytch-nextjs-integration"
               rel="noopener noreferrer"
               target="_blank"
+              style={styles.leftLinkText}
             >
               Github
             </a>
             <a
               className="no-underline"
+              style={styles.leftLinkText}
               href="https://stytch.com/docs/api/postman"
               rel="noopener noreferrer"
               target="_blank"
@@ -54,7 +68,15 @@ function NavBar() {
 
       <div style={styles.rightLinks}>
         {windowInnerWidth > 600 && (
-          <a className="no-underline" href="https://stytch.com/contact" rel="noopener noreferrer" target="_blank">
+          <a
+            className="no-underline"
+            style={styles.tertiaryButton}
+            href="https://stytch.com/contact"
+            rel="noopener noreferrer"
+            target="_blank"
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#E5E8EB')} // fog
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
+          >
             Contact Us
           </a>
         )}
@@ -102,6 +124,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     alignItems: 'center',
     paddingRight: '32px',
+    cursor: 'pointer',
   },
   logoFont: {
     padding: '0px 0px 10px 20px',
@@ -110,6 +133,10 @@ const styles: Record<string, React.CSSProperties> = {
   leftLinks: {
     display: 'flex',
     gap: '16px',
+  },
+  leftLinkText: {
+    fontSize: '16px',
+    fontWeight: 500,
   },
   rightLinks: {
     display: 'flex',
@@ -124,6 +151,11 @@ const styles: Record<string, React.CSSProperties> = {
   },
   secondaryButton: {
     backgroundColor: '#E5E8EB', // fog
+    color: '#19303D', // charcoal
+    padding: '8px 22px',
+    borderRadius: '3px',
+  },
+  tertiaryButton: {
     color: '#19303D', // charcoal
     padding: '8px 22px',
     borderRadius: '3px',
