@@ -12,7 +12,6 @@ function NavBar() {
     };
     handleWindowResize();
     window.addEventListener('resize', handleWindowResize);
-    // unsubscribe from the event on component unmount
     return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
 
@@ -86,8 +85,8 @@ function NavBar() {
           href="https://stytch.com/pricing"
           rel="noopener noreferrer"
           target="_blank"
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#ADBCC5')} // cement
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#E5E8EB')} // fog
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#E5E8EB')} // fog
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'white')}
         >
           See pricing
         </a>
@@ -154,6 +153,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#19303D', // charcoal
     padding: '8px 22px',
     borderRadius: '3px',
+    border: '1px solid #19303D', // charcoal
   },
   tertiaryButton: {
     color: '#19303D', // charcoal
