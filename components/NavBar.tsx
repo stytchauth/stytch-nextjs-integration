@@ -149,7 +149,6 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '3px',
   },
   secondaryButton: {
-    backgroundColor: '#E5E8EB', // fog
     color: '#19303D', // charcoal
     padding: '8px 22px',
     borderRadius: '3px',
