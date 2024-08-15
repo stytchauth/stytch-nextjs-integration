@@ -90,7 +90,7 @@ await stytchClient.magicLinks.authenticate(token as string);`,
     details:
       'Our Web3 login products let you seamlessly weave crypto wallets into your traditional Web2 app or your latest Web3 project.',
     description: `In this example you can link your Ethereum based wallet with Stytch with just a few clicks!`,
-    instructions: `To the right you'll see button to sign in with your wallet, once clicked your wallet will open a prompt to get started. Below you can see the four simple steps to authenticate an Ethereum wallet; fetch the address, generate a challenge, sign the challenge, validate the signature with Stytch.`,
+    instructions: `To the right you'll see a button to sign in with your wallet. Once clicked, your wallet will open a prompt to get started. Below you can see the four simple steps to authenticate an Ethereum wallet: fetch the address, generate a challenge, sign the challenge, and validate the signature with Stytch. If you want to use the Sign In With Ethereum (SIWE) protocol for Ethereum crypto wallet logins, you'll need to toggle "Enable SIWE" in the SDK Configuration page of your dashboard.`,
     component: <LoginWithCryptoWallets />,
     products: [LoginProducts.WEB3],
     code: `
