@@ -120,7 +120,6 @@ function SessionDemo() {
                   const start = performance.now();
                   const resp = await fetch('/api/sessions/authenticate_jwt', { method: 'POST' });
                   const data = await resp.json();
-                  console.log(data);
                   const end = performance.now();
 
                   setJwtMetrics({ requestTime: Math.floor(end - start), authenticateTime: data.net_ms });
