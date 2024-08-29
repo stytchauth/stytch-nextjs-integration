@@ -39,7 +39,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Response
       // Start a timer to measure authentication process time
       const start = process.hrtime();
       // Authenticate the session JWT. If an error is thrown the session authentication has failed.
-      const resp = await stytchClient.sessions.authenticateJwt(stytchSessionJWT);
+      const resp = await stytchClient.sessions.authenticateJwt({session_jwt: stytchSessionJWT});
       // End the timer
       const end = process.hrtime(start);
 
