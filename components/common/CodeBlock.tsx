@@ -18,7 +18,7 @@ const styles: Record<string, React.CSSProperties> = {
     whiteSpace: 'pre-wrap',
     overflowWrap: 'anywhere',
     fontSize: '16px',
-    fontFamily: '"IBM Plex Mono", monospace',
+    fontFamily: '"Chivo Mono", monospace',
     overflowY: 'scroll',
   },
 };
