@@ -20,7 +20,7 @@ function NavBar() {
       <div style={styles.leftNav}>
         <div style={styles.logoContainer}>
           <Link href={'/'}>
-            <Image alt="Stytch logo" height={30} src={stytchLogo} width={152} />
+            <Image alt="Stytch logo" height={50} src={stytchLogo} width={110} />
           </Link>
         </div>
         {windowInnerWidth > 1000 && (
