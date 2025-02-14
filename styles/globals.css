@@ -1,12 +1,13 @@
 html {
   margin: 0;
   padding: 0;
+  background-color: #f4eee9;
 }
 
 body {
   padding: 0;
   margin: 0;
-  background-color: #ecfaff;
+  background-color: #f4eee9;
 }
 
 * {
@@ -14,8 +15,17 @@ body {
   margin: 0;
 }
 
-body {
-  background-color: #ecfaff;
+@font-face {
+  font-family: 'Booton Regular';
+  src: url('/fonts/Booton-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Chivo Mono';
+  src: url('https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400&display=swap') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 h1,
@@ -28,7 +38,7 @@ span,
 button,
 a {
   color: #19303d;
-  font-family: IBM Plex Sans, 'sans-serif';
+  font-family: 'Booton Regular', 'sans-serif';
 }
 
 h1 {
@@ -88,7 +98,7 @@ p {
 
 code {
   font-size: 16px;
-  font-family: IBM Plex Mono, monospace;
+  font-family: 'Chivo Mono', monospace;
   font-weight: 400;
   line-height: 28px;
   padding-left: 4px;
