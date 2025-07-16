@@ -19,6 +19,9 @@ function SMSRegister() {
   const [otp, setOTP] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [methodId, setMethodId] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const phoneModalOpen = async () => {
     setOpenModalPhone(true);
@@ -26,28 +29,51 @@ function SMSRegister() {
 
   const handlePhoneModalClose = () => {
     setOpenModalPhone(false);
+    setPhoneError('');
+    setPhoneNumber('');
   };
 
   const handleOTPModalClose = () => {
     setOTP('');
     setOpenModal(false);
+    setOtpError('');
   };
 
   const handleOTPSubmit = async () => {
+    if (!otp.trim()) {
+      setOtpError('Please enter the passcode');
+      return;
+    }
+
+    setIsLoading(true);
+    setOtpError('');
+
     try {
       await authOTP(methodId, otp);
       router.push('./profile');
     } catch (error) {
       console.error('Failed to authenticate OTP:', error);
+      setOtpError('Invalid passcode. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handlePhoneSubmit = async () => {
+    if (!phoneNumber.trim()) {
+      setPhoneError('Please enter a phone number');
+      return;
+    }
+
+    setIsLoading(true);
+    setPhoneError('');
+
     try {
       const response = await sendOTP('+1' + phoneNumber);
 
       if (!response) {
         console.error('Empty response received from sendOTP');
+        setPhoneError('Failed to send passcode. Please try again.');
         return;
       }
   
@@ -56,8 +82,13 @@ function SMSRegister() {
 
       setOpenModalPhone(false);
       setOpenModal(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to send OTP:', error);
+      // Use the error message from the backend if available
+      const errorMessage = error.message || 'Failed to send passcode. Please check your phone number and try again.';
+      setPhoneError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,10 +115,21 @@ function SMSRegister() {
                 placeholder="(123) 456-7890"
               />
             </div>
+            {phoneError && (
+              <p style={styles.errorText}>
+                ❌ {phoneError}
+              </p>
+            )}
             <p style={styles.smsDisclaimer}>
               By continuing, you consent to receive an SMS for verification. Message and data rates may apply.
             </p>
-            <button className="full-width" onClick={handlePhoneSubmit}>Submit</button>
+            <button 
+              className="full-width" 
+              onClick={handlePhoneSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Sending...' : 'Submit'}
+            </button>
           </div>
         </div>
       )}
@@ -108,10 +150,21 @@ function SMSRegister() {
               onChange={(e) => setOTP(e.target.value)}
               placeholder="Enter OTP"
             />
+            {otpError && (
+              <p style={styles.errorText}>
+                ❌ {otpError}
+              </p>
+            )}
             <p style={styles.smsDisclaimer}>
               Didn&apos;t receive a code? <a style={styles.smsDisclaimer} href="#" onClick={(e) => { e.preventDefault(); handlePhoneSubmit(); }}>Resend</a>
             </p>
-            <button className="full-width" onClick={handleOTPSubmit}>Submit</button>
+            <button 
+              className="full-width" 
+              onClick={handleOTPSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Verifying...' : 'Submit'}
+            </button>
           </div>
         </div>
       )}
@@ -178,7 +231,13 @@ const styles: Record<string, React.CSSProperties> = {
     borderRadius: '3px', 
     marginBottom: '10px', 
     width: '100%', 
-  }  
+  },
+  errorText: {
+    color: '#dc3545',
+    fontSize: '14px',
+    marginBottom: '10px',
+    marginTop: '5px',
+  }
 };
 
 export default SMSRegister; 

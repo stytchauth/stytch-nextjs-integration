@@ -17,8 +17,9 @@ export async function sendOTP(phoneNumber: string) {
   console.log('Response headers:', Object.fromEntries(resp.headers.entries()));
   // Check if response status is ok
   if (!resp.ok) {
-    const errorText = await resp.text();
-    throw new Error(`Failed to send OTP: ${resp.status} ${resp.statusText} - ${errorText}`);
+    const errorData = await resp.json();
+    const errorMessage = errorData.errorString || `Failed to send OTP: ${resp.status} ${resp.statusText}`;
+    throw new Error(errorMessage);
   }
   const data = await resp.json();
 

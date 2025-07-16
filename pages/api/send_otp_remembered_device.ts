@@ -42,10 +42,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
       });
 
       return res.status(200).json(authResp);
-    } catch (error) {
-        const errorString = JSON.stringify(error);
-        console.log(error);
-        return res.status(400).json({ errorString });
+    } catch (error: any) {
+        console.log('Stytch OTP send error:', error);
+        
+        return res.status(400).json({ errorString: error.error_type });
     }
   } else {
     // Handle other HTTP methods
