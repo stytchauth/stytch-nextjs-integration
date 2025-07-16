@@ -29,14 +29,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         session_duration_minutes: 30,
       });
       
-      console.log('Authenticate response:', authenticateResponse);
-
       let knownCountries = authenticateResponse.user.trusted_metadata?.known_countries || [];
 
       // Get telemetry ID from the request (this would come from the frontend)
       const telemetryId = req.headers['x-telemetry-id'] as string;
-
-      console.log('telemetryId', telemetryId);
       
       let requiresMfa = false;
       let country = '';
@@ -47,8 +43,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
           const fingerprintResponse = await stytchClient.fraud.fingerprint.lookup({
             telemetry_id: telemetryId,
           });
-
-          console.log('Fingerprint response:', fingerprintResponse);
           
           country = fingerprintResponse.properties?.network_properties.ip_geolocation.country || '';
           

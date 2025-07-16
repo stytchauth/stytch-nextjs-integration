@@ -19,12 +19,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
   const cookies = new Cookies(req, res);
   const storedSession = cookies.get('api_sms_remembered_device_session');
   
-  // Debug logging
-  console.log('Request method:', req.method);
-  console.log('Request headers:', req.headers);
-  console.log('Request body type:', typeof req.body);
-  console.log('Request body:', req.body);
-  
   // If session does not exist display an error
   if (!storedSession) {
     return res.status(400).json({ errorString: 'No session provided' });
