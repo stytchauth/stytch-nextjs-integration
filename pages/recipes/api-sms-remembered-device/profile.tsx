@@ -8,6 +8,7 @@ import lock from '/public/lock.svg';
 import CodeBlock from '../../../components/common/CodeBlock';
 import SMSOTPButton from '../../../components/RememberedDevice/SMSOTPButtonRememberedDevice';
 import SMSRegister from '../../../components/RememberedDevice/SMSRegisterRememberedDevice';
+import { SUPER_SECRET_DATA } from '../../../lib/rememberedDeviceConstants';
 
 type Props = {
   user?: any;
@@ -39,7 +40,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
     try {
       const resp = await fetch('/api/logout', { method: 'POST' });
       if (resp.status === 200) {
-        router.push('/');
+        router.push('/recipes/remembered-device');
       }
     } catch {}
   };
@@ -272,13 +273,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     
     if (hasEmailFactor && hasSmsFactor) {
       // User has completed full MFA - authorized for super secret data
-      superSecretData =
-        "Welcome to the super secret data area. If you inspect your Stytch session on the right (or below, depending on screen width) you will see you have two authentication factors: email and phone. You're only able to view the Super secret area because your session has both of these authentication factors.";
+      superSecretData = SUPER_SECRET_DATA.FULL_MFA;
       requiresMfa = false;
     } else if (hasEmailFactor && session.custom_claims?.authorized_for_secret_data) {
       // User is in a remembered device location (authorized during EML auth via session claims)
-      superSecretData =
-        "Welcome to the super secret data area! You're accessing this area because your device was recognized as a trusted device. No additional MFA was required.";
+      superSecretData = SUPER_SECRET_DATA.REMEMBERED_DEVICE;
       isRememberedDevice = true;
       requiresMfa = false;
       country = session.custom_claims.authorized_country as string || '';

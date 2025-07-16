@@ -1,6 +1,7 @@
 // This API route authenticates magic link tokens and handles remembered device logic
 import type { NextApiRequest, NextApiResponse } from 'next';
 import loadStytch from '../../lib/loadStytch';
+import { SUPER_SECRET_DATA } from '../../lib/rememberedDeviceConstants';
 
 type ErrorData = {
   errorString: string;
@@ -23,10 +24,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     }
 
     try {
-      // First, authenticate the magic link token (without claims initially)
+      // First, authenticate the magic link token
       let authenticateResponse = await stytchClient.magicLinks.authenticate({
         token: token,
-        session_duration_minutes: 30,
+        session_duration_minutes: 60,
       });
       
       let knownCountries = authenticateResponse.user.trusted_metadata?.known_countries || [];
@@ -83,14 +84,14 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
 
 
 
-      // Set the session cookie in the response
-      res.setHeader('Set-Cookie', `api_sms_remembered_device_session=${authenticateResponse.session_token}; HttpOnly; Path=/; Max-Age=1800; SameSite=Lax`);
+      // Set the session cookie in the response 
+      res.setHeader('Set-Cookie', `api_sms_remembered_device_session=${authenticateResponse.session_token}; Path=/; Max-Age=1800; SameSite=Lax`);
 
       return res.status(200).json({
         session_token: authenticateResponse.session_token,
         country: country,
         user_id: authenticateResponse.user_id,
-        super_secret_data: !requiresMfa ? "Welcome to the super secret data area! You're accessing this area because your device was recognized as a trusted device. No additional MFA was required." : undefined,
+        super_secret_data: !requiresMfa ? SUPER_SECRET_DATA.REMEMBERED_DEVICE : undefined,
       });
 
     } catch (error) {
