@@ -92,15 +92,34 @@ await stytchClient.magicLinks.authenticate(token as string);`,
     description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device/location authentication flow. In this example a login attempt from the same country is considered a known device/location, but you can get more granular by using something like visitor_finterprint or IP address.',
     instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new location.',
     component: <LoginWithEmailRememberedDevice />,
-    code: `// Send EML normally
+    code: `// Send Email Magic Link. 
 await sendEML(
   email,
-  '/recipes/api-sms-remembered-device/magic-link-authenticate',
-  '/recipes/api-sms-remembered-device/magic-link-authenticate'
+  login_magic_link_url:  REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device/magic-link-authenticate',
+  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device/magic-link-authenticate'
 );
 
-// Backend handles telemetry and remembered device logic
-// in /api/authenticate_eml endpoint`,
+// On the authenticate call to backend, generate a telemetry ID to send along with the token
+// Get telemetry ID from the Stytch script
+let telemetryId: string | undefined;
+      
+try {
+  const publicToken = process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN;
+  telemetryId = await (window as any).GetTelemetryID({ publicToken });
+} catch (telemetryError) {
+    console.warn('Could not get telemetry ID:', telemetryError);
+}
+
+// Call our authenticate API
+const response = await fetch('/api/authenticate_eml_remembered_device', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    ...(telemetryId && { 'X-Telemetry-ID': telemetryId }),
+  },
+  body: JSON.stringify({ token }),
+});
+// `,
     products: [LoginProducts.EML, LoginProducts.SMS],
   },
   CRYPTO_WALLETS: {

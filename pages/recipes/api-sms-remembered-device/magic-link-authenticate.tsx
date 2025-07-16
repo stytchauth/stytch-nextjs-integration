@@ -8,8 +8,9 @@ type Props = {
 
 const AuthenticateMagicLink = ({ token }: Props) => {
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'error' | 'requiresMfa' | 'success'>('loading');
+  const [status, setStatus] = useState<'loading' | 'error'>('loading');
   const [error, setError] = useState<string>('');
+  // Prevent double authentication in React Strict Mode (development)
   const hasAuthenticated = useRef(false);
 
   const authenticateWithTelemetry = async () => {
@@ -91,25 +92,11 @@ const AuthenticateMagicLink = ({ token }: Props) => {
     );
   }
 
-  if (status === 'requiresMfa') {
-    return (
-      <div>
-        <h2>Additional Authentication Required</h2>
-        <p>This appears to be a new device. Please complete SMS verification to continue.</p>
-        <Link href="./profile">
-          <a className="link">Continue to Profile</a>
-        </Link>
-      </div>
-    );
-  }
-
+  // This should never be reached since we always redirect on success
   return (
     <div>
-      <h2>Welcome back!</h2>
-      <p>Your device has been recognized. You can now access your profile.</p>
-      <Link href="./profile">
-        <a className="link">Continue to Profile</a>
-      </Link>
+      <h2>Redirecting...</h2>
+      <p>Please wait while we redirect you to your profile.</p>
     </div>
   );
 };

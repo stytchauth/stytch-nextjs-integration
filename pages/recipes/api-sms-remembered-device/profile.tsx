@@ -10,8 +10,8 @@ import SMSOTPButton from '../../../components/EmailSMS/SMSOTPButtonRememberedDev
 import SMSRegister from '../../../components/EmailSMS/SMSRegisterRememberedDevice';
 
 type Props = {
-  user?: Object;
-  session?: Object;
+  user?: any;
+  session?: any;
   error?: string;
   hasRegisteredPhone?: boolean;
   superSecretData?: string;
@@ -42,6 +42,21 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
         router.push('/');
       }
     } catch {}
+  };
+
+  const clearKnownCountries = async () => {
+    try {
+      const resp = await fetch('/api/clear_known_countries', { method: 'POST' });
+      if (resp.status === 200) {
+        // Refresh the page to show updated state
+        router.reload();
+      } else {
+        const errorData = await resp.json();
+        console.error('Failed to clear known countries:', errorData.errorString);
+      }
+    } catch (error) {
+      console.error('Failed to clear known countries:', error);
+    }
   };
 
 
@@ -87,10 +102,60 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
         <button onClick={signOut}>Sign out</button>
       </div>
       <div style={styles.details}>
-        <h2>Stytch objects</h2>
+        <h2>Current State</h2>
+        
+        <h3>Session Authorization</h3>
+        <div style={styles.sessionInfo}>
+          <p style={styles.infoText}>
+            <strong>Session Custom Claims:</strong> These control authorization for the super secret area
+          </p>
+          {session.custom_claims?.authorized_for_secret_data && (
+            <p style={styles.successNote}>
+              ✅ <strong>Authorized!</strong> Session has <code>authorized_for_secret_data: true</code>
+            </p>
+          )}
+          {session.custom_claims?.pending_country && (
+            <p style={styles.pendingNote}>
+              ⏳ <strong>Pending MFA:</strong> Country <code>{session.custom_claims.pending_country}</code> waiting for SMS verification
+            </p>
+          )}
+          {session.custom_claims?.authorized_country && (
+            <p style={styles.successNote}>
+              🌍 <strong>Known Location:</strong> Country <code>{session.custom_claims.authorized_country}</code> recognized as trusted
+            </p>
+          )}
+        </div>
+        
+        <h3>Trusted Countries</h3>
+        <div style={styles.userInfo}>
+          <p style={styles.infoText}>
+            <strong>Trusted Metadata:</strong> Countries where this user has completed MFA
+          </p>
+          {user.trusted_metadata?.known_countries && user.trusted_metadata.known_countries.length > 0 && (
+            <div style={styles.knownCountriesContainer}>
+              <p style={styles.successNote}>
+                🗺️ <strong>Known Countries:</strong> {user.trusted_metadata.known_countries.join(', ')}
+              </p>
+              <button 
+                onClick={clearKnownCountries}
+                style={styles.clearButton}
+                title="Clear the list of known countries (useful for testing)"
+              >
+                🗑️ Clear
+              </button>
+            </div>
+          )}
+          {user.trusted_metadata?.pending_country && (
+            <p style={styles.pendingNote}>
+              ⚠️ <strong>Legacy:</strong> <code>pending_country</code> in user metadata (should be in session claims)
+            </p>
+          )}
+        </div>
 
+        <h2>Raw Stytch Data</h2>
         <h3>Session</h3>
         <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} />
+        
         <h3>User</h3>
         <CodeBlock codeString={JSON.stringify(user, null, 2).replace(' ', '')} />
       </div>
@@ -129,6 +194,48 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: '10px',
     textAlign: 'center',
   },
+  sessionInfo: {
+    marginBottom: '20px',
+  },
+  userInfo: {
+    marginBottom: '20px',
+  },
+  infoText: {
+    fontSize: '14px',
+    color: '#666',
+    marginBottom: '10px',
+  },
+  successNote: {
+    backgroundColor: '#d4edda',
+    color: '#155724',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    marginBottom: '8px',
+    fontSize: '14px',
+  },
+  pendingNote: {
+    backgroundColor: '#fff3cd',
+    color: '#856404',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    marginBottom: '8px',
+    fontSize: '14px',
+  },
+  knownCountriesContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+  },
+  clearButton: {
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    padding: '4px 8px',
+    borderRadius: '4px',
+    fontSize: '11px',
+    cursor: 'pointer',
+    flexShrink: 0,
+  },
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -166,7 +273,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     if (hasEmailFactor && hasSmsFactor) {
       // User has completed full MFA - authorized for super secret data
       superSecretData =
-        "Welcome to the super secret data area. If you inspect your Stytch session on the right you will see you have two authentication factors: email and phone. You're only able to view the Super secret area because your session has both of these authentication factors.";
+        "Welcome to the super secret data area. If you inspect your Stytch session on the right (or below, depending on screen width) you will see you have two authentication factors: email and phone. You're only able to view the Super secret area because your session has both of these authentication factors.";
       requiresMfa = false;
     } else if (hasEmailFactor && session.custom_claims?.authorized_for_secret_data) {
       // User is in a remembered device location (authorized during EML auth via session claims)
