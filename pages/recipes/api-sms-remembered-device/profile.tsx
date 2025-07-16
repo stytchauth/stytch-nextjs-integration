@@ -6,8 +6,8 @@ import loadStytch from '../../../lib/loadStytch';
 import Cookies from 'cookies';
 import lock from '/public/lock.svg';
 import CodeBlock from '../../../components/common/CodeBlock';
-import SMSOTPButton from '../../../components/EmailSMS/SMSOTPButtonRememberedDevice';
-import SMSRegister from '../../../components/EmailSMS/SMSRegisterRememberedDevice';
+import SMSOTPButton from '../../../components/RememberedDevice/SMSOTPButtonRememberedDevice';
+import SMSRegister from '../../../components/RememberedDevice/SMSRegisterRememberedDevice';
 
 type Props = {
   user?: any;

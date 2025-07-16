@@ -8,7 +8,7 @@ import LoginProducts from './loginProduct';
 import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
 import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
 import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
-import LoginWithEmailRememberedDevice from '../components/EmailSMS/LoginWithEmailRememberedDevice';
+import LoginWithEmailRememberedDevice from '../components/RememberedDevice/LoginWithEmailRememberedDevice';
 import {OTPMethods, Products, StytchLoginConfig} from "@stytch/vanilla-js";
 
 export const Recipes: Record<string, LoginType> = {
