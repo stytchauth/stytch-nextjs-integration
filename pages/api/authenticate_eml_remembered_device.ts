@@ -37,7 +37,11 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       let requiresMfa = false;
       let country = '';
 
-      if (telemetryId) {
+      // Fail closed: require MFA if no telemetry ID provided
+      if (!telemetryId) {
+        console.log('No telemetry ID provided, requiring MFA (fail closed)');
+        requiresMfa = true;
+      } else {
         try {
           // Lookup the telemetry ID response to get the country
           const fingerprintResponse = await stytchClient.fraud.fingerprint.lookup({
@@ -61,8 +65,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
           } else {
             console.log('Country is not known, MFA required');
             requiresMfa = true;
-            // Store country in trusted metadata for later retrieval during OTP auth
-            // Store pending country in session custom claims instead of user metadata
+            // Store pending country in session custom claims for later retrieval during OTP auth
             await stytchClient.sessions.authenticate({
               session_token: authenticateResponse.session_token,
               session_custom_claims: {
@@ -73,12 +76,9 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
           }
         } catch (telemetryError) {
           console.error('Error checking remembered device:', telemetryError);
-          // If telemetry check fails, require MFA for security
+          // Fail closed: if telemetry lookup fails, require MFA for security
           requiresMfa = true;
         }
-      } else {
-        // No telemetry ID provided, require MFA to fail closed.
-        requiresMfa = true;
       }
 
 
