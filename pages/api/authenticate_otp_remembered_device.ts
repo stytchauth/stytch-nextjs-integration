@@ -42,38 +42,38 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       const hasSmsFactor = updatedSession.authentication_factors.some(f => f.delivery_method === 'sms');
       
       if (hasEmailFactor && hasSmsFactor) {
-        // Get the pending country from session custom claims that was stored during EML authentication
-        const pendingCountry = updatedSession.custom_claims?.pending_country;
+        // Get the pending device from session custom claims that was stored during EML authentication
+        const pendingDevice = updatedSession.custom_claims?.pending_device;
         
-        if (pendingCountry) {
-          // Get existing known countries or initialize empty array
+        if (pendingDevice) {
+          // Get existing known devices or initialize empty array
           const user = await stytchClient.users.get({ user_id: updatedSession.user_id });
-          const existingKnownCountries = user.trusted_metadata?.known_countries || [];
+          const existingKnownDevices = user.trusted_metadata?.known_devices || [];
           
-          // Add new country if it's not already in the list
-          if (!existingKnownCountries.includes(pendingCountry)) {
-            const updatedKnownCountries = [...existingKnownCountries, pendingCountry];
+          // Add new device if it's not already in the list
+          if (!existingKnownDevices.includes(pendingDevice)) {
+            const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
 
-            // Update the user's trusted metadata with the new known country
+            // Update the user's trusted metadata with the new known device
             await stytchClient.users.update({
               user_id: updatedSession.user_id,
               trusted_metadata: {
                 ...user.trusted_metadata,
-                known_countries: updatedKnownCountries,
+                known_devices: updatedKnownDevices,
               },
             });
 
-            // Update session custom claims to authorize this session for secret data and remove pending country
+            // Update session custom claims to authorize this session for secret data and remove pending device
             await stytchClient.sessions.authenticate({
               session_token: session_token,
               session_custom_claims: {
                 authorized_for_secret_data: true,
-                authorized_country: pendingCountry,
-                pending_country: null, // Remove the pending country from session claims
+                authorized_device: pendingDevice,
+                pending_device: null, // Remove the pending device from session claims
               },
             });
 
-            console.log(`Added country ${pendingCountry} to trusted metadata for user ${updatedSession.user_id} and authorized session`);
+            console.log(`Added device ${pendingDevice} to trusted metadata for user ${updatedSession.user_id} and authorized session`);
           }
         }
       }

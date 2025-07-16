@@ -10,7 +10,7 @@ type ErrorData = {
 type SuccessData = {
   session_token: string;
   user_id: string;
-  country: string;
+  visitorID: string;
   super_secret_data?: string;
 };
 
@@ -30,13 +30,13 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         session_duration_minutes: 60,
       });
       
-      let knownCountries = authenticateResponse.user.trusted_metadata?.known_countries || [];
+      let knownDevices = authenticateResponse.user.trusted_metadata?.known_devices || [];
 
       // Get telemetry ID from the request (this would come from the frontend)
       const telemetryId = req.headers['x-telemetry-id'] as string;
       
       let requiresMfa = false;
-      let country = '';
+      let visitorID = '';
 
       // Fail closed: require MFA if no telemetry ID provided
       if (!telemetryId) {
@@ -44,34 +44,34 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         requiresMfa = true;
       } else {
         try {
-          // Lookup the telemetry ID response to get the country
+          // Lookup the telemetry ID response to get the visitor ID
           const fingerprintResponse = await stytchClient.fraud.fingerprint.lookup({
             telemetry_id: telemetryId,
           });
           
-          country = fingerprintResponse.properties?.network_properties.ip_geolocation.country || '';
+          visitorID = fingerprintResponse.fingerprints.visitor_id || '';
           
-          // Check if the country is in the known countries list
-          if (isKnownCountry(country, knownCountries) && country !== '') {
-            console.log('Country is known, no MFA required');
+          // Check if the visitor ID is in the known devices list
+          if (isKnownDevice(visitorID, knownDevices) && visitorID !== '') {
+            console.log('Device is known, no MFA required');
             requiresMfa = false;
             // Update session with custom claims to mark this session as authorized
             await stytchClient.sessions.authenticate({
               session_token: authenticateResponse.session_token,
               session_custom_claims: {
                 authorized_for_secret_data: true,
-                authorized_country: country,
+                authorized_device: visitorID,
               },
             });
           } else {
-            console.log('Country is not known, MFA required');
+            console.log('Device is not known, MFA required');
             requiresMfa = true;
-            // Store pending country in session custom claims for later retrieval during OTP auth
+            // Store pending device in session custom claims for later retrieval during OTP auth
             await stytchClient.sessions.authenticate({
               session_token: authenticateResponse.session_token,
               session_custom_claims: {
                 authorized_for_secret_data: false,
-                pending_country: country,
+                pending_device: visitorID,
               },
             });
           }
@@ -89,7 +89,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
 
       return res.status(200).json({
         session_token: authenticateResponse.session_token,
-        country: country,
+        visitorID: visitorID,
         user_id: authenticateResponse.user_id,
         super_secret_data: !requiresMfa ? SUPER_SECRET_DATA.REMEMBERED_DEVICE : undefined,
       });
@@ -104,8 +104,8 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
   }
 }
 
-function isKnownCountry(country: string, knownCountries: string[]) {
-  return knownCountries.includes(country);
+function isKnownDevice(visitorID: string, knownDevices: string[]) {
+  return knownDevices.includes(visitorID);
 }
 
 export default handler; 

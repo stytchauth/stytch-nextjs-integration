@@ -89,8 +89,8 @@ await stytchClient.magicLinks.authenticate(token as string);`,
     id: 'remembered-device',
     title: 'Remembered Device',
     details: 'Build a remembered device authentication flow using Stytch DFP.',
-    description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device/location authentication flow. A login attempt from the same country is considered a known device/location, but you can get more granular by using something like visitor_finterprint or IP address in your own implementation.',
-    instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new location.',
+    description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device authentication flow. A login attempt from the same device (determined by visitor ID) is considered a known device.',
+    instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
     component: <LoginWithEmailRememberedDevice />,
     code: `// Send Email Magic Link. 
 await sendEML(

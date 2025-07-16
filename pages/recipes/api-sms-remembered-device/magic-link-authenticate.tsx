@@ -52,9 +52,9 @@ const AuthenticateMagicLink = ({ token }: Props) => {
 
       // The backend has already set the session cookie, so we can redirect
       // MFA requirement is determined by session state, not response data
-      if (data.country) {
-        // Redirect to profile with country info (MFA requirement determined by session)
-        router.push(`./profile?country=${encodeURIComponent(data.country)}`);
+      if (data.visitorID) {
+        // Redirect to profile with visitor ID info (MFA requirement determined by session)
+        router.push(`./profile?visitorID=${encodeURIComponent(data.visitorID)}`);
       } else {
         // Redirect to profile (authorization determined by session)
         router.push('./profile');

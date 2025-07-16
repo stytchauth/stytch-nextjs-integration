@@ -30,16 +30,16 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       // Get current user data
       const user = await stytchClient.users.get({ user_id: session.user_id });
       
-      // Clear the known countries list
+      // Clear the known devices list
       await stytchClient.users.update({
         user_id: session.user_id,
         trusted_metadata: {
           ...user.trusted_metadata,
-          known_countries: [], // Clear the known countries list
+          known_devices: [], // Clear the known devices list
         },
       });
 
-      console.log(`Cleared known countries for user ${session.user_id}`);
+      console.log(`Cleared known devices for user ${session.user_id}`);
 
       return res.status(200).json({ success: true });
     } catch (error) {

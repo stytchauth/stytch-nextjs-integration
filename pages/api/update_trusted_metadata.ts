@@ -36,34 +36,34 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         return res.status(403).json({ errorString: 'MFA not completed. Both email and SMS factors required.' });
       }
 
-      // Get the pending country from session custom claims that was stored during EML authentication
-      const pendingCountry = session.custom_claims?.pending_country;
+      // Get the pending device from session custom claims that was stored during EML authentication
+      const pendingDevice = session.custom_claims?.pending_device;
       
-      if (!pendingCountry) {
-        return res.status(400).json({ errorString: 'No pending country found for this session' });
+      if (!pendingDevice) {
+        return res.status(400).json({ errorString: 'No pending device found for this session' });
       }
       
       // Get user to access existing trusted metadata
       const user = await stytchClient.users.get({ user_id: session.user_id });
       
-      // Get existing known countries or initialize empty array
-      const existingKnownCountries = user.trusted_metadata?.known_countries || [];
+      // Get existing known devices or initialize empty array
+      const existingKnownDevices = user.trusted_metadata?.known_devices || [];
       
-      // Add new country if it's not already in the list
-      if (!existingKnownCountries.includes(pendingCountry)) {
-        const updatedKnownCountries = [...existingKnownCountries, pendingCountry];
+      // Add new device if it's not already in the list
+      if (!existingKnownDevices.includes(pendingDevice)) {
+        const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
 
-        // Update the user's trusted metadata and clean up pending country
+        // Update the user's trusted metadata and clean up pending device
         await stytchClient.users.update({
           user_id: session.user_id,
           trusted_metadata: {
             ...user.trusted_metadata,
-            known_countries: updatedKnownCountries,
-            pending_country: undefined, // Remove the pending country
+            known_devices: updatedKnownDevices,
+            pending_device: undefined, // Remove the pending device
           },
         });
 
-        console.log(`Added country ${pendingCountry} to trusted metadata for user ${session.user_id}`);
+        console.log(`Added device ${pendingDevice} to trusted metadata for user ${session.user_id}`);
       }
 
       return res.status(200).json({ success: true });

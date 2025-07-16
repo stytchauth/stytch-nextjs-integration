@@ -19,10 +19,10 @@ type Props = {
   phoneNumber?: string;
   isRememberedDevice?: boolean;
   requiresMfa?: boolean;
-  country?: string;
+  visitorID?: string;
 };
 
-const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, phoneNumber, isRememberedDevice, requiresMfa, country }: Props) => {
+const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, phoneNumber, isRememberedDevice, requiresMfa, visitorID }: Props) => {
   const router = useRouter();
 
   if (error) {
@@ -45,7 +45,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
     } catch {}
   };
 
-  const clearKnownCountries = async () => {
+  const clearKnownDevices = async () => {
     try {
       const resp = await fetch('/api/clear_known_countries', { method: 'POST' });
       if (resp.status === 200) {
@@ -53,10 +53,10 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
         router.reload();
       } else {
         const errorData = await resp.json();
-        console.error('Failed to clear known countries:', errorData.errorString);
+        console.error('Failed to clear known devices:', errorData.errorString);
       }
     } catch (error) {
-      console.error('Failed to clear known countries:', error);
+      console.error('Failed to clear known devices:', error);
     }
   };
 
@@ -78,7 +78,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
               <p>{superSecretData}</p>
               {isRememberedDevice && (
                 <p style={styles.rememberedDeviceNote}>
-                  🎉 <strong>Device location remembered!</strong> You bypassed MFA because this device location was recognized.
+                  🎉 <strong>Device remembered!</strong> You bypassed MFA because this device was recognized.
                 </p>
               )}
             </div>
@@ -87,7 +87,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
               <Image alt="Lock" src={lock} width={100} />
               <p>
                 {requiresMfa 
-                  ? `Additional authentication required. This appears to be a new location (${country || 'unknown country'}). Please complete SMS verification to continue.`
+                  ? `Additional authentication required. This appears to be a new device (${visitorID || 'unknown device'}). Please complete SMS verification to continue.`
                   : 'Super secret profile information is secured by two factor authentication. To unlock this area complete the SMS OTP flow.'
                 }
               </p>
@@ -115,40 +115,40 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
               ✅ <strong>Authorized!</strong> Session has <code>authorized_for_secret_data: true</code>
             </p>
           )}
-          {session.custom_claims?.pending_country && (
+          {session.custom_claims?.pending_device && (
             <p style={styles.pendingNote}>
-              ⏳ <strong>Pending MFA:</strong> Country <code>{session.custom_claims.pending_country}</code> waiting for SMS verification
+              ⏳ <strong>Pending MFA:</strong> Device <code>{session.custom_claims.pending_device}</code> waiting for SMS verification
             </p>
           )}
-          {session.custom_claims?.authorized_country && (
+          {session.custom_claims?.authorized_device && (
             <p style={styles.successNote}>
-              🌍 <strong>Known Location:</strong> Country <code>{session.custom_claims.authorized_country}</code> recognized as trusted
+              💻 <strong>Known Device:</strong> Device <code>{session.custom_claims.authorized_device}</code> recognized as trusted
             </p>
           )}
         </div>
         
-        <h3>Trusted Countries</h3>
+        <h3>Trusted Devices</h3>
         <div style={styles.userInfo}>
           <p style={styles.infoText}>
-            <strong>Trusted Metadata:</strong> Countries where this user has completed MFA
+            <strong>Trusted Metadata:</strong> Devices where this user has completed MFA
           </p>
-          {user.trusted_metadata?.known_countries && user.trusted_metadata.known_countries.length > 0 && (
+          {user.trusted_metadata?.known_devices && user.trusted_metadata.known_devices.length > 0 && (
             <div style={styles.knownCountriesContainer}>
               <p style={styles.successNote}>
-                🗺️ <strong>Known Countries:</strong> {user.trusted_metadata.known_countries.join(', ')}
+                💻 <strong>Known Devices:</strong> {user.trusted_metadata.known_devices.join(', ')}
               </p>
               <button 
-                onClick={clearKnownCountries}
+                onClick={clearKnownDevices}
                 style={styles.clearButton}
-                title="Clear the list of known countries (useful for testing)"
+                title="Clear the list of known devices (useful for testing)"
               >
                 🗑️ Clear
               </button>
             </div>
           )}
-          {user.trusted_metadata?.pending_country && (
+          {user.trusted_metadata?.pending_device && (
             <p style={styles.pendingNote}>
-              ⚠️ <strong>Legacy:</strong> <code>pending_country</code> in user metadata (should be in session claims)
+              ⚠️ <strong>Legacy:</strong> <code>pending_device</code> in user metadata (should be in session claims)
             </p>
           )}
         </div>
@@ -250,7 +250,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const stytchClient = loadStytch();
 
-    // Get the session data (this doesn't consume the token)
+    // Get the session data
     const { session } = await stytchClient.sessions.authenticate({ session_token: storedSession });
 
     const user = await stytchClient.users.get({ user_id: session.user_id });
@@ -262,10 +262,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let superSecretData = null;
     let isRememberedDevice = false;
     let requiresMfa = true; // Default to requiring MFA unless session proves otherwise
-    let country = '';
-
-    // Get the state from query parameters (set by the authenticate_eml_remembered_device endpoint)
-    const countryParam = context.query.country as string || '';
+    let visitorID = '';
 
     // Server-side authorization check based on session authentication factors and custom claims
     const hasEmailFactor = session.authentication_factors.find((i: any) => i.delivery_method === 'email');
@@ -280,14 +277,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       superSecretData = SUPER_SECRET_DATA.REMEMBERED_DEVICE;
       isRememberedDevice = true;
       requiresMfa = false;
-      country = session.custom_claims.authorized_country as string || '';
+      visitorID = session.custom_claims.authorized_device as string || '';
     } else {
       // User needs MFA - either no email factor or not in trusted location
       requiresMfa = true;
-      country = session.custom_claims?.pending_country as string || '';
+      visitorID = session.custom_claims?.pending_device as string || '';
     }
 
-    // Due to Date serialization issues in Next we do some fancy JSON translations
     return {
       props: {
         user: JSON.parse(JSON.stringify(user)),
@@ -297,7 +293,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         superSecretData,
         isRememberedDevice,
         requiresMfa,
-        country,
+        visitorID,
       },
     };
   } catch (error) {
