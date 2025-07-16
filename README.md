@@ -41,7 +41,17 @@ cp .env.template .env.local
 # Replace your keys in new .env.local file
 ```
 
-Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. Add `http://localhost:3000/authenticate` as both a login and sign-up redirect URL. If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `http://localhost:3000/recipes/api-webauthn/magic-link-authenticate` as a login and sign-up redirect URL as well.
+Next we'll configure the appropriate redirect URLs for your project, you'll set these magic link URLs for your project in the [Redirect URLs](https://stytch.com/dashboard/redirect-urls) section of your Dashboard. 
+
+* Add `http://localhost:3000/authenticate` as both a login and sign-up redirect URL. 
+
+* If you'd like to try our [WebAuthn](https://stytch.com/docs/api/webauthn-overview) example integration, add `http://localhost:3000/recipes/api-webauthn/magic-link-authenticate` as a login and sign-up redirect URL as well.
+
+* If you'd like to try our SMS OTP example integration, add `http://localhost:3000/recipes/api-sms-mfa/magic-link-authenticate` as a login and sign-up redirect URL.
+
+* If you'd like to try our Remember Device example integration:
+  * Add `http://localhost:3000/recipes/api-sms-remembered-device/magic-link-authenticate` as a login and sign-up redirect URL.
+  * [Request access](https://offers.stytch.com/dfp-30-day-trial) to [our Device Fingerprinting product](https://stytch.com/docs/fraud/guides) if you don't have it already!
 
 ## Running the example app
 

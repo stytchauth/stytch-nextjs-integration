@@ -8,6 +8,7 @@ import LoginProducts from './loginProduct';
 import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
 import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
 import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
+import LoginWithEmailRememberedDevice from '../components/EmailSMS/LoginWithEmailRememberedDevice';
 import {OTPMethods, Products, StytchLoginConfig} from "@stytch/vanilla-js";
 
 export const Recipes: Record<string, LoginType> = {
@@ -83,6 +84,24 @@ await stytchClient.magicLinks.email.loginOrCreate({
   
 // Authenticate the Email magic link
 await stytchClient.magicLinks.authenticate(token as string);`,
+  },
+  REMEMBERED_DEVICE: {
+    id: 'remembered-device',
+    title: 'Remembered Device',
+    details: 'Build a remembered device authentication flow using Stytch DFP.',
+    description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device/location authentication flow. In this example a login attempt from the same country is considered a known device/location, but you can get more granular by using something like visitor_finterprint or IP address.',
+    instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new location.',
+    component: <LoginWithEmailRememberedDevice />,
+    code: `// Send EML normally
+await sendEML(
+  email,
+  '/recipes/api-sms-remembered-device/magic-link-authenticate',
+  '/recipes/api-sms-remembered-device/magic-link-authenticate'
+);
+
+// Backend handles telemetry and remembered device logic
+// in /api/authenticate_eml endpoint`,
+    products: [LoginProducts.EML, LoginProducts.SMS],
   },
   CRYPTO_WALLETS: {
     id: 'sdk-crypto-wallets',
@@ -232,7 +251,6 @@ const LoginWithOneTap = () => <StytchLogin config={sdkConfig} callbacks={callbac
     // Authenticate the Email magic link
     await stytchClient.magicLinks.authenticate(token as string);`,
   },
-
   FEEDBACK: {
     id: 'feedback',
     title: 'Feedback',

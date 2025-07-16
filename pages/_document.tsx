@@ -17,6 +17,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
           <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet" />
+          <script src="https://elements.stytch.com/telemetry.js"></script>
         </Head>
         <body>
           <Main />

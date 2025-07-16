@@ -22,7 +22,7 @@
     "next": "^12.3.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "stytch": "^11.4.1"
+    "stytch": "^12.25.0"
   },
   "devDependencies": {
     "@types/cookies": "^0.7.7",
