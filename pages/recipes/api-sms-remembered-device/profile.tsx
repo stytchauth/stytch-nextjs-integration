@@ -129,14 +129,11 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
         
         <h3>Trusted Devices</h3>
         <div style={styles.userInfo}>
-          <p style={styles.infoText}>
-            <strong>Trusted Metadata:</strong> Devices where this user has completed MFA
-          </p>
-          {user.trusted_metadata?.known_devices && user.trusted_metadata.known_devices.length > 0 && (
-            <div style={styles.knownCountriesContainer}>
-              <p style={styles.successNote}>
-                💻 <strong>Known Devices:</strong> {user.trusted_metadata.known_devices.join(', ')}
-              </p>
+          <div style={styles.metadataHeader}>
+            <p style={styles.infoText}>
+              <strong>Trusted Metadata:</strong> Devices where this user has completed MFA
+            </p>
+            {user.trusted_metadata?.known_devices && user.trusted_metadata.known_devices.length > 0 && (
               <button 
                 onClick={clearKnownDevices}
                 style={styles.clearButton}
@@ -144,6 +141,15 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
               >
                 🗑️ Clear
               </button>
+            )}
+          </div>
+          {user.trusted_metadata?.known_devices && user.trusted_metadata.known_devices.length > 0 && (
+            <div style={styles.knownDevicesList}>
+              {user.trusted_metadata.known_devices.map((device: string, index: number) => (
+                <div key={index} style={styles.deviceBox}>
+                  💻 {device}
+                </div>
+              ))}
             </div>
           )}
           {user.trusted_metadata?.pending_device && (
@@ -222,10 +228,24 @@ const styles: Record<string, React.CSSProperties> = {
     marginBottom: '8px',
     fontSize: '14px',
   },
-  knownCountriesContainer: {
+  metadataHeader: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
+    marginBottom: '10px',
+  },
+  knownDevicesList: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '8px',
+  },
+  deviceBox: {
+    backgroundColor: '#d4edda',
+    color: '#155724',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    fontSize: '14px',
+    border: '1px solid #c3e6cb',
   },
   clearButton: {
     backgroundColor: '#dc3545',
@@ -233,9 +253,10 @@ const styles: Record<string, React.CSSProperties> = {
     border: 'none',
     padding: '4px 8px',
     borderRadius: '4px',
-    fontSize: '11px',
+    fontSize: '12px',
     cursor: 'pointer',
     flexShrink: 0,
+    height: 'fit-content',
   },
 };
 
