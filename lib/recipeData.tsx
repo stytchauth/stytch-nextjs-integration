@@ -103,11 +103,15 @@ await sendEML(
 // Get telemetry ID from the Stytch script
 let telemetryId: string | undefined;
       
+const config = {
+        submitURL: "auth.stytchdemo.com",
+        publicToken: public_token
+}
+      
 try {
-  const publicToken = process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN;
-  telemetryId = await (window as any).GetTelemetryID({ publicToken });
+  telemetryId = await (window as any).GetTelemetryID(config);
 } catch (telemetryError) {
-    console.warn('Could not get telemetry ID:', telemetryError);
+  console.warn('Could not get telemetry ID:', telemetryError);
 }
 
 // Call our authenticate API
