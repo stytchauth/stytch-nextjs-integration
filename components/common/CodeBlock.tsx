@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import Prism from 'prismjs';
+
+import 'prismjs/components/prism-jsx';
 
 type Props = {
   codeString: string;
@@ -6,20 +9,33 @@ type Props = {
 };
 
 function CodeBlock({ codeString, maxHeight }: Props) {
-  return <div style={{ ...styles.code, maxHeight }}>{codeString}</div>;
+  const codeBlockRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!codeBlockRef.current) {
+      return;
+    }
+    Prism.highlightElement(codeBlockRef.current, false);
+  }, [codeString, maxHeight]);
+
+  return (
+    <div>
+      <pre>
+        <code
+          className="language-jsx"
+          ref={codeBlockRef}
+          style={{ ...styles.code, maxHeight }}
+        >
+          {codeString}
+        </code>
+      </pre>
+    </div>
+  );
 }
+
 
 const styles: Record<string, React.CSSProperties> = {
   code: {
-    backgroundColor: 'rgb(25, 48, 61)',
-    borderRadius: '4px',
-    padding: '24px',
-    color: 'rgb(19, 229, 192)',
     whiteSpace: 'pre-wrap',
-    overflowWrap: 'anywhere',
-    fontSize: '16px',
-    fontFamily: '"Chivo Mono", monospace',
-    overflowY: 'scroll',
   },
 };
 

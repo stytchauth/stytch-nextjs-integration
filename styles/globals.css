@@ -108,6 +108,10 @@ code {
   word-break: break-all;
 }
 
+code span {
+  font-family: 'Chivo Mono', monospace;
+}
+
 input {
   border: 1px solid #adbcc5;
   box-sizing: border-box;
