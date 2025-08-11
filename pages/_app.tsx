@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/prism.css';
 import type { AppProps } from 'next/app';
 import React from 'react';
 import { StytchProvider } from '@stytch/nextjs';
