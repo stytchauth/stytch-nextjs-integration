@@ -9,29 +9,46 @@ type Props = {
 };
 
 const LoginDetails = ({ recipe }: Props) => {
-  const router = useRouter();
-
-  const handleClick = (e: any) => {
-    e.preventDefault();
-    router.push(`/`);
-  };
-
-  return (  
-      <div style={styles.container}>  
-        <div style={styles.details}>  
-          <h2>{recipe.title}</h2> 
-          <p>{recipe.instructions}</p>  
-          <CodeBlock codeString={recipe.code} />  
-          <Link href="/"> 
-            <a className="btn outlined mt2">{'Back'}</a>  
-          </Link> 
-        </div>  
-        {recipe.id == "onetap" ? recipe.component :  (<div style={styles.component}>{recipe.component}</div>)}
-      </div>  
-    );
+  return (
+    <>
+      { recipe.tabs && (
+        <div style={styles.tabsContainer}>
+          {recipe.tabs.map((tab) => {
+            const isActive = tab.recipeId === recipe.id;
+            return (
+              <Link key={tab.recipeId} href={`/recipes/${tab.recipeId}`}>
+                <a className={`btn outlined ${isActive ? 'active' : ''}`}>{tab.title}</a>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+      <div style={styles.container}>
+        <div style={styles.details}>
+          <h2>{recipe.title}</h2>
+          <p>{recipe.instructions}</p>
+          <CodeBlock codeString={recipe.code} />
+          <Link href="/">
+            <a className="btn outlined mt2">{'Back'}</a>
+          </Link>
+        </div>
+        {recipe.id == "onetap" ? recipe.component : (<div style={styles.component}>{recipe.component}</div>)}
+      </div>
+    </>
+  );
 };
 
 const styles: Record<string, React.CSSProperties> = {
+  tabsContainer: {
+    backgroundColor: '#FFF',
+    display: 'flex',
+    margin: '48px auto 0',
+    padding: '12px',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'center',
+    gap: '48px',
+    width: 'calc(100% - 48px)',
+  },
   container: {
     display: 'flex',
     margin: '48px 24px',

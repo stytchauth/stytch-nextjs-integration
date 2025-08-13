@@ -6,6 +6,19 @@ type Props = {
   token?: string;
 };
 
+export const getTelemetryId = async () => {
+  const config = {
+    submitURL: "auth.stytchdemo.com",
+    publicToken: process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN,
+  };
+  try {
+    return await (window as any).GetTelemetryID(config);
+  } catch (error) {
+    console.warn('Could not get telemetry ID:', error);
+    return undefined;
+  }
+};
+
 const AuthenticateMagicLink = ({ token }: Props) => {
   const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'error'>('loading');
@@ -21,25 +34,12 @@ const AuthenticateMagicLink = ({ token }: Props) => {
     }
 
     try {
-      // Get telemetry ID from the Stytch script
-      let telemetryId: string | undefined;
-      const config = {
-        submitURL: "auth.stytchdemo.com",
-        publicToken: process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN
-      }
-
-      try {
-        telemetryId = await (window as any).GetTelemetryID(config);
-      } catch (telemetryError) {
-        console.warn('Could not get telemetry ID:', telemetryError);
-      }
-
       // Call our authenticate API
-      const response = await fetch('/api/authenticate_eml_remembered_device', {
+      const response = await fetch('/api/authenticate_eml_remembered_device_integrated', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(telemetryId && { 'X-Telemetry-ID': telemetryId }),
+          'X-Telemetry-ID': await getTelemetryId(),
         },
         body: JSON.stringify({ token }),
       });
@@ -54,14 +54,7 @@ const AuthenticateMagicLink = ({ token }: Props) => {
       const data = await response.json();
 
       // The backend has already set the session cookie, so we can redirect
-      // MFA requirement is determined by session state, not response data
-      if (data.visitorID) {
-        // Redirect to profile with visitor ID info (MFA requirement determined by session)
-        router.push(`./profile?visitorID=${encodeURIComponent(data.visitorID)}`);
-      } else {
-        // Redirect to profile (authorization determined by session)
-        router.push('./profile');
-      }
+      router.push(`./profile`);
     } catch (error) {
       setError(JSON.stringify(error));
       setStatus('error');

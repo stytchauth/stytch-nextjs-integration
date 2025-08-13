@@ -183,6 +183,11 @@ button.compact {
 }
 
 /* Button links */
+a.link {
+  cursor: pointer; /* without a `href` no pointer will appear */
+  text-decoration: underline;
+}
+
 a.btn {
   color: #ffffff;
   background-color: #19303d;
@@ -210,6 +215,12 @@ a.btn.outlined {
   background-color: initial;
   color: #19303d;
   border: 1px solid #19303d;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+a.btn.outlined:hover, a.btn.outlined.active {
+  background-color: #5c727d;
+  color: #ffffff;
 }
 
 /* Helper classes to add margin quickly */
