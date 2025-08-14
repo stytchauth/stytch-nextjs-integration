@@ -149,7 +149,7 @@ await stytchClient.users.update({
     id: 'remembered-device-integrated',
     title: 'Remembered Device Integrated',
     details: 'Build a remembered device authentication flow using Stytch Auth Flow.',
-    description: 'In this example we use a backend Stytch auth flow to build a remembered device authentication flow. Remembered devices are returned by the SDK and can be used to determine if a login attempt is from a known device.',
+    description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device authentication flow. A login attempt from the same device (determined by visitor ID) is considered a known device. This recipe includes two examples: one that uses the standalone DFP product, and one that uses the built-in DFP integration in Stytch auth.',
     instructions: 'To the right you\'ll see a login form that uses Stytch Auth Flow to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
     component: <RememberedDeviceIntegrated />,
     tabs: [
