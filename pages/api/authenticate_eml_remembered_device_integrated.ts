@@ -15,25 +15,6 @@ type SuccessData = {
   super_secret_data?: string;
 };
 
-export const trustedDevices = {
-  devices: {} as Record<string, Set<string>>,
-  clear: (userId: string): void => {
-    trustedDevices.devices[userId] = new Set<string>();
-  },
-  list: (userId: string): string[] => {
-    return Array.from(trustedDevices.devices[userId] ?? new Set<string>());
-  },
-  trust: (userID: string, visitorID: string): void => {
-    if (!trustedDevices.devices[userID]) {
-      trustedDevices.devices[userID] = new Set<string>();
-    }
-    trustedDevices.devices[userID].add(visitorID);
-  },
-  isTrusted: (userID: string, visitorID: string): boolean => {
-    return trustedDevices.devices[userID]?.has(visitorID) ?? false;
-  },
-}
-
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData | SuccessData>) {
   if (req.method === 'POST') {
     const cookies = new Cookies(req, res);
@@ -53,7 +34,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         telemetry_id: telemetryId,
       });
 
-      const userID = authenticateResponse?.user_id ?? '';
+      const knownDevices = authenticateResponse.user.trusted_metadata?.known_devices || [];
       const visitorID = authenticateResponse?.user_device?.visitor_id ?? '';
 
       // Set the session cookie in the response
@@ -61,18 +42,35 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         httpOnly: true,
         maxAge: 1000 * 60 * 30,
       });
-      cookies.set('visitor_id', visitorID, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 30,
-      });
 
-      // Set the session cookie in the response
-      const isKnownDevice = trustedDevices.isTrusted(userID, visitorID);
+      // Store known device
+      const knownDevice = isKnownDevice(visitorID, knownDevices) && visitorID !== '';
+
+      // Update the session
+      if (knownDevice) {
+        await stytchClient.sessions.authenticate({
+          session_token: authenticateResponse.session_token,
+          session_custom_claims: {
+            authorized_for_secret_data: true,
+            authorized_device: visitorID,
+          },
+        });
+      } else {
+        await stytchClient.sessions.authenticate({
+          session_token: authenticateResponse.session_token,
+          session_custom_claims: {
+            authorized_for_secret_data: false,
+            pending_device: visitorID,
+          },
+        });
+      }
+
+      // Return the response
       return res.status(200).json({
         session_token: authenticateResponse.session_token,
         visitorID: visitorID,
         user_id: authenticateResponse.user_id,
-        super_secret_data: isKnownDevice ? SUPER_SECRET_DATA.REMEMBERED_DEVICE : undefined,
+        super_secret_data: knownDevice ? SUPER_SECRET_DATA.REMEMBERED_DEVICE : undefined,
       });
 
     } catch (error) {
@@ -83,6 +81,10 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
   } else {
     return res.status(405).end();
   }
+}
+
+function isKnownDevice(visitorID: string, knownDevices: string[]) {
+  return knownDevices.includes(visitorID);
 }
 
 export default handler;

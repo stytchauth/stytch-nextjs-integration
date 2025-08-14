@@ -8,7 +8,7 @@ type ErrorData = {
 };
 
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData>) {
-// Get session from cookie - using the recipe-specific cookie name
+  // Get session from cookie - using the recipe-specific cookie name
   const cookies = new Cookies(req, res);
   const storedSession = cookies.get('api_sms_remembered_device_session');
   // If session does not exist display an error
@@ -36,20 +36,20 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       // Now that MFA is complete, update the trusted metadata
       // Get the updated session to verify factors
       const { session: updatedSession } = await stytchClient.sessions.authenticate({ session_token });
-      
+
       // Verify that the session has both EML and SMS factors (proving MFA completion)
       const hasEmailFactor = updatedSession.authentication_factors.some(f => f.delivery_method === 'email');
       const hasSmsFactor = updatedSession.authentication_factors.some(f => f.delivery_method === 'sms');
-      
+
       if (hasEmailFactor && hasSmsFactor) {
         // Get the pending device from session custom claims that was stored during EML authentication
         const pendingDevice = updatedSession.custom_claims?.pending_device;
-        
+
         if (pendingDevice) {
           // Get existing known devices or initialize empty array
           const user = await stytchClient.users.get({ user_id: updatedSession.user_id });
           const existingKnownDevices = user.trusted_metadata?.known_devices || [];
-          
+
           // Add new device if it's not already in the list
           if (!existingKnownDevices.includes(pendingDevice)) {
             const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
@@ -89,4 +89,4 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
   }
 }
 
-export default handler; 
+export default handler;

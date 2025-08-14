@@ -1,6 +1,5 @@
 // This API route clears the user's known countries list from trusted metadata
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { trustedDevices } from './authenticate_eml_remembered_device_integrated';
 import Cookies from 'cookies';
 import loadStytch from '../../lib/loadStytch';
 import { SUPER_SECRET_DATA } from '../../lib/rememberedDeviceConstants';
@@ -20,7 +19,6 @@ export type SuccessData = {
   isRememberedDevice: boolean;
   requiresMfa: boolean;
   visitorID: string;
-  userID: string;
 };
 
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData | SuccessData>) {
@@ -28,16 +26,13 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     // Lookup the session to get the user id
     const cookies = new Cookies(req, res);
     const storedSession = cookies.get('api_sms_remembered_device_session');
-    const visitorID = cookies.get('visitor_id') ?? '';
     if (!storedSession) {
       return res.status(400).json({ errorString: 'No session provided' });
     }
     const stytchClient = loadStytch();
-    const { session } = await stytchClient.sessions.authenticate({
+    const { session, user } = await stytchClient.sessions.authenticate({
       session_token: storedSession,
     });
-    const userID = session.user_id;
-    const user = await stytchClient.users.get({ user_id: session.user_id });
     const hasRegisteredPhone = user.phone_numbers.length > 0;
 
     const phoneNumber = user.phone_numbers[0]?.phone_number ?? '';
@@ -45,10 +40,11 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     // Server-side authorization check based on session authentication factors and custom claims
     const hasEmailFactor = session.authentication_factors.find((i: any) => i.delivery_method === 'email');
     const hasSmsFactor = session.authentication_factors.find((i: any) => i.delivery_method === 'sms');
+    const visitorID = session.custom_claims?.authorized_device || session.custom_claims?.pending_device || 'no visitor ID';
 
     let superSecretData = null;
     let requiresMfa = true; // Default to requiring MFA unless session proves otherwise
-    const isRememberedDevice = trustedDevices.isTrusted(userID, visitorID);
+    const isRememberedDevice = session.custom_claims?.authorized_for_secret_data;
 
     if (hasEmailFactor && hasSmsFactor) {
       // User has completed full MFA - authorized for super secret data
@@ -64,7 +60,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
     }
 
     // Get the known devices for the user
-    const deviceList = trustedDevices.list(session.user_id);
+    const deviceList = user.trusted_metadata?.known_devices || [];
 
     // Return success
     return res.status(200).json({
@@ -77,7 +73,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       isRememberedDevice,
       requiresMfa,
       visitorID,
-      userID,
     });
   } else {
     return res.status(405).end();

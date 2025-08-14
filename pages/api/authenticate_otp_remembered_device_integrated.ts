@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { trustedDevices } from './authenticate_eml_remembered_device_integrated';
 import loadStytch from '../../lib/loadStytch';
 import Cookies from 'cookies';
 
@@ -29,31 +28,59 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         telemetry_id: telemetryId,
       });
 
-      const { session: { authentication_factors } } = await stytchClient.sessions.authenticate({
+      const { session: updatedSession } = await stytchClient.sessions.authenticate({
         session_token: authenticateResponse.session_token,
       });
-
-      // Verify that the session has both EML and SMS factors (proving MFA completion)
-      const hasEmailFactor = authentication_factors.some(f => f.delivery_method === 'email');
-      const hasSmsFactor = authentication_factors.some(f => f.delivery_method === 'sms');
-      const visitorID = authenticateResponse?.user_device?.visitor_id;
-      const userID = authenticateResponse?.user_id;
 
       // Save updated Stytch session to a cookie - using the recipe-specific cookie name
       cookies.set('api_sms_remembered_device_session', authenticateResponse.session_token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 30,
       });
-      cookies.set('visitor_id', visitorID, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 30,
-      });
 
-      // Check if MFA is fully completed
-      const isMfaComplete = hasEmailFactor && hasSmsFactor;
+      // Verify that the session has both EML and SMS factors (proving MFA completion)
+      const hasEmailFactor = updatedSession.authentication_factors.some(f => f.delivery_method === 'email');
+      const hasSmsFactor = updatedSession.authentication_factors.some(f => f.delivery_method === 'sms');
+      const visitorID = authenticateResponse?.user_device?.visitor_id;
+      const pendingDevice = updatedSession.custom_claims?.pending_device;
 
-      if (isMfaComplete && visitorID) {
-        trustedDevices.trust(userID, visitorID); // Could be stored in the apps user table
+      const hasSteppedUp = hasEmailFactor && hasSmsFactor;
+      const hasPendingDevice = pendingDevice && pendingDevice === visitorID;
+
+      if (hasSteppedUp && hasPendingDevice) {
+        const user = await stytchClient.users.get({ user_id: updatedSession.user_id });
+        const existingKnownDevices = user.trusted_metadata?.known_devices || [];
+
+        if (!existingKnownDevices.includes(pendingDevice)) {
+          const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
+          // Update the user's trusted metadata with the new known device
+          await stytchClient.users.update({
+            user_id: updatedSession.user_id,
+            trusted_metadata: {
+              ...user.trusted_metadata,
+              known_devices: updatedKnownDevices,
+            },
+          });
+
+          // Update session custom claims to authorize this session for secret data and remove pending device
+          await stytchClient.sessions.authenticate({
+            session_token: authenticateResponse.session_token,
+            session_custom_claims: {
+              authorized_for_secret_data: true,
+              authorized_device: pendingDevice,
+              pending_device: null, // Remove the pending device from session claims
+            },
+          });
+
+          console.log(`Added device ${pendingDevice} to trusted metadata for user ${updatedSession.user_id} and authorized session`);
+        }
+      } else {
+        console.log('Did not store device', {
+          hasEmailFactor,
+          hasSmsFactor,
+          visitorID,
+          customClaims: updatedSession.custom_claims,
+        })
       }
 
       return res.status(200).end();

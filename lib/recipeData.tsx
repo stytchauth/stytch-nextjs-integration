@@ -189,18 +189,16 @@ const authenticateResponse = await stytchClient.magicLinks.authenticate({
   session_duration_minutes: 60,
   telemetry_id: telemetryId,
 });
-// Lookup the visitor ID, store it for lookup later
-const visitorID = authenticateResponse?.user_device?.visitor_id ?? '';
-cookies.set('visitor_id', visitorID, {
-  httpOnly: true,
-  maxAge: 1000 * 60 * 30,
-});
 
 // Trust the device
-const isMfaComplete = hasEmailFactor && hasSmsFactor;
-if (isMfaComplete && visitorID) {
-  trustedDevices.trust(userID, visitorID); // Could be stored in the apps user table
-}
+const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
+await stytchClient.users.update({
+  user_id: updatedSession.user_id,
+  trusted_metadata: {
+    ...user.trusted_metadata,
+    known_devices: updatedKnownDevices,
+  },
+});
 `,
     products: [LoginProducts.EML, LoginProducts.SMS],
   },

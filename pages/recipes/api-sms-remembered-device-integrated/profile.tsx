@@ -48,7 +48,7 @@ const Profile = () => {
 
   const clearKnownDevices = async () => {
     try {
-      const resp = await fetch('/api/clear_known_devices_integrated', { method: 'POST' });
+      const resp = await fetch('/api/clear_known_devices', { method: 'POST' });
       if (resp.status === 200) {
         // Refresh the page to show updated state
         router.reload();
@@ -105,6 +105,28 @@ const Profile = () => {
       </div>
       <div style={styles.details}>
         <h2>Current State</h2>
+
+        <h3>Session Authorization</h3>
+        <div style={styles.sessionInfo}>
+          <p style={styles.infoText}>
+            <strong>Session Custom Claims:</strong> These control authorization for the super secret area
+          </p>
+          {deviceResponse.session.custom_claims?.authorized_for_secret_data && (
+            <p style={styles.successNote}>
+              ✅ <strong>Authorized!</strong> Session has <code>authorized_for_secret_data: true</code>
+            </p>
+          )}
+          {deviceResponse.session.custom_claims?.pending_device && (
+            <p style={styles.pendingNote}>
+              ⏳ <strong>Pending MFA:</strong> Device <code>{deviceResponse.session.custom_claims.pending_device}</code> waiting for SMS verification
+            </p>
+          )}
+          {deviceResponse.session.custom_claims?.authorized_device && (
+            <p style={styles.successNote}>
+              💻 <strong>Known Device:</strong> Device <code>{deviceResponse.session.custom_claims.authorized_device}</code> recognized as trusted
+            </p>
+          )}
+        </div>
 
         <h3>Visitor ID</h3>
         <div style={styles.sessionInfo}>
