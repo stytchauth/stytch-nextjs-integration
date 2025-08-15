@@ -12,16 +12,21 @@ const LoginDetails = ({ recipe }: Props) => {
   return (
     <>
       { recipe.tabs && (
-        <div style={styles.tabsContainer}>
-          {recipe.tabs.map((tab) => {
-            const isActive = tab.recipeId === recipe.id;
-            return (
-              <Link key={tab.recipeId} href={`/recipes/${tab.recipeId}`}>
-                <a className={`btn outlined ${isActive ? 'active' : ''}`}>{tab.title}</a>
-              </Link>
-            );
-          })}
-        </div>
+        <>
+          <div style={styles.tabsContainer}>
+            {recipe.tabs.map((tab) => {
+              const isActive = tab.recipeId === recipe.id;
+              return (
+                <Link key={tab.recipeId} href={`/recipes/${tab.recipeId}`}>
+                  <a className={`btn outlined ${isActive ? 'active' : ''}`}>{tab.title}</a>
+                </Link>
+              );
+            })}
+          </div>
+          <div key='description' style={styles.descriptionContainer}>
+            {recipe.description}
+          </div>
+        </>
       )}
       <div style={styles.container}>
         <div style={styles.details}>
@@ -48,6 +53,13 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     gap: '48px',
     width: 'calc(100% - 48px)',
+  },
+  descriptionContainer: {
+    backgroundColor: '#FFF',
+    padding: '24px',
+    margin: '0 auto',
+    width: 'calc(100% - 48px)',
+    textAlign: 'center',
   },
   container: {
     display: 'flex',
