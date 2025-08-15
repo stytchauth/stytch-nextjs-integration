@@ -9,6 +9,7 @@ export type RecipeTab = {
 };
 
 export type LoginType = {
+  cardTitle?: string;
   title: string;
   description: string;
   details: string;
