@@ -14,8 +14,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
 
     try {
       const domain = getDomainFromRequest(req);
-
-
       await stytchClient.magicLinks.email.loginOrCreate({
         email: data.email,
         login_magic_link_url: `${domain + data.login_redirect}`,

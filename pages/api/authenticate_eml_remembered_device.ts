@@ -25,16 +25,16 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
 
     try {
       // First, authenticate the magic link token
-      let authenticateResponse = await stytchClient.magicLinks.authenticate({
+      const authenticateResponse = await stytchClient.magicLinks.authenticate({
         token: token,
         session_duration_minutes: 60,
       });
-      
-      let knownDevices = authenticateResponse.user.trusted_metadata?.known_devices || [];
+
+      const knownDevices = authenticateResponse.user.trusted_metadata?.known_devices || [];
 
       // Get telemetry ID from the request (this would come from the frontend)
       const telemetryId = req.headers['x-telemetry-id'] as string;
-      
+
       let requiresMfa = false;
       let visitorID = '';
 
@@ -48,9 +48,9 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
           const fingerprintResponse = await stytchClient.fraud.fingerprint.lookup({
             telemetry_id: telemetryId,
           });
-          
+
           visitorID = fingerprintResponse.fingerprints.visitor_id || '';
-          
+
           // Check if the visitor ID is in the known devices list
           if (isKnownDevice(visitorID, knownDevices) && visitorID !== '') {
             console.log('Device is known, no MFA required');
@@ -84,7 +84,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
 
 
 
-      // Set the session cookie in the response 
+      // Set the session cookie in the response
       res.setHeader('Set-Cookie', `api_sms_remembered_device_session=${authenticateResponse.session_token}; Path=/; Max-Age=1800; SameSite=Lax`);
 
       return res.status(200).json({
@@ -108,4 +108,4 @@ function isKnownDevice(visitorID: string, knownDevices: string[]) {
   return knownDevices.includes(visitorID);
 }
 
-export default handler; 
+export default handler;

@@ -1,4 +1,4 @@
-import { LoginType } from './types';
+import type { LoginType } from './types';
 import LoginWithCryptoWallets from '../components/CryptoWallets/LoginWithCryptoWallets';
 import LoginWithSMS from '../components/SMSPasscodes/LoginWithSMS';
 import LoginWithEmailWebAuthn from '../components/EmailWebAuthn/LoginWithEmail';
@@ -9,7 +9,7 @@ import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
 import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
 import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
 import LoginWithEmailRememberedDevice from '../components/RememberedDevice/LoginWithEmailRememberedDevice';
-import {OTPMethods, Products, StytchLoginConfig} from "@stytch/vanilla-js";
+import RememberedDeviceIntegrated from '../components/RememberedDeviceIntegrated/RememberedDeviceIntegrated';
 
 export const Recipes: Record<string, LoginType> = {
   REACT: {
@@ -54,10 +54,10 @@ const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkSt
     instructions: `To the right you'll see a phone number entry form built within this example app itself, not using our pre-built UI. Below you can see the two simple SDK calls to send the SMS passcode and authenticate the passcode input by the user.`,
     component: <LoginWithSMS />,
     products: [LoginProducts.SMS],
-    code: `    
+    code: `
   // Send the SMS passcode
   await stytchClient.otps.sms.loginOrCreate('+1' + phoneNumber);
-  
+
   // Verify the passcode input by the user
   await stytchClient.otps.authenticate(
     otpInput,
@@ -81,49 +81,126 @@ await stytchClient.magicLinks.email.loginOrCreate({
   login_magic_link_url:  REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
   signup_magic_link_url: REDIRECT_URL_BASE + '/api/authenticate_magic_link_with_webauthn',
 });
-  
+
 // Authenticate the Email magic link
 await stytchClient.magicLinks.authenticate(token as string);`,
   },
   REMEMBERED_DEVICE: {
+    hidden: true,
     id: 'remembered-device',
     title: 'Remembered Device',
     details: 'Build a remembered device authentication flow using Stytch DFP.',
     description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device authentication flow. A login attempt from the same device (determined by visitor ID) is considered a known device.',
     instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
     component: <LoginWithEmailRememberedDevice />,
-    code: `// Send Email Magic Link. 
-await sendEML(
-  email,
-  login_magic_link_url:  REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device/magic-link-authenticate',
-  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device/magic-link-authenticate'
-);
+    tabs: [
+      {
+        title: 'Integrated',
+        recipeId: 'remembered-device-integrated',
+      },
+      {
+        title: 'Standalone',
+        recipeId: 'remembered-device',
+      }
+    ],
+    code: `// Send Email Magic Link.
+await stytchClient.magicLinks.email.loginOrCreate({
+  email: email,
+  login_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device-integrated/magic-link-authenticate',
+  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device-integrated/magic-link-authenticate',
+});
 
-// On the authenticate call to backend, generate a telemetry ID to send along with the token
-// Get telemetry ID from the Stytch script
-let telemetryId: string | undefined;
-      
-const config = {
-        submitURL: "auth.stytchdemo.com",
-        publicToken: public_token
-}
-      
-try {
-  telemetryId = await (window as any).GetTelemetryID(config);
-} catch (telemetryError) {
-  console.warn('Could not get telemetry ID:', telemetryError);
-}
+// Function to safely return telemetry ID
+export const getTelemetryId = async () => {
+  const config = {
+    submitURL: "auth.stytchdemo.com",
+    publicToken: process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN,
+  };
+  try {
+    return await (window as any).GetTelemetryID(config);
+  } catch (error) {
+    console.warn('Could not get telemetry ID:', error);
+    return undefined;
+  }
+};
+
+// Lookup telemetry ID and call authenticate API
+const fingerprintResponse = await stytchClient.fraud.fingerprint.lookup({
+  telemetry_id: telemetryId,
+});
+let authenticateResponse = await stytchClient.magicLinks.authenticate({
+  token: token,
+  session_duration_minutes: 60,
+});
+
+// Trust the device
+const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
+await stytchClient.users.update({
+  user_id: updatedSession.user_id,
+  trusted_metadata: {
+    ...user.trusted_metadata,
+    known_devices: updatedKnownDevices,
+  },
+});
+`,
+    products: [LoginProducts.EML, LoginProducts.SMS],
+  },
+  REMEMBERED_DEVICE_INTEGRATED: {
+    id: 'remembered-device-integrated',
+    title: 'Remembered Device Integrated',
+    cardTitle: 'Remembered Device',
+    details: 'Build a remembered device authentication flow using Stytch Auth, integrated with our DFP product.',
+    description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device authentication flow. A login attempt from the same device (determined by visitor ID) is considered a known device. This recipe includes two examples: one that uses the standalone DFP product, and one that uses the built-in DFP integration in Stytch auth.',
+    instructions: 'To the right you\'ll see a login form that uses Stytch Auth Flow to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
+    component: <RememberedDeviceIntegrated />,
+    tabs: [
+      {
+        title: 'Integrated',
+        recipeId: 'remembered-device-integrated',
+      },
+      {
+        title: 'Standalone',
+        recipeId: 'remembered-device',
+      }
+    ],
+    code: `// Send Email Magic Link.
+await stytchClient.magicLinks.email.loginOrCreate({
+  email: email,
+  login_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device-integrated/magic-link-authenticate',
+  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device-integrated/magic-link-authenticate',
+});
+
+// Function to safely return telemetry ID
+export const getTelemetryId = async () => {
+  const config = {
+    submitURL: "auth.stytchdemo.com",
+    publicToken: process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN,
+  };
+  try {
+    return await (window as any).GetTelemetryID(config);
+  } catch (error) {
+    console.warn('Could not get telemetry ID:', error);
+    return undefined;
+  }
+};
 
 // Call our authenticate API
-const response = await fetch('/api/authenticate_eml_remembered_device', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    ...(telemetryId && { 'X-Telemetry-ID': telemetryId }),
-  },
-  body: JSON.stringify({ token }),
+const authenticateResponse = await stytchClient.magicLinks.authenticate({
+  token: token,
+  session_duration_minutes: 60,
+  telemetry_id: telemetryId,
 });
-// `,
+
+// Trust the device
+const updatedKnownDevices = [...existingKnownDevices, pendingDevice];
+await stytchClient.users.update({
+  user_id: updatedSession.user_id,
+  trusted_metadata: {
+    ...user.trusted_metadata,
+    known_devices: updatedKnownDevices,
+  },
+});
+`,
     products: [LoginProducts.EML, LoginProducts.SMS],
   },
   CRYPTO_WALLETS: {
@@ -135,23 +212,21 @@ const response = await fetch('/api/authenticate_eml_remembered_device', {
     instructions: `To the right you'll see a button to sign in with your wallet. Once clicked, your wallet will open a prompt to get started. Below you can see the four simple steps to authenticate an Ethereum wallet: fetch the address, generate a challenge, sign the challenge, and validate the signature with Stytch. If you want to use the Sign In With Ethereum (SIWE) protocol for Ethereum crypto wallet logins, you'll need to toggle "Enable SIWE" in the SDK Configuration page of your dashboard.`,
     component: <LoginWithCryptoWallets />,
     products: [LoginProducts.WEB3],
-    code: `
-const trigger = useCallback(async () => {
+    code: `const trigger = useCallback(async () => {
   /* Request user's wallet address */
-  const [crypto_wallet_address] = await window.ethereum.request({ 
+  const [crypto_wallet_address] = await window.ethereum.request({
     method: 'eth_requestAccounts',
   });
-  
 
   /* Ask Stytch to generate a challenge for the user */
   const { challenge } = await stytchClient.cryptoWallets.authenticateStart({
     crypto_wallet_address,
     crypto_wallet_type: 'ethereum',
   });
-  
+
   /* Ask the user's browser to sign the challenge */
   const signature = await window.ethereum.request({
-    method: 'personal_sign', 
+    method: 'personal_sign',
     params: [challenge, crypto_wallet_address],
   });
 
@@ -165,8 +240,7 @@ const trigger = useCallback(async () => {
   if (user) {
     router.push('/profile');
   }
-}, [stytchClient]);
-    `,
+}, [stytchClient]);`,
   },
   PASSWORDS: {
     id: 'passwords',
@@ -197,7 +271,8 @@ const LoginWithPasswords = () => {
   if (user) {
     router.push('/profile');
   }
-return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
+  return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;
+}`,
   },
   PASSKEYS: {
     id: 'passkeys',
@@ -208,7 +283,7 @@ return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
     instructions: 'To the right you\'ll see the Stytch UI configured for Email OTP and Passkey login. Continue with email to create an account. Then, once logged in, use the Passkey Registration SDK to create a passkey for your account.',
     component: <LoginWithPasskeys />,
     products: [LoginProducts.PASSKEYS],
-    code: `const loginConfig: StytchLoginConfig = 
+    code: `const loginConfig: StytchLoginConfig =
   sessionOptions: {
     sessionDurationMinutes: 60,
   },
@@ -226,7 +301,8 @@ const LoginWithPasskeys = () => {
     router.push('/recipes/passkeys/profile');
   }
 
-return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;`,
+  return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;
+}`,
   },
   ONETAP: {
     id: 'onetap',
@@ -270,7 +346,7 @@ const LoginWithOneTap = () => <StytchLogin config={sdkConfig} callbacks={callbac
       login_magic_link_url:  REDIRECT_URL_BASE + '/api-sms-mfa/magic-link-authenticate',
       signup_magic_link_url: REDIRECT_URL_BASE + '/api-sms-mfa/magic-link-authenticate',
     });
-      
+
     // Authenticate the Email magic link
     await stytchClient.magicLinks.authenticate(token as string);`,
   },

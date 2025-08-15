@@ -129,7 +129,7 @@ const PasskeyRegistration = () => {
             setDisplayView(PasskeyRegViews.Register);
         }
 
-    },[session, user]);
+    },[session, user, displayView]);
 
     const callbackConfig = {
         onEvent: (message: StytchEvent) => {

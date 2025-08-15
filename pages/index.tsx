@@ -24,7 +24,7 @@ const App = () => {
         learn which approach will work best for you.
       </p>
       <div style={styles.loginRow}>
-        {Object.values(Recipes).map((recipe) => (
+        {Object.values(Recipes).filter((recipe) => !recipe.hidden).map((recipe) => (
           <LoginMethodCard key={recipe.id} recipe={recipe} />
         ))}
       </div>

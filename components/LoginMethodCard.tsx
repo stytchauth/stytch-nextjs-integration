@@ -17,7 +17,7 @@ const LoginMethodCard = ({ recipe }: Props) => {
 
   return (
     <div style={styles.container}>
-      <h3>{recipe.title}</h3>
+      <h3>{recipe.cardTitle || recipe.title}</h3>
       {recipe.products && <h4>Products:</h4>}
       {recipe.products?.map((product) => {
         return (

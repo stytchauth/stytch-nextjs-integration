@@ -47,7 +47,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
 
   const clearKnownDevices = async () => {
     try {
-      const resp = await fetch('/api/clear_known_countries', { method: 'POST' });
+      const resp = await fetch('/api/clear_known_devices', { method: 'POST' });
       if (resp.status === 200) {
         // Refresh the page to show updated state
         router.reload();
@@ -86,7 +86,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
             <>
               <Image alt="Lock" src={lock} width={100} />
               <p>
-                {requiresMfa 
+                {requiresMfa
                   ? `Additional authentication required. This appears to be a new device (${visitorID || 'unknown device'}). Please complete SMS verification to continue.`
                   : 'Super secret profile information is secured by two factor authentication. To unlock this area complete the SMS OTP flow.'
                 }
@@ -104,7 +104,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
       </div>
       <div style={styles.details}>
         <h2>Current State</h2>
-        
+
         <h3>Session Authorization</h3>
         <div style={styles.sessionInfo}>
           <p style={styles.infoText}>
@@ -126,7 +126,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
             </p>
           )}
         </div>
-        
+
         <h3>Trusted Devices</h3>
         <div style={styles.userInfo}>
           <div style={styles.metadataHeader}>
@@ -134,7 +134,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
               <strong>Trusted Metadata:</strong> Devices where this user has completed MFA
             </p>
             {user.trusted_metadata?.known_devices && user.trusted_metadata.known_devices.length > 0 && (
-              <button 
+              <button
                 onClick={clearKnownDevices}
                 style={styles.clearButton}
                 title="Clear the list of known devices (useful for testing)"
@@ -162,7 +162,7 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
         <h2>Raw Stytch Data</h2>
         <h3>Session</h3>
         <CodeBlock codeString={JSON.stringify(session, null, 2).replace(' ', '')} />
-        
+
         <h3>User</h3>
         <CodeBlock codeString={JSON.stringify(user, null, 2).replace(' ', '')} />
       </div>
@@ -288,7 +288,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     // Server-side authorization check based on session authentication factors and custom claims
     const hasEmailFactor = session.authentication_factors.find((i: any) => i.delivery_method === 'email');
     const hasSmsFactor = session.authentication_factors.find((i: any) => i.delivery_method === 'sms');
-    
+
     if (hasEmailFactor && hasSmsFactor) {
       // User has completed full MFA - authorized for super secret data
       superSecretData = SUPER_SECRET_DATA.FULL_MFA;

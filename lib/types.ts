@@ -3,7 +3,13 @@ export type LoginProduct = {
   name: string;
 };
 
+export type RecipeTab = {
+  title: string;
+  recipeId: string;
+};
+
 export type LoginType = {
+  cardTitle?: string;
   title: string;
   description: string;
   details: string;
@@ -11,11 +17,13 @@ export type LoginType = {
   instructions: string;
   component: JSX.Element;
   code: string;
+  tabs?: RecipeTab[];
   products?: LoginProduct[];
   entryButton?: {
     text: string;
     disabled?: boolean;
     onClick?: () => void;
   };
+  hidden?: true;
   preventClickthrough?: boolean;
 };
