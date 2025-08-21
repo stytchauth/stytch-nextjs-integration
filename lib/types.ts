@@ -18,6 +18,7 @@ export type LoginType = {
   component: JSX.Element;
   code: string;
   tabs?: RecipeTab[];
+  tabDescription?: string;
   products?: LoginProduct[];
   entryButton?: {
     text: string;

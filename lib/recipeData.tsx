@@ -91,6 +91,7 @@ await stytchClient.magicLinks.authenticate(token as string);`,
     title: 'Remembered Device',
     details: 'Build a remembered device authentication flow using Stytch DFP.',
     description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device authentication flow. A login attempt from the same device (determined by visitor ID) is considered a known device.',
+    tabDescription: 'The standalone flow calls magic links authenticate and DFP fingerprint lookup separately. You can switch to the Integrated tab to see these combined into a single call to the Stytch API.',
     instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
     component: <LoginWithEmailRememberedDevice />,
     tabs: [
@@ -106,8 +107,8 @@ await stytchClient.magicLinks.authenticate(token as string);`,
     code: `// Send Email Magic Link.
 await stytchClient.magicLinks.email.loginOrCreate({
   email: email,
-  login_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device-integrated/magic-link-authenticate',
-  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device-integrated/magic-link-authenticate',
+  login_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device/magic-link-authenticate',
+  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-sms-remembered-device/magic-link-authenticate',
 });
 
 // Function to safely return telemetry ID
@@ -151,7 +152,8 @@ await stytchClient.users.update({
     cardTitle: 'Remembered Device',
     details: 'Build a remembered device authentication flow using Stytch Auth, integrated with our DFP product.',
     description: 'In this example we use a backend Stytch auth flow and DFP to build a remembered device authentication flow. A login attempt from the same device (determined by visitor ID) is considered a known device. This recipe includes two examples: one that uses the standalone DFP product, and one that uses the built-in DFP integration in Stytch auth.',
-    instructions: 'To the right you\'ll see a login form that uses Stytch Auth Flow to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
+    tabDescription: 'The integrated flow combines magic links authenticate and DFP fingerprint lookup into a single call to the Stytch API. You can switch to the Standalone tab if you want to call DFP fingerprint lookup separately.',
+    instructions: 'To the right you\'ll see a login form that uses Stytch\'s integrated Auth + Fraud product to remember your device. Enter your email to receive a magic link. The first time you login, you will be prompted to register SMS OTP as a second factor. On subsequent logins, you will only be prompted to authenticate with SMS OTP if you are attempting to authenticate from a new device.',
     component: <RememberedDeviceIntegrated />,
     tabs: [
       {
@@ -184,7 +186,7 @@ export const getTelemetryId = async () => {
   }
 };
 
-// Call our authenticate API
+// Call our authenticate API with the telemetry ID
 const authenticateResponse = await stytchClient.magicLinks.authenticate({
   token: token,
   session_duration_minutes: 60,
