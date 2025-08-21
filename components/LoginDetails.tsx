@@ -12,7 +12,7 @@ const LoginDetails = ({ recipe }: Props) => {
   return (
     <>
       { recipe.tabs && (
-        <>
+        <div style={styles.tabsAndDescriptionContainer}>
           <div style={styles.tabsContainer}>
             {recipe.tabs.map((tab) => {
               const isActive = tab.recipeId === recipe.id;
@@ -24,9 +24,9 @@ const LoginDetails = ({ recipe }: Props) => {
             })}
           </div>
           <div key='description' style={styles.descriptionContainer}>
-            {recipe.description}
+            {recipe.tabDescription}
           </div>
-        </>
+        </div>
       )}
       <div style={styles.container}>
         <div style={styles.details}>
@@ -44,22 +44,26 @@ const LoginDetails = ({ recipe }: Props) => {
 };
 
 const styles: Record<string, React.CSSProperties> = {
-  tabsContainer: {
+  tabsAndDescriptionContainer: {
     backgroundColor: '#FFF',
-    display: 'flex',
     margin: '48px auto 0',
-    padding: '12px',
-    flexWrap: 'wrap-reverse',
-    justifyContent: 'center',
-    gap: '48px',
     width: 'calc(100% - 48px)',
   },
+  tabsContainer: {
+    display: 'flex',
+    padding: '24px 24px 12px 24px',
+    flexWrap: 'wrap-reverse',
+    justifyContent: 'center',
+    gap: '32px',
+  },
   descriptionContainer: {
-    backgroundColor: '#FFF',
-    padding: '24px',
-    margin: '0 auto',
-    width: 'calc(100% - 48px)',
+    padding: '12px 24px 24px 24px',
     textAlign: 'center',
+    fontFamily: "'Booton Regular', 'sans-serif'",
+    fontSize: '16px',
+    lineHeight: '25px',
+    color: '#19303d',
+    fontWeight: 400,
   },
   container: {
     display: 'flex',

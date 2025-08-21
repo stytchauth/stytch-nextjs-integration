@@ -50,7 +50,7 @@ Next we'll configure the appropriate redirect URLs for your project, you'll set 
 * If you'd like to try our SMS OTP example integration, add `http://localhost:3000/recipes/api-sms-mfa/magic-link-authenticate` as a login and sign-up redirect URL.
 
 * If you'd like to try our Remember Device example integration:
-  * Add `http://localhost:3000/recipes/api-sms-remembered-device/magic-link-authenticate` as a login and sign-up redirect URL.
+  * Add `http://localhost:3000/recipes/api-sms-remembered-device/magic-link-authenticate` and `http://localhost:3000/recipes/api-sms-remembered-device-integrated/magic-link-authenticate` as a login and sign-up redirect URL.
   * [Request access](https://offers.stytch.com/dfp-30-day-trial) to [our Device Fingerprinting product](https://stytch.com/docs/fraud/guides) if you don't have it already!
 
 ## Running the example app
