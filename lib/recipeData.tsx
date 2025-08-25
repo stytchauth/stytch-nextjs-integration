@@ -10,6 +10,7 @@ import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
 import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
 import LoginWithEmailRememberedDevice from '../components/RememberedDevice/LoginWithEmailRememberedDevice';
 import RememberedDeviceIntegrated from '../components/RememberedDeviceIntegrated/RememberedDeviceIntegrated';
+import LoginWithEmailFreeCreditAbuse from '../components/FreeCreditAbuse/LoginWithEmailFreeCreditAbuse';
 
 export const Recipes: Record<string, LoginType> = {
   REACT: {
@@ -202,6 +203,48 @@ await stytchClient.users.update({
 });
 `,
     products: [LoginProducts.EML, LoginProducts.SMS],
+  },
+  FREE_CREDIT_ABUSE: {
+    id: 'free-credit-abuse',
+    title: 'Free Credit Abuse Prevention',
+    cardTitle: 'Free Credit Abuse',
+    details: 'Build a fraud prevention flow using Stytch DFP to detect and prevent free credit abuse.',
+    description: 'In this example we use a backend Stytch auth flow and DFP to build a fraud prevention system. The system generates a telemetry_id on the frontend and uses that data to make authentication decisions to prevent free credit abuse.',
+    instructions: 'To the right you\'ll see a login form that uses Stytch telemetry to detect potential fraud. Enter your email to receive a magic link. The system will use telemetry data to determine whether this user might be attempting to abuse free credits.',
+    component: <LoginWithEmailFreeCreditAbuse />,
+    code: `// Send Email Magic Link.
+await stytchClient.magicLinks.email.loginOrCreate({
+  email: email,
+  login_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-free-credit-abuse/magic-link-authenticate',
+  signup_magic_link_url: REDIRECT_URL_BASE + '/recipes/api-free-credit-abuse/magic-link-authenticate',
+});
+
+// Function to safely return telemetry ID
+export const getTelemetryId = async () => {
+  const config = {
+    submitURL: "auth.stytchdemo.com",
+    publicToken: process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN,
+  };
+  try {
+    return await (window as any).GetTelemetryID(config);
+  } catch (error) {
+    console.warn('Could not get telemetry ID:', error);
+    return undefined;
+  }
+};
+
+// Lookup telemetry ID for fraud detection
+const fingerprintResponse = await stytchClient.fraud.fingerprint.lookup({
+  telemetry_id: telemetryId,
+});
+
+// Make authentication decision to prevent free credit abuse
+const authenticateResponse = await stytchClient.magicLinks.authenticate({
+  token: token,
+  session_duration_minutes: 60,
+});
+`,
+    products: [LoginProducts.EML],
   },
   CRYPTO_WALLETS: {
     id: 'sdk-crypto-wallets',
