@@ -25,8 +25,8 @@ const Profile = ({ error, user, session, hasRegisteredPhone, superSecretData, ph
     return (
       <div>
         <p>{`Error: ${error}`}</p>
-        <Link href="/">
-          <a className="link">Click here to start over</a>
+        <Link href="/" className="link">
+          Click here to start over
         </Link>
       </div>
     );

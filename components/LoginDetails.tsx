@@ -17,8 +17,8 @@ const LoginDetails = ({ recipe }: Props) => {
             {recipe.tabs.map((tab) => {
               const isActive = tab.recipeId === recipe.id;
               return (
-                <Link key={tab.recipeId} href={`/recipes/${tab.recipeId}`}>
-                  <a className={`btn outlined ${isActive ? 'active' : ''}`}>{tab.title}</a>
+                <Link key={tab.recipeId} href={`/recipes/${tab.recipeId}`} className={`btn outlined ${isActive ? 'active' : ''}`}>
+                  {tab.title}
                 </Link>
               );
             })}
@@ -33,8 +33,8 @@ const LoginDetails = ({ recipe }: Props) => {
           <h2>{recipe.title}</h2>
           <p>{recipe.instructions}</p>
           <CodeBlock codeString={recipe.code} />
-          <Link href="/">
-            <a className="btn outlined mt2">{'Back'}</a>
+          <Link href="/" className="btn outlined mt2">
+            {'Back'}
           </Link>
         </div>
         {recipe.id == "onetap" ? recipe.component : (<div style={styles.component}>{recipe.component}</div>)}

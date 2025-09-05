@@ -6,6 +6,7 @@ import { StytchProvider } from '@stytch/nextjs';
 import { createStytchUIClient } from '@stytch/nextjs/ui';
 import Head from 'next/head';
 import NavBar from '../components/NavBar';
+import { Analytics } from '@vercel/analytics/react';
 
 const stytch = createStytchUIClient(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN || '');
 
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NavBar />
         <Component {...pageProps} />
       </StytchProvider>
+      <Analytics />
     </>
   );
 }

@@ -12,8 +12,8 @@ const AuthenticateMagicLink = ({ error }: Props) => {
     return (
       <div>
         <p>{`Error: ${error}`}</p>
-        <Link href="../../recipes/api-webauthn">
-          <a className="link">Click here to start over</a>
+        <Link href="../../recipes/api-webauthn" className="link">
+          Click here to start over
         </Link>
       </div>
     );

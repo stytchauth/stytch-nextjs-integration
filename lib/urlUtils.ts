@@ -17,6 +17,11 @@ export const getDomainFromRequest = (req: NextIncomingMessage, isWebAuthN: boole
   const host = req.headers.host || '';
   const protocol = req.headers['x-forwarded-proto'] ? 'https://' : 'http://';
 
+  // For local development, always use localhost:3000 so we can continue using the existing redirect URLs
+  if (host?.includes('localhost') || host?.includes('[::1]')) {
+    return 'http://localhost:3000';
+  }
+
   // WebAuthN uses the host but doesn't require protocol
   if (isWebAuthN) {
     // WebAuthN requires port number is stripped from localhost

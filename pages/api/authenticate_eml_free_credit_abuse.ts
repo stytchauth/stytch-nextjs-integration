@@ -11,7 +11,6 @@ type SuccessData = {
   session_token: string;
   user_id: string;
   visitorID: string;
-  super_secret_data?: string;
 };
 
 export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorData | SuccessData>) {
@@ -33,14 +32,12 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
       // Get telemetry ID from the request (this would come from the frontend)
       const telemetryId = req.headers['x-telemetry-id'] as string;
 
-      let isSuspiciousForFreeCredits = false;
       let visitorFingerprint = '';
       let isAuthorizedForCredits = false;
 
-      // Fail closed: flag as suspicious if no telemetry ID provided
+      // Check if telemetry ID is provided
       if (!telemetryId) {
-        console.log('No telemetry ID provided, flagging as suspicious for free credit abuse (fail closed)');
-        isSuspiciousForFreeCredits = true;
+        console.log('No telemetry ID provided, cannot process free credits');
       } else {
         try {
           // Lookup the telemetry ID 
@@ -54,83 +51,57 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
           // This is where you would implement your custom free credit abuse prevention logic
           // For this example, we'll use a simple heuristic based on visitor fingerprint
           if (visitorFingerprint && visitorFingerprint.length > 0) {
-            // Example: If visitor fingerprint exists and has some length, check for suspicious patterns
-            // In a real implementation, you might check:
-            // - Multiple accounts from same device/IP
-            // - Rapid account creation patterns  
-            // - Device fingerprint similarity to known abusers
-            // - Geographic location anomalies
-            // - Browser/device characteristics that suggest automation
-            // - Risk scores from Stytch DFP
-            
-                        console.log('Telemetry data available, checking for free credit abuse patterns');
+            console.log('Telemetry data available, checking for free credit abuse patterns');
             
             // Check if this device is already associated with a different user
             const existingOwner = await getDeviceOwner(visitorFingerprint);
             
             if (existingOwner && existingOwner !== authenticateResponse.user_id) {
               console.log(`Device already belongs to user ${existingOwner}, preventing free credit abuse`);
-              isSuspiciousForFreeCredits = true;
               isAuthorizedForCredits = false;
-              
-              // Update session with custom claims to mark this session as flagged
-              await stytchClient.sessions.authenticate({
-                session_token: authenticateResponse.session_token,
-                session_custom_claims: {
-                  visitor_fingerprint: visitorFingerprint,
-                  flagged_for_review: true,
-                  abuse_reason: 'device_already_associated_with_different_user',
-                  existing_owner: existingOwner,
-                },
-              });
             } else {
               console.log('Device is available for this user, authorizing free credits');
               isAuthorizedForCredits = true;
-              isSuspiciousForFreeCredits = false;
               
               // Add this device to the user's device list (if not already there)
               await addUserDevice(authenticateResponse.user_id, visitorFingerprint);
+              
+              // Get current user data to update credits
+              const user = await stytchClient.users.get({
+                user_id: authenticateResponse.user_id,
+              });
+              
+              // Grant 3 free credits to the user
+              const currentCredits = user.trusted_metadata?.free_credits || 0;
+              const newCredits = currentCredits + 3;
+              
+              await stytchClient.users.update({
+                user_id: authenticateResponse.user_id,
+                trusted_metadata: {
+                  ...user.trusted_metadata,
+                  free_credits: newCredits,
+                  last_credit_grant: new Date().toISOString(),
+                },
+              });
               
               // Update session with custom claims to mark this session as authorized
               await stytchClient.sessions.authenticate({
                 session_token: authenticateResponse.session_token,
                 session_custom_claims: {
-                  authorized_for_secret_data: true,
                   visitor_fingerprint: visitorFingerprint,
-                  device_owner: authenticateResponse.user_id,
                   credits_granted: 3,
                 },
               });
             }
           } else {
-            console.log('No visitor fingerprint from telemetry, flagging as suspicious');
-            isSuspiciousForFreeCredits = true;
+            console.log('No visitor fingerprint from telemetry, cannot process free credits');
             isAuthorizedForCredits = false;
           }
 
-          // If flagged as suspicious, store fraud info in session
-          if (isSuspiciousForFreeCredits) {
-            await stytchClient.sessions.authenticate({
-              session_token: authenticateResponse.session_token,
-              session_custom_claims: {
-                visitor_fingerprint: visitorFingerprint,
-                flagged_for_review: true,
-              },
-            });
-          }
-
         } catch (telemetryError) {
-          console.error('Error checking telemetry data for fraud:', telemetryError);
-          // Fail closed: if telemetry lookup fails, flag as suspicious for security
-          isSuspiciousForFreeCredits = true;
+          console.error('Error checking telemetry data:', telemetryError);
+          // If telemetry lookup fails, cannot process free credits
           isAuthorizedForCredits = false;
-          
-          await stytchClient.sessions.authenticate({
-            session_token: authenticateResponse.session_token,
-            session_custom_claims: {
-              telemetry_error: true,
-            },
-          });
         }
       }
 
@@ -141,7 +112,6 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<ErrorDat
         session_token: authenticateResponse.session_token,
         visitorID: visitorFingerprint,
         user_id: authenticateResponse.user_id,
-        super_secret_data: isAuthorizedForCredits ? '🎉 Free credits authorized! No fraud detected.' : undefined,
       });
 
     } catch (error) {

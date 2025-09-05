@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next/types';
 import { useState } from 'react';
+import { track } from '@vercel/analytics';
 import loadStytch from '../../../lib/loadStytch';
 import Cookies from 'cookies';
 import lock from '/public/lock.svg';
@@ -12,16 +13,12 @@ type Props = {
   user?: any;
   session?: any;
   error?: string;
-  superSecretData?: string;
-  isFlaggedForReview?: boolean;
   visitorID?: string;
-  abuseReason?: string;
-  existingOwner?: string;
   creditsGranted?: number;
   currentCredits?: number;
 };
 
-const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, visitorID, abuseReason, existingOwner, creditsGranted, currentCredits }: Props) => {
+const Profile = ({ error, user, session, visitorID, creditsGranted, currentCredits }: Props) => {
   const router = useRouter();
   const [credits, setCredits] = useState(currentCredits || 0);
   const [isUsingCredit, setIsUsingCredit] = useState(false);
@@ -31,8 +28,8 @@ const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, vi
     return (
       <div>
         <p>{`Error: ${error}`}</p>
-        <Link href="/">
-          <a className="link">Click here to start over</a>
+        <Link href="/" className="link">
+          Click here to start over
         </Link>
       </div>
     );
@@ -53,6 +50,13 @@ const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, vi
       return;
     }
 
+    // Track the credit usage attempt
+    track('credit_used', {
+      userId: user?.user_id,
+      currentCredits: credits,
+      recipe: 'free-credit-abuse'
+    });
+
     setIsUsingCredit(true);
     setCreditMessage('');
 
@@ -63,11 +67,33 @@ const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, vi
       if (resp.ok) {
         setCredits(data.remainingCredits);
         setCreditMessage(`✅ Credit used successfully! ${data.creditsUsed} credit consumed. ${data.remainingCredits} credits remaining.`);
+        
+        // Track successful credit usage
+        track('credit_used_success', {
+          userId: user?.user_id,
+          creditsUsed: data.creditsUsed,
+          remainingCredits: data.remainingCredits,
+          recipe: 'free-credit-abuse'
+        });
       } else {
         setCreditMessage(`❌ Error: ${data.errorString}`);
+        
+        // Track failed credit usage
+        track('credit_used_error', {
+          userId: user?.user_id,
+          error: data.errorString,
+          recipe: 'free-credit-abuse'
+        });
       }
     } catch (error) {
       setCreditMessage('❌ Network error occurred while using credit');
+      
+      // Track error
+      track('credit_used_error', {
+        userId: user?.user_id,
+        error: 'Network error',
+        recipe: 'free-credit-abuse'
+      });
     } finally {
       setIsUsingCredit(false);
     }
@@ -84,38 +110,19 @@ const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, vi
 
         <div style={styles.secretBox}>
           <h3>Free Credits Status</h3>
-          {superSecretData ? (
+          {creditsGranted && creditsGranted > 0 ? (
             <div>
-              <p>{superSecretData}</p>
-              {creditsGranted && (
-                <p style={styles.authorizedNote}>
-                  ✅ <strong>Free credits granted!</strong> You received {creditsGranted} free credits for using a new device.
-                </p>
-              )}
+              <p>🎉 Congratulations! You received {creditsGranted} free credits as a first time user.</p>
+              <p style={styles.authorizedNote}>
+                ✅ <strong>Free credits granted!</strong> You received {creditsGranted} free credits as a first time user.
+              </p>
             </div>
           ) : (
             <>
               <Image alt="Lock" src={lock} width={100} />
               <p>
-                {isFlaggedForReview
-                  ? `⚠️ Account flagged for review. This appears to be suspicious activity from device (${visitorID || 'unknown device'}). Free credits are temporarily unavailable.`
-                  : 'Free credits are protected by fraud detection. Your device and usage patterns will be analyzed to prevent abuse.'
-                }
+                Free credits are protected by fraud detection. Your device and usage patterns will be analyzed to prevent abuse.
               </p>
-              {isFlaggedForReview && (
-                <div style={styles.warningBox}>
-                  <h4>🚨 Fraud Detection Alert</h4>
-                  <p>Your account has been flagged for potential free credit abuse.</p>
-                  <p>Common reasons for flagging:</p>
-                  <ul>
-                    <li>Multiple accounts from the same device</li>
-                    <li>Suspicious device characteristics</li>
-                    <li>Automated/bot-like behavior</li>
-                    <li>Geographic location inconsistencies</li>
-                  </ul>
-                  <p>Please contact support if you believe this is an error.</p>
-                </div>
-              )}
             </>
           )}
         </div>
@@ -125,15 +132,8 @@ const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, vi
           <p><strong>Email:</strong> {user.emails?.[0]?.email || 'No email'}</p>
           <p><strong>User ID:</strong> {user.user_id}</p>
           <p><strong>Visitor Fingerprint:</strong> {visitorID || 'Not available'}</p>
-          <p><strong>Flagged for Review:</strong> {isFlaggedForReview ? '⚠️ Yes' : '✅ No'}</p>
           {creditsGranted && (
             <p><strong>Credits Granted This Session:</strong> {creditsGranted}</p>
-          )}
-          {abuseReason && (
-            <p><strong>Abuse Reason:</strong> {abuseReason}</p>
-          )}
-          {existingOwner && (
-            <p><strong>Device Already Owned By:</strong> {existingOwner}</p>
           )}
         </div>
 
@@ -177,36 +177,6 @@ const Profile = ({ error, user, session, superSecretData, isFlaggedForReview, vi
         </div>
       </div>
 
-      <div style={styles.codeSection}>
-        <h3>How Free Credit Abuse Detection Works</h3>
-        <p>
-          This recipe demonstrates how to use Stytch DFP (Device Fingerprinting) to detect and prevent free credit abuse:
-        </p>
-        <ol>
-          <li>User enters email and receives magic link</li>
-          <li>Frontend generates telemetry_id using Stytch DFP</li>
-          <li>Backend receives telemetry_id and analyzes device fingerprint</li>
-          <li>Fraud detection algorithm evaluates user for potential abuse</li>
-          <li>User is either authorized for credits or flagged for review</li>
-        </ol>
-        
-        <h4>Fraud Detection Techniques:</h4>
-        <ul>
-          <li><strong>Device Fingerprinting:</strong> Unique device characteristics to identify repeat users</li>
-          <li><strong>Behavioral Analysis:</strong> Detecting automated or bot-like behavior patterns</li>
-          <li><strong>Geographic Consistency:</strong> Analyzing location data for suspicious patterns</li>
-          <li><strong>Account Velocity:</strong> Monitoring rapid account creation from same devices</li>
-          <li><strong>Risk Scoring:</strong> Using Stytch DFP to assess overall fraud risk</li>
-        </ul>
-
-        <h4>Implementation Notes:</h4>
-        <ul>
-          <li><strong>Fail-Safe Design:</strong> When in doubt, flag for review to prevent abuse</li>
-          <li><strong>Custom Logic:</strong> Replace demo logic with your specific fraud detection rules</li>
-          <li><strong>Session Tracking:</strong> Use session custom claims to track authorization status</li>
-          <li><strong>Continuous Monitoring:</strong> Regular analysis of patterns to improve detection</li>
-        </ul>
-      </div>
     </div>
   );
 };
@@ -233,14 +203,6 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#059669',
     fontWeight: 'bold',
     marginTop: '1rem',
-  },
-  warningBox: {
-    backgroundColor: '#fef2f2',
-    border: '1px solid #fecaca',
-    borderRadius: '8px',
-    padding: '1rem',
-    marginTop: '1rem',
-    textAlign: 'left',
   },
   userInfo: {
     border: '1px solid #e0e0e0',
@@ -347,27 +309,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     // Check session custom claims for fraud detection results
     const sessionCustomClaims = sessionResponse.session.custom_claims || {};
-    const isFlaggedForReview = sessionCustomClaims.flagged_for_review === true;
     const visitorID = sessionCustomClaims.visitor_fingerprint || '';
-    const abuseReason = sessionCustomClaims.abuse_reason || '';
-    const existingOwner = sessionCustomClaims.existing_owner || '';
     const creditsGranted = sessionCustomClaims.credits_granted || 0;
 
     // Get current credits from user trusted metadata
     const currentCredits = user.trusted_metadata?.free_credits || 0;
 
-    // Get super secret data if credits were granted
-    const superSecretData = creditsGranted > 0 ? `🎉 Congratulations! You received ${creditsGranted} free credits for using a new device.` : undefined;
-
     return {
       props: {
         user: user,
         session: sessionResponse,
-        superSecretData,
-        isFlaggedForReview,
         visitorID,
-        abuseReason,
-        existingOwner,
         creditsGranted,
         currentCredits,
       },

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Recipes } from '../lib/recipeData';
 import LoginMethodCard from '../components/LoginMethodCard';
 import { useStytchUser } from '@stytch/nextjs';
+import { track } from '@vercel/analytics';
 
 const App = () => {
   const { user } = useStytchUser();
@@ -14,6 +15,14 @@ const App = () => {
       router.push('/profile');
     }
   }, [user, router]);
+
+  useEffect(() => {
+    // Track page view
+    track('page_view', {
+      page: 'home',
+      userAuthenticated: !!user
+    });
+  }, [user]);
 
   return (
     <div style={{ padding: '24px 40px', backgroundColor: '#F4EEE9' }}>

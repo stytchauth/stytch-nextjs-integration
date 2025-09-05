@@ -51,9 +51,9 @@ POSTGRES_PASSWORD="your_postgres_password"
 Within the Free Credit Abuse recipe:
 
 - When a user authenticates, the system generates a `visitor_fingerprint` using Stytch DFP
-- The system checks if this device has been used before for this user
-- If it's a new device, free credits are authorized and the device is recorded
-- If it's a repeat device, the user is flagged for review
+- The system checks if this device is already associated with a different user
+- If the device is available (not used by another user), free credits are granted and the device is recorded
+- If the device belongs to another user, free credits are denied to prevent abuse
 
 Devices are not tracked in other recipes. 
 
@@ -62,9 +62,8 @@ Devices are not tracked in other recipes.
 The system provides these database functions:
 
 - `addUserDevice(userId, visitorFingerprint)` - Records a new device for a user
-- `getUserDevices(userId)` - Gets all devices for a user
-- `isNewDevice(userId, visitorFingerprint)` - Checks if a device is new for a user
-- `getDeviceCount(userId)` - Gets the total device count for a user
+- `getDeviceOwner(visitorFingerprint)` - Gets the user ID who owns a specific device
+- `isDeviceAvailable(visitorFingerprint)` - Checks if a device is available (not associated with any user)
 
 ### Session Claims
 
@@ -87,9 +86,9 @@ The system tracks free credits in user trusted metadata:
 ## Testing
 
 1. Create a new account and authenticate
-2. Check that the device is recorded in the database
-3. Try to authenticate from the same device again
-4. Verify that repeat devices are flagged for review
+2. Check that the device is recorded in the database and free credits are granted
+3. Try to authenticate from a different device - should get free credits
+4. Try to authenticate from the same device with a different account - should be denied free credits
 
 ## Monitoring
 
@@ -101,8 +100,8 @@ You can monitor the system by:
 
 ## Customization
 
-The fraud detection logic in `pages/api/authenticate_eml_free_credit_abuse.ts` can be customized:
+The free credit logic in `pages/api/authenticate_eml_free_credit_abuse.ts` can be customized:
 
-- Modify the `isNewDevice` check to implement your business rules
-- Add additional fraud detection criteria
-- Implement rate limiting or other abuse prevention measures
+- Modify the device ownership check to implement your business rules
+- Add additional criteria for credit granting
+- Implement different credit amounts based on device characteristics
