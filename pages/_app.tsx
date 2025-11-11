@@ -18,10 +18,21 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Stytch Demo</title>
       </Head>
       <StytchProvider stytch={stytch}>
-        <NavBar />
-        <Component {...pageProps} />
+        <div style={styles.container}>
+          <NavBar />
+          <Component {...pageProps} />
+        </div>
       </StytchProvider>
     </>
   );
 }
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+};
+
 export default MyApp;
