@@ -1,5 +1,5 @@
 import React from 'react';
-import { authenticateWebAuthn, authenticateWebAuthnStart, serializeAssertionCredential, serializeAttestationCredential } from '../../lib/webAuthnUtils';
+import { authenticateWebAuthn, authenticateWebAuthnStart, serializeAssertionCredential } from '../../lib/webAuthnUtils';
 import { useRouter } from 'next/router';
 
 function WebAuthnAuthenticateButton() {
