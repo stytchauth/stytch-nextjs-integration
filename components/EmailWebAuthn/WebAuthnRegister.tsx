@@ -1,6 +1,5 @@
 import React from 'react';
-import { registerWebAuthn, registerWebAuthnStart } from '../../lib/webAuthnUtils';
-import * as webauthnJson from '@github/webauthn-json';
+import { registerWebAuthn, registerWebAuthnStart, serializeAttestationCredential } from '../../lib/webAuthnUtils';
 import { useRouter } from 'next/router';
 import CodeBlock from '../common/CodeBlock';
 
@@ -9,10 +8,19 @@ const WebAuthnRegister = () => {
 
   const register = async () => {
     const options = await registerWebAuthnStart();
-    const credential = await webauthnJson.create({
-      publicKey: JSON.parse(options),
-    });
-    await registerWebAuthn(JSON.stringify(credential));
+
+    const publicKey = PublicKeyCredential.parseCreationOptionsFromJSON(JSON.parse(options));
+
+    const credential = (await navigator.credentials.create({publicKey})) as PublicKeyCredential;
+
+    // Instead of manually serializing the credential, you can also simply
+    // call credential.toJSON(). However, there are known incompatibilites
+    // with the toJSON() method and certain password managers like 1Password.
+    const serializedCredential = serializeAttestationCredential(
+      credential as PublicKeyCredential,
+    );
+
+    await registerWebAuthn(JSON.stringify(serializedCredential));
     // Now that we have registered, we will authenticate
     router.push('./webauthn-authenticate');
   };
@@ -20,13 +28,14 @@ const WebAuthnRegister = () => {
   const code = `  // Start WebAuthn registration
   await stytchClient.webauthn.registerStart({
     user_id: user_id as string,
-    domain: DOMAIN,
+    domain: domain as string,
+    use_base64_url_encoding: true,
   });
 
   // Register the WebAuthn device
   await stytchClient.webauthn.register({
-    user_id: user_id_cookie as string,
-    public_key_credential: data.credential,
+    user_id: user_id as string,
+    public_key_credential: credential as string,
   });`;
 
   return (

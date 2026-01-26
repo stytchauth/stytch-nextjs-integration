@@ -15,7 +15,6 @@
     "lint"
   ],
   "dependencies": {
-    "@github/webauthn-json": "^2.0.1",
     "@stytch/nextjs": "^21.0.0",
     "@stytch/vanilla-js": "^5.2.0",
     "cookies": "^0.8.0",

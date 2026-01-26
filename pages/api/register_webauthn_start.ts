@@ -31,6 +31,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse<Data | E
     const authnResp = await stytchClient.webauthn.registerStart({
       user_id: session.user_id,
       domain: getDomainFromRequest(req, true),
+      use_base64_url_encoding: true,
     });
     return res.status(200).json(authnResp);
   } catch (error) {
