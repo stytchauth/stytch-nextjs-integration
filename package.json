@@ -15,8 +15,7 @@
     "lint"
   ],
   "dependencies": {
-    "@stytch/nextjs": "^21.0.0",
-    "@stytch/vanilla-js": "^5.2.0",
+    "@stytch/nextjs": "22.0.0-next.5",
     "cookies": "^0.8.0",
     "next": "^12.3.5",
     "prismjs": "^1.30.0",

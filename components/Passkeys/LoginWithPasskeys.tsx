@@ -1,6 +1,5 @@
 import React from 'react';
-import {OTPMethods, Products, StytchError, StytchEvent, StytchLoginConfig} from '@stytch/vanilla-js';
-import {StytchLogin, useStytchUser} from '@stytch/nextjs';
+import {StytchLogin, useStytchUser, OTPMethods, Products, StytchError, StytchEvent, StytchLoginConfig } from '@stytch/nextjs';
 import {useRouter} from 'next/router';
 
 const loginConfig: StytchLoginConfig = {

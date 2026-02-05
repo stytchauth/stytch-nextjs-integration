@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import CodeBlock from '../common/CodeBlock';
 import { getDomainFromWindow } from '../../lib/urlUtils';
-import { Products } from '@stytch/vanilla-js';
-import { useStytchUser, StytchPasswordReset } from '@stytch/nextjs';
+import { useStytchUser, StytchPasswordReset, Products } from '@stytch/nextjs';
 
 const config = {
   passwordOptions: {

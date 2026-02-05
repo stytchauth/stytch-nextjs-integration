@@ -2,12 +2,11 @@ import '../styles/globals.css';
 import '../styles/prism.css';
 import type { AppProps } from 'next/app';
 import React from 'react';
-import { StytchProvider } from '@stytch/nextjs';
-import { createStytchUIClient } from '@stytch/nextjs/ui';
+import { createStytchClient, StytchProvider } from '@stytch/nextjs';
 import Head from 'next/head';
 import NavBar from '../components/NavBar';
 
-const stytch = createStytchUIClient(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN || '');
+const stytch = createStytchClient(process.env.NEXT_PUBLIC_STYTCH_PUBLIC_TOKEN || '');
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

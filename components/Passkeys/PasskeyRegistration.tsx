@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {AuthenticationFactor, Products, StytchError, StytchEvent, StytchEventType} from '@stytch/vanilla-js';
-import {StytchPasskeyRegistration, useStytch, useStytchSession, useStytchUser} from '@stytch/nextjs';
+import {StytchPasskeyRegistration, useStytch, useStytchSession, useStytchUser, AuthenticationFactor, Products, StytchError, StytchEvent, StytchEventType } from '@stytch/nextjs';
 
 const styles: Record<string, React.CSSProperties> = {
     registerButton: {
