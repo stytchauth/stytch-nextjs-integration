@@ -13,7 +13,7 @@ const sdkConfig: StytchLoginConfig = {
   },
   oauthOptions: {
     providers: [
-      { type: OAuthProviders.Google, one_tap: true},
+      { type: OAuthProviders.Google, one_tap: true },
       { type: OAuthProviders.Apple },
       { type: OAuthProviders.Microsoft },
       { type: OAuthProviders.Facebook },
@@ -28,8 +28,14 @@ const sdkConfig: StytchLoginConfig = {
 const callbackConfig = {
   onEvent: (message: StytchEvent) => console.log(message),
   onError: (error: StytchError) => console.log(error),
-}
+};
 
-const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} callbacks={callbackConfig} />;
+const presentationConfig = {
+  options: { enableShadowDOM: true },
+};
+
+const LoginWithStytchSDKUI = () => (
+  <StytchLogin config={sdkConfig} callbacks={callbackConfig} presentation={presentationConfig} />
+);
 
 export default LoginWithStytchSDKUI;

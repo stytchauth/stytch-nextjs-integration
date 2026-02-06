@@ -82,6 +82,7 @@ const styles: Record<string, React.CSSProperties> = {
     backgroundColor: '#FFF',
     padding: '48px',
     maxWidth: '500px',
+    flex: '1 1 auto',
   },
 };
 
