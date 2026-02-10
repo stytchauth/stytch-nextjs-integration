@@ -4,7 +4,6 @@ import smsIcon from '/public/sms-icon.svg';
 import webauthnIcon from '/public/webauthn-icon.svg';
 import web3Icon from '/public/web3-icon.svg';
 import passwordsIcon from '/public/passwords-icon.svg';
-import passkeysIcon from 'public/passkeys-icon.svg';
 import { LoginProduct } from './types';
 
 const LoginProducts: Record<string, LoginProduct> = {
@@ -32,10 +31,6 @@ const LoginProducts: Record<string, LoginProduct> = {
     icon: passwordsIcon,
     name: 'Passwords',
   },
-  PASSKEYS: {
-    icon: passkeysIcon,
-    name: 'Passkeys',
-  }
 };
 
 export default LoginProducts;

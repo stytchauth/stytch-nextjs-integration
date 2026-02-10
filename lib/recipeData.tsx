@@ -6,7 +6,6 @@ import LoginWithStytchSDKUI from '../components/LoginWithStytchSDKUI';
 import LoginWithPasswords from '../components/Passwords/LoginWithPasswords';
 import LoginProducts from './loginProduct';
 import LoginWithOneTap from '../components/LoginWithOneTapSDKUI';
-import LoginWithPasskeys from "../components/Passkeys/LoginWithPasskeys";
 import LoginWithSMSMFA from '../components/EmailSMS/LoginWithEmail';
 import LoginWithEmailRememberedDevice from '../components/RememberedDevice/LoginWithEmailRememberedDevice';
 import RememberedDeviceIntegrated from '../components/RememberedDeviceIntegrated/RememberedDeviceIntegrated';
@@ -273,36 +272,6 @@ const LoginWithPasswords = () => {
   if (user) {
     router.push('/profile');
   }
-  return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;
-}`,
-  },
-  PASSKEYS: {
-    id: 'passkeys',
-    title: 'Passkeys',
-    details:
-        'Build an email/passkey authentication experience including passkey registrations and email OTPs using prebuilt Stytch UI components.',
-    description: ``,
-    instructions: 'To the right you\'ll see the Stytch UI configured for Email OTP and Passkey login. Continue with email to create an account. Then, once logged in, use the Passkey Registration SDK to create a passkey for your account.',
-    component: <LoginWithPasskeys />,
-    products: [LoginProducts.PASSKEYS],
-    code: `const loginConfig: StytchLoginConfig =
-  sessionOptions: {
-    sessionDurationMinutes: 60,
-  },
-  products: [Products.passkeys, Products.otp],
-  otpOptions: {
-    expirationMinutes: 10,
-    methods: [OTPMethods.Email],
-  },
-};
-const LoginWithPasskeys = () => {
-  const { user } = useStytchUser();
-  const router = useRouter();
-
-  if (user) {
-    router.push('/recipes/passkeys/profile');
-  }
-
   return <StytchLogin config={loginConfig} callbacks={callbackConfig} />;
 }`,
   },
