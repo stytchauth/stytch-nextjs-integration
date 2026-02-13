@@ -1,6 +1,5 @@
 import React from 'react';
-import { StytchLogin } from '@stytch/nextjs';
-import { StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig, StytchEvent, StytchError } from '@stytch/vanilla-js';
+import { Products, StytchLogin, StytchLoginConfig, OAuthProviders, OneTapPositions, StytchEvent, StytchError } from '@stytch/nextjs';
 import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkConfig: StytchLoginConfig = {

@@ -1,17 +1,6 @@
 import React from 'react';
-import { StytchLogin } from '@stytch/nextjs';
-import { StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig, StytchEvent, StytchError } from '@stytch/vanilla-js';
+import { StytchLogin, StytchLoginConfig, OAuthProviders, Products, StytchEvent, StytchError } from '@stytch/nextjs';
 import { getDomainFromWindow } from '../lib/urlUtils';
-
-const sdkStyle: StyleConfig = {
-  fontFamily: '"Helvetica New", Helvetica, sans-serif',
-  buttons: {
-    primary: {
-      backgroundColor: '#19303d',
-      textColor: '#ffffff',
-    },
-  },
-};
 
 const sdkConfig: StytchLoginConfig = {
   products: [Products.oauth, Products.emailMagicLinks],
@@ -24,7 +13,7 @@ const sdkConfig: StytchLoginConfig = {
   },
   oauthOptions: {
     providers: [
-      { type: OAuthProviders.Google, one_tap: true},
+      { type: OAuthProviders.Google, one_tap: true },
       { type: OAuthProviders.Apple },
       { type: OAuthProviders.Microsoft },
       { type: OAuthProviders.Facebook },
@@ -39,8 +28,14 @@ const sdkConfig: StytchLoginConfig = {
 const callbackConfig = {
   onEvent: (message: StytchEvent) => console.log(message),
   onError: (error: StytchError) => console.log(error),
-}
+};
 
-const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} callbacks={callbackConfig} />;
+const presentationConfig = {
+  options: { enableShadowDOM: true },
+};
+
+const LoginWithStytchSDKUI = () => (
+  <StytchLogin config={sdkConfig} callbacks={callbackConfig} presentation={presentationConfig} />
+);
 
 export default LoginWithStytchSDKUI;

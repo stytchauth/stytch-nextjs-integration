@@ -1,6 +1,5 @@
 import React from 'react';
-import { Products, StytchEvent, StytchError, StytchLoginConfig } from '@stytch/vanilla-js';
-import { useStytchUser, StytchLogin } from '@stytch/nextjs';
+import { useStytchUser, StytchLogin, Products, StytchEvent, StytchError, StytchLoginConfig } from '@stytch/nextjs';
 import { useRouter } from 'next/router';
 import { getDomainFromWindow } from '../../lib/urlUtils';
 
