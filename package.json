@@ -15,13 +15,13 @@
     "lint"
   ],
   "dependencies": {
-    "@stytch/nextjs": "^22.0.1",
+    "@stytch/nextjs": "^22.0.9",
     "cookies": "^0.8.0",
     "next": "^12.3.5",
     "prismjs": "^1.30.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "stytch": "^13.1.0"
+    "stytch": "^14.0.0"
   },
   "devDependencies": {
     "@types/cookies": "^0.7.7",
